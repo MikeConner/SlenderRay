@@ -1,0 +1,10 @@
+# Sample localization file for English. Add more files in this directory for other locales.
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+  patient_created: 'New patient created successfully'
+  patient_deleted: 'Patient record deleted'
+  patient_created: 'New patient created successfully'
+  testimonial_deleted: 'Patient testimonial deleted'
+  testimonial_updated: 'Patient testimonial updated successfully'
+  testimonial_created: 'Patient testimonial created successfully'

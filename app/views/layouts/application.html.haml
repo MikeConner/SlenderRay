@@ -1,0 +1,14 @@
+!!!
+%head
+  %meta{:content => 'text/html', :charset => 'UTF-8', 'http-equiv' => 'Content-Type'}
+  %meta{:name => 'viewport', :content => "initial-scale=1, maximum-scale=1" }
+  %meta{:name => 'viewport', :content => "width=device-width" }
+  %meta{:name => 'description', :content => I18n.t('meta_description') }
+  %title SlenderRay
+  = favicon_link_tag 
+  = javascript_include_tag "application"
+  = csrf_meta_tags
+  = stylesheet_link_tag "application", :media => "all"
+  = render 'layouts/application/shim'
+%body
+  = yield

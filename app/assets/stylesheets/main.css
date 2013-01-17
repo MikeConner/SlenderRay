@@ -1,0 +1,16 @@
+body {
+  background-position: 50% 0%;
+  background-image: url('/assets/background.png');
+  background-repeat: no-repeat;
+}
+
+.space {margin: 25px 0px}
+.space-medium {margin:40px 0;}
+.space-large {margin:75px 0}
+.space-huge {margin:150px 0}
+.push{
+  margin: 0px 0px 200px 0px;
+}
+.push-large{
+  margin: 0px 0px 400px 0px;
+}
