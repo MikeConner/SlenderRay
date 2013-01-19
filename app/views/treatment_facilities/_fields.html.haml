@@ -1,0 +1,44 @@
+.span10
+  .span4
+    .field
+      = f.label :facility_name
+      = f.text_field :facility_name
+    .field
+      = f.label :facility_url
+      = f.text_field :facility_url
+    .field
+      = f.label :first_name
+      = f.text_field :first_name
+    .field
+      = f.label :last_name
+      = f.text_field :last_name
+    .field
+      = f.label :email
+      = f.text_field :email
+    .field
+      = f.label :phone
+      = f.text_field :phone
+    .field
+      = f.label :fax
+      = f.text_field :fax
+  .span6
+    .field
+      = f.label :address_1, 'Street address'
+      = f.text_field :address_1
+    .field
+      = f.label :address_2, 'Apt./Suite'
+      = f.text_field :address_2
+    .field
+      = f.label :city
+      = f.text_field :city
+    .field
+      = f.label :state
+      = f.text_field :state
+    .field
+      = f.label :zipcode
+      = f.text_field :zipcode
+%br/
+= f.fields_for :machines do |machine_form|
+  .span3
+    = render :partial => 'machine', :locals => { :f => machine_form }
+

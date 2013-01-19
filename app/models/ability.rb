@@ -10,9 +10,9 @@ class Ability
       can :manage, :all
     elsif user.has_role?(Role::INSTRUMENT_ADMIN)
       can :read, :all
-      can :create, [Measurement, TreatmentPlan, Treatment]
-      can :manage, [Patient, Measurement, TreatmentPlan, Treatment]
-      cannot :destroy, [Machine, Measurement, Patient, Protocol, Role, Testimonial, TreatmentFacility, TreatmentPlan, Treatment, User]
+      can :create, [Measurement, TreatmentPlan, TreatmentSession, Treatment]
+      can :manage, [Patient, Measurement, TreatmentPlan, TreatmentSession, Treatment]
+      cannot :destroy, [Machine, Measurement, Patient, Protocol, Role, Testimonial, TreatmentFacility, TreatmentPlan, TreatmentSession, Treatment, User]
     end
     #   if user.admin?
     #     can :manage, :all

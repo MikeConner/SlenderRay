@@ -8,3 +8,6 @@ en:
   testimonial_deleted: 'Patient testimonial deleted'
   testimonial_updated: 'Patient testimonial updated successfully'
   testimonial_created: 'Patient testimonial created successfully'
+  facility_deleted: 'Treatment facility deleted'
+  facility_updated: 'Treatment facility updated successfully'
+  facility_created: 'Treatment facility created successfully'

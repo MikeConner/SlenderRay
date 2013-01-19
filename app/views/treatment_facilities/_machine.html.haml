@@ -1,0 +1,14 @@
+%h4 Machine
+.field
+  = f.label :model
+  = f.text_field :model, :maxlength => Machine::MAX_FIELD_LEN
+.field
+  = f.label :serial_number
+  = f.text_field :serial_number, :maxlength => Machine::MAX_FIELD_LEN
+.field
+  = f.label :date_installed
+  = f.date_select :date_installed, :order => [:month, :day, :year]
+- if !f.object.new_record?
+  .field
+    = f.check_box :_destroy
+    = f.label :_destroy, 'Delete machine'

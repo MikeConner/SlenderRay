@@ -30,11 +30,15 @@
 class TreatmentFacility < ActiveRecord::Base
   include ApplicationHelper
     
-  attr_accessible :facility_name, :facility_url, :first_name, :last_name, :email, :phone, :fax, :address_1, :address_2, :city, :state, :zipcode
+  attr_accessible :facility_name, :facility_url, :first_name, :last_name, :email, :phone, :fax, :address_1, :address_2, :city, :state, :zipcode,
+                  :machines_attributes
   
   before_validation :downcase_email
+  before_validation :upcase_state
   
   has_many :machines, :dependent => :restrict
+  
+  accepts_nested_attributes_for :machines, :allow_destroy => true, :reject_if => :all_blank
   
   validates :facility_name, :presence => true,
                             :uniqueness => { case_sensitive: false },
@@ -63,5 +67,9 @@ class TreatmentFacility < ActiveRecord::Base
 private
   def downcase_email
     self.email.downcase!
+  end
+  
+  def upcase_state
+    self.state.upcase!
   end
 end

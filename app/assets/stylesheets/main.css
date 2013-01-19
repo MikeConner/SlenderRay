@@ -14,3 +14,22 @@ body {
 .push-large{
   margin: 0px 0px 400px 0px;
 }
+
+input[type="text"],
+.uneditable-input {
+  display: inline-block;
+  height: 20px;
+  padding: 0px 0px; /* override from bootstrap */
+  margin-bottom: 10px;
+  font-size: 18px;
+  line-height: 20px;
+  color: #555555;
+  vertical-align: middle;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+}
+
+label {
+	display:inline;
+}

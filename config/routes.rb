@@ -6,7 +6,9 @@ SlenderRay::Application.routes.draw do
   root :to => 'static_pages#home'
 
   devise_for :users
+  resources :users, :only => [:index]
   
+  resources :treatment_facilities
   resources :patients
   resources :testimonials
   

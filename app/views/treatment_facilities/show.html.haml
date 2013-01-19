@@ -1,0 +1,20 @@
+.offset2
+  %h1= @facility.facility_name
+  %p= @facility.facility_url
+  %p== Dr. #{@facility.first_name} #{@facility.last_name}
+  %p== Email: #{@facility.email}
+  %p== Phone: #{@facility.phone}
+  - if !@facility.fax.blank?
+    %p== Fax: #{@facility.phone}
+  %br/
+  %p= @facility.address_1
+  - if !@facility.address_2.blank?
+    %p= @facility.address_1
+  %p== #{@facility.city}, #{@facility.state}  #{@facility.zipcode}
+  %br/
+  - idx = 1
+  - @facility.machines.each do |machine|
+    == #{idx}: #{machine.model} (#{machine.serial_number}), installed #{machine.date_installed.try(:strftime, '%b %d, %Y')}
+    - idx += 1
+  %br/
+  = link_to 'Back', treatment_facilities_path

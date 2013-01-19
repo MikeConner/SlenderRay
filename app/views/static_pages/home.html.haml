@@ -1,19 +1,16 @@
-.container
-  %center
-    .space-huge
-    = render :partial => 'shared/flash_messages'
-    .row
-      = image_tag '/assets/LaunchPad.png'
-      = link_to(image_tag('/assets/Intake.png'), patients_path)
-      = image_tag '/assets/treatment.png'
-      = image_tag '/assets/training.png'
-    .row
-      = image_tag '/assets/smile.png'
-      = image_tag '/assets/faces.png'
-      = link_to(image_tag('/assets/testimonials.png'), testimonials_path)
-      = image_tag '/assets/schedule.png'
-    .row
-      = image_tag '/assets/flower.png'
-      = image_tag '/assets/photos.png'
-      = image_tag '/assets/payments.png'
-      = image_tag '/assets/shoes.png'
+%center
+  .row
+    = image_tag '/assets/LaunchPad.png'
+    = link_to(image_tag('/assets/Intake.png'), patients_path)
+    = image_tag '/assets/treatment.png'
+    = image_tag '/assets/training.png'
+  .row
+    = image_tag '/assets/smile.png'
+    = image_tag '/assets/faces.png'
+    = link_to(image_tag('/assets/testimonials.png'), testimonials_path)
+    = image_tag '/assets/schedule.png'
+  .row
+    = image_tag '/assets/flower.png'
+    = image_tag '/assets/photos.png'
+    = image_tag '/assets/payments.png'
+    = image_tag '/assets/shoes.png'
