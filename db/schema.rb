@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130117162653) do
+ActiveRecord::Schema.define(:version => 20130118041804) do
 
   create_table "machines", :force => true do |t|
     t.string   "model",                 :limit => 64, :null => false
@@ -23,11 +23,11 @@ ActiveRecord::Schema.define(:version => 20130117162653) do
   end
 
   create_table "measurements", :force => true do |t|
-    t.string   "location",      :limit => 16, :null => false
-    t.decimal  "circumference",               :null => false
-    t.integer  "treatment_id"
-    t.datetime "created_at",                  :null => false
-    t.datetime "updated_at",                  :null => false
+    t.string   "location",             :limit => 16, :null => false
+    t.decimal  "circumference",                      :null => false
+    t.integer  "treatment_session_id"
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
   end
 
   create_table "patients", :force => true do |t|
@@ -94,22 +94,31 @@ ActiveRecord::Schema.define(:version => 20130117162653) do
   add_index "treatment_facilities", ["email"], :name => "index_treatment_facilities_on_email", :unique => true
   add_index "treatment_facilities", ["facility_name"], :name => "index_treatment_facilities_on_facility_name", :unique => true
 
-  create_table "treatment_plans", :force => true do |t|
+  create_table "treatment_plan_templates", :force => true do |t|
     t.integer  "patient_id"
     t.integer  "num_sessions",           :null => false
     t.integer  "treatments_per_session", :null => false
     t.text     "description",            :null => false
+    t.decimal  "price"
+    t.string   "type"
     t.datetime "created_at",             :null => false
     t.datetime "updated_at",             :null => false
   end
 
-  create_table "treatments", :force => true do |t|
+  create_table "treatment_sessions", :force => true do |t|
     t.integer  "treatment_plan_id"
-    t.integer  "protocol_id"
     t.string   "patient_image"
     t.text     "notes"
     t.datetime "created_at",        :null => false
     t.datetime "updated_at",        :null => false
+  end
+
+  create_table "treatments", :force => true do |t|
+    t.integer  "treatment_session_id"
+    t.integer  "protocol_id"
+    t.integer  "duration"
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
   end
 
   create_table "users", :force => true do |t|

@@ -1,10 +1,9 @@
 class CreateTreatments < ActiveRecord::Migration
   def change
     create_table :treatments do |t|
-      t.references :treatment_plan
+      t.references :treatment_session
       t.references :protocol
-      t.string :patient_image
-      t.text :notes
+      t.integer :duration
       
       t.timestamps
     end

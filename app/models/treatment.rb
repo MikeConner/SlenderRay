@@ -2,25 +2,31 @@
 #
 # Table name: treatments
 #
-#  id                :integer         not null, primary key
-#  treatment_plan_id :integer
-#  protocol_id       :integer
-#  patient_image     :string(255)
-#  notes             :text
-#  created_at        :datetime        not null
-#  updated_at        :datetime        not null
+#  id                   :integer         not null, primary key
+#  protocol_id          :integer
+#  created_at           :datetime        not null
+#  updated_at           :datetime        not null
+#  duration             :integer
+#  treatment_session_id :integer
 #
 
+# CHARTER
+#  Represent a single treatment (e.g., 8-minute SlenderRay session), associated with a particular session (office visit)
+#
+# USAGE
+#   Duration is given in minutes
+#
+# NOTES AND WARNINGS
+#
 class Treatment < ActiveRecord::Base
-  attr_accessible :notes
+  attr_accessible :duration,
+                  :protocol_id, :treatment_session_id
   
-  mount_uploader :patient_image, PatientImageUploader
-
-  belongs_to :treatment_plan
   belongs_to :protocol
-
-  has_many :measurements, :dependent => :destroy
+  belongs_to :treatment_session
   
-  validates_presence_of :treatment_plan_id
-  validates_presence_of :protocol_id
+  validates :duration, :presence => true,
+                       :numericality => { only_integer: true, greater_than: 0 }
+  validates_presence_of :protocol_id  
+  validates_presence_of :treatment_session_id  
 end

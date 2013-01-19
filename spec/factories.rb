@@ -88,44 +88,78 @@ FactoryGirl.define do
     frequency 532
   end
   
+  factory :plan1, :class => TreatmentPlanTemplate do
+    description { generate(:random_paragraphs) }
+    num_sessions 2
+    treatments_per_session 2
+    price 1750
+    type 'TreatmentPlanTemplate'
+  end
+  
+  factory :plan2, :class => TreatmentPlanTemplate do
+    description { generate(:random_paragraphs) }
+    num_sessions 3
+    treatments_per_session 2
+    price 2800
+    type 'TreatmentPlanTemplate'
+  end
+  
   factory :treatment_plan do
     patient
     
     description { generate(:random_paragraphs) }
     num_sessions 2
     treatments_per_session 2
+    price 1750
+    type 'TreatmentPlan'
     
-    factory :plan_with_treatments do
+    factory :plan_with_sessions do
       ignore do
-        num_treatments 2
+        num_treatment_sessions 2
       end
       
       after(:create) do |plan, evaluator|
-        FactoryGirl.create_list(:treatment, evaluator.num_treatments, :treatment_plan => plan)
+        FactoryGirl.create_list(:treatment_session, evaluator.num_treatment_sessions, :treatment_plan => plan)
       end
     end
   end
   
-  factory :treatment do
+  factory :treatment_session do
     treatment_plan
-    protocol
     
-    notes { generate(:random_paragraphs) }
     remote_patient_image_url 'http://s1.static.gotsmile.net/images/2011/05/31/very-fat-woman-eating_130682670469.jpg'
+    notes { generate(:random_paragraphs) }
     
-    factory :treatment_with_measurements do
+    factory :session_with_treatments do
+      ignore do
+        num_treatments 2
+      end
+      
+      after(:create) do |session, evaluator|
+        FactoryGirl.create_list(:treatment, evaluator.num_treatments, :treatment_session => session)
+      end
+    end   
+    
+    factory :session_with_measurements do
       ignore do
         num_measurements 6
       end
       
-      after(:create) do |treatment, evaluator|
-        FactoryGirl.create_list(:measurement, evaluator.num_measurements, :treatment => treatment)
-      end      
-    end
+      after(:create) do |session, evaluator|
+        FactoryGirl.create_list(:measurement, evaluator.num_measurements, :treatment_session => session)
+      end            
+    end 
+  end
+  
+  factory :treatment do
+    treatment_session
+    protocol
+    
+    duration 8
   end
 
   factory :measurement do
-    treatment
+    treatment_session
     
     location 'navel'
     circumference 42.5
