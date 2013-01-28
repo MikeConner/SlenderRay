@@ -26,6 +26,16 @@ describe "ProcessTimer" do
     treatment_timer.should respond_to(:duration_seconds)
     treatment_timer.should respond_to(:process)
     treatment_timer.should respond_to(:seconds_remaining)
+    treatment_timer.should respond_to(:startable?)
+    treatment_timer.should respond_to(:start)
+    treatment_timer.should respond_to(:pausable?)
+    treatment_timer.should respond_to(:pause)
+    treatment_timer.should respond_to(:resumable?)
+    treatment_timer.should respond_to(:resume)
+    treatment_timer.should respond_to(:expireable?)
+    treatment_timer.should respond_to(:expire)
+    treatment_timer.should respond_to(:completeable?)
+    treatment_timer.should respond_to(:complete)
   end
   
   it { should be_valid }
@@ -39,6 +49,14 @@ describe "ProcessTimer" do
   it "should have the right types" do
     treatment_timer.process.class.should be == Treatment
     area_timer.process.class.should be == TreatmentArea
+  end
+  
+  it "should have correct statuses" do
+    treatment_timer.startable?.should be_true
+    treatment_timer.pausable?.should be_false
+    treatment_timer.resumable?.should be_false
+    treatment_timer.expireable?.should be_false
+    treatment_timer.completeable?.should be_false
   end
   
   describe "valid states" do
@@ -65,6 +83,11 @@ describe "ProcessTimer" do
       
       it "should not have remaining time" do
         treatment_timer.seconds_remaining.should be_nil
+        treatment_timer.startable?.should be_false
+        treatment_timer.pausable?.should be_false
+        treatment_timer.resumable?.should be_false
+        treatment_timer.expireable?.should be_false
+        treatment_timer.completeable?.should be_true
       end
     end
     
@@ -73,13 +96,29 @@ describe "ProcessTimer" do
       
       it "should not have remaining time" do
         treatment_timer.seconds_remaining.should be_nil
+        treatment_timer.startable?.should be_false
+        treatment_timer.pausable?.should be_false
+        treatment_timer.resumable?.should be_false
+        treatment_timer.expireable?.should be_false
+        treatment_timer.completeable?.should be_false
+      end
+      
+      describe "reset" do
+        before { treatment_timer.reset }
+        
+        it "should have correct status" do
+          treatment_timer.startable?.should be_true
+          treatment_timer.pausable?.should be_false
+          treatment_timer.resumable?.should be_false
+          treatment_timer.expireable?.should be_false
+          treatment_timer.completeable?.should be_false          
+        end
       end
     end
     
     describe "start timer" do
       before do
-        treatment_timer.process_state = ProcessTimer::STARTED
-        treatment_timer.start_time = Time.now
+        treatment_timer.start
         sleep 5
       end
       
@@ -91,10 +130,19 @@ describe "ProcessTimer" do
     
     describe "pause" do
       before do
-        treatment_timer.process_state = ProcessTimer::STARTED
+        treatment_timer.start
+        treatment_timer.startable?.should be_false
+        treatment_timer.pausable?.should be_true
+        treatment_timer.resumable?.should be_false
+        treatment_timer.expireable?.should be_true
+        treatment_timer.completeable?.should be_false
         sleep 5
-        treatment_timer.process_state = ProcessTimer::PAUSED
-        treatment_timer.elapsed_seconds = 5
+        treatment_timer.pause
+        treatment_timer.startable?.should be_false
+        treatment_timer.pausable?.should be_false
+        treatment_timer.resumable?.should be_true
+        treatment_timer.expireable?.should be_false
+        treatment_timer.completeable?.should be_false
         sleep 5
       end
       
@@ -106,13 +154,16 @@ describe "ProcessTimer" do
       
     describe "resume" do
       before do
-        treatment_timer.process_state = ProcessTimer::STARTED
+        treatment_timer.start
         sleep 5
-        treatment_timer.process_state = ProcessTimer::PAUSED
-        treatment_timer.elapsed_seconds = 5
+        treatment_timer.pause
         sleep 5
-        treatment_timer.process_state = ProcessTimer::RESUMED
-        treatment_timer.start_time = Time.now
+        treatment_timer.resume
+        treatment_timer.startable?.should be_false
+        treatment_timer.pausable?.should be_true
+        treatment_timer.resumable?.should be_false
+        treatment_timer.expireable?.should be_true
+        treatment_timer.completeable?.should be_false
         sleep 5
       end
       
