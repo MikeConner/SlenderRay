@@ -9,6 +9,7 @@
 #  treatment_facility_id :integer
 #  created_at            :datetime        not null
 #  updated_at            :datetime        not null
+#  display_name          :string(64)      default(""), not null
 #
 
 # CHARTER
@@ -22,10 +23,11 @@
 class Machine < ActiveRecord::Base
   MAX_FIELD_LEN = 64
   
-  attr_accessible :model, :serial_number, :date_installed,
+  attr_accessible :model, :serial_number, :display_name, :date_installed,
                   :treatment_facility_id
   
   belongs_to :treatment_facility
+  has_many :treatment_sessions, :dependent => :restrict
   
   validates :model, :presence => true,
                     :length => { maximum: MAX_FIELD_LEN }
@@ -33,4 +35,6 @@ class Machine < ActiveRecord::Base
                             :length => { maximum: MAX_FIELD_LEN }
   validates_presence_of :date_installed
   validates_presence_of :treatment_facility_id
+  validates :display_name, :presence => true,
+                           :length => { maximum: MAX_FIELD_LEN }
 end

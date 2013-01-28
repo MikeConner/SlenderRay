@@ -22,12 +22,17 @@ describe 'Treatment' do
     treatment.should respond_to(:treatment_session)
     treatment.should respond_to(:protocol)
     treatment.should respond_to(:duration)
+    treatment.should respond_to(:process_timer)
   end
   
   its(:protocol) { should == protocol }
   its(:treatment_session) { should == session }
   
   it { should be_valid }
+  
+  it "should be idle" do
+    treatment.process_timer.process_state.should be == ProcessTimer::IDLE
+  end
   
   describe "missing protocol" do
     before { treatment.protocol = nil }
@@ -45,5 +50,5 @@ describe 'Treatment' do
     before { treatment.duration = nil }
     
     it { should_not be_valid }
-  end  
+  end    
 end

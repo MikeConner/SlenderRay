@@ -37,6 +37,10 @@ class TreatmentFacility < ActiveRecord::Base
   before_validation :upcase_state
   
   has_many :machines, :dependent => :restrict
+  has_many :treatment_areas, :dependent => :destroy
+  
+  has_many :treatment_sessions, :through => :machines
+  has_many :treatments, :through => :treatment_sessions
   
   accepts_nested_attributes_for :machines, :allow_destroy => true, :reject_if => :all_blank
   

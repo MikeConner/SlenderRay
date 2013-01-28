@@ -9,6 +9,7 @@
 #  treatment_facility_id :integer
 #  created_at            :datetime        not null
 #  updated_at            :datetime        not null
+#  display_name          :string(64)      default(""), not null
 #
 
 describe "Machine" do
@@ -24,9 +25,42 @@ describe "Machine" do
     machine.should respond_to(:serial_number)
     machine.should respond_to(:date_installed)
     machine.should respond_to(:treatment_facility)
+    machine.should respond_to(:display_name)
+    machine.should respond_to(:treatment_sessions)
   end
   
   its(:treatment_facility) { should == facility }
+  
+  it "should allow deletion" do
+    expect { machine.destroy }.to_not raise_exception
+  end
+  
+  describe "sessions" do
+    let(:machine) { FactoryGirl.create(:machine_with_sessions, :treatment_facility => facility) }
+    
+    it "should have sessions" do
+      machine.treatment_sessions.count.should be == 4
+      machine.treatment_sessions.each do |session|
+        session.machine.should be == machine
+      end
+    end
+    
+    it "should not allow delete" do
+      expect { machine.destroy }.to raise_exception(ActiveRecord::DeleteRestrictionError)
+    end
+  end
+  
+  describe "Missing display name" do
+    before { machine.display_name = ' ' }
+    
+    it { should_not be_valid }
+  end
+  
+  describe "Name too long" do 
+    before { machine.display_name = 'n'*(Machine::MAX_FIELD_LEN + 1) }
+    
+    it { should_not be_valid }
+  end
   
   describe "model" do
     context "missing" do

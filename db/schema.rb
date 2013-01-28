@@ -11,15 +11,16 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130118041804) do
+ActiveRecord::Schema.define(:version => 20130128040855) do
 
   create_table "machines", :force => true do |t|
-    t.string   "model",                 :limit => 64, :null => false
-    t.string   "serial_number",         :limit => 64, :null => false
+    t.string   "model",                 :limit => 64,                 :null => false
+    t.string   "serial_number",         :limit => 64,                 :null => false
     t.date     "date_installed"
     t.integer  "treatment_facility_id"
-    t.datetime "created_at",                          :null => false
-    t.datetime "updated_at",                          :null => false
+    t.datetime "created_at",                                          :null => false
+    t.datetime "updated_at",                                          :null => false
+    t.string   "display_name",          :limit => 64, :default => "", :null => false
   end
 
   create_table "measurements", :force => true do |t|
@@ -28,6 +29,7 @@ ActiveRecord::Schema.define(:version => 20130118041804) do
     t.integer  "treatment_session_id"
     t.datetime "created_at",                         :null => false
     t.datetime "updated_at",                         :null => false
+    t.string   "label",                :limit => 16
   end
 
   create_table "patients", :force => true do |t|
@@ -35,6 +37,17 @@ ActiveRecord::Schema.define(:version => 20130118041804) do
     t.string   "name",       :limit => 40
     t.datetime "created_at",               :null => false
     t.datetime "updated_at",               :null => false
+  end
+
+  create_table "process_timers", :force => true do |t|
+    t.string   "process_state",    :limit => 16, :default => "Idle", :null => false
+    t.datetime "start_time"
+    t.integer  "elapsed_seconds"
+    t.integer  "process_id"
+    t.string   "process_type"
+    t.datetime "created_at",                                         :null => false
+    t.datetime "updated_at",                                         :null => false
+    t.integer  "duration_seconds"
   end
 
   create_table "protocols", :force => true do |t|
@@ -74,6 +87,14 @@ ActiveRecord::Schema.define(:version => 20130118041804) do
     t.datetime "updated_at",                     :null => false
   end
 
+  create_table "treatment_areas", :force => true do |t|
+    t.string   "area_name",             :limit => 64, :null => false
+    t.string   "process_name",          :limit => 64
+    t.integer  "treatment_facility_id"
+    t.datetime "created_at",                          :null => false
+    t.datetime "updated_at",                          :null => false
+  end
+
   create_table "treatment_facilities", :force => true do |t|
     t.string   "facility_name", :limit => 50, :null => false
     t.string   "facility_url"
@@ -111,6 +132,7 @@ ActiveRecord::Schema.define(:version => 20130118041804) do
     t.text     "notes"
     t.datetime "created_at",        :null => false
     t.datetime "updated_at",        :null => false
+    t.integer  "machine_id"
   end
 
   create_table "treatments", :force => true do |t|

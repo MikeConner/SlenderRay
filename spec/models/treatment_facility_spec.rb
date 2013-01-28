@@ -37,6 +37,9 @@ describe "TreatmentFacility" do
     facility.should respond_to(:city)
     facility.should respond_to(:state)
     facility.should respond_to(:zipcode)
+    facility.should respond_to(:machines)
+    facility.should respond_to(:treatment_sessions)
+    facility.should respond_to(:treatments)
   end
   
   it { should be_valid }
@@ -333,6 +336,39 @@ describe "TreatmentFacility" do
           expect { facility.reload.destroy }.to_not raise_exception
         end
       end
+    end
+  end
+  
+  describe "treatments" do
+    let(:facility) { FactoryGirl.create(:facility_with_treatments) }
+    
+    it "should have all relationships" do
+      facility.machines.count.should be == 1
+      facility.treatment_sessions.count.should be == 4
+      facility.treatments.count.should be == 8
+    end
+    
+    it "should not delete" do
+      expect { facility.destroy }.to raise_exception(ActiveRecord::DeleteRestrictionError)
+    end    
+  end
+  
+  it "should delete" do
+    expect { facility.destroy }.to_not raise_exception
+  end
+  
+  describe "areas" do
+    let(:facility) { FactoryGirl.create(:facility_with_areas) }
+    
+    it "should have all relationships" do
+      facility.treatment_areas.count.should be == 3
+      facility.treatment_areas.each do |area|
+        area.treatment_facility.should == facility
+      end
+    end
+    
+    it "should delete" do
+      expect { facility.destroy }.to_not raise_exception
     end
   end
 end

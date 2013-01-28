@@ -20,6 +20,7 @@ FactoryGirl.define do
   sequence(:random_phrase) { |n| Faker::Company.catch_phrase }
   sequence(:random_paragraphs) { |n| Faker::Lorem.paragraphs.join("\n") }
   sequence(:sequential_serial) { |n| "00342" + sprintf("%04d", n) }
+  sequence(:sequential_machine) { |n| sprintf("Machine %d", n) }
   
   factory :treatment_facility do
     facility_name { generate(:random_vendor_name) }
@@ -32,6 +33,27 @@ FactoryGirl.define do
     city { generate(:random_city) }
     state { generate(:random_state) }
     zipcode { generate(:random_zip) }
+    
+    factory :facility_with_treatments do
+      ignore do
+        num_sessions 4
+      end
+      
+      after(:create) do |facility, evaluator|
+        machine = FactoryGirl.create(:machine, :treatment_facility => facility)
+        FactoryGirl.create_list(:session_with_treatments, evaluator.num_sessions, :machine => machine)
+      end
+    end
+    
+    factory :facility_with_areas do
+      ignore do
+        num_areas 3
+      end
+      
+      after(:create) do |facility, evaluator|
+        FactoryGirl.create_list(:treatment_area, evaluator.num_areas, :treatment_facility => facility)
+      end
+    end
   end
   
   factory :machine do
@@ -39,7 +61,18 @@ FactoryGirl.define do
     
     model { generate(:random_phrase) }
     serial_number { generate(:sequential_serial) }
+    display_name { generate(:sequential_machine) }
     date_installed 1.week.ago
+    
+    factory :machine_with_sessions do
+      ignore do
+        num_sessions 4
+      end
+      
+      after(:create) do |machine, evaluator|
+        FactoryGirl.create_list(:treatment_session, evaluator.num_sessions, :machine => machine)
+      end
+    end
   end
   
   factory :role do
@@ -126,6 +159,7 @@ FactoryGirl.define do
   
   factory :treatment_session do
     treatment_plan
+    machine
     
     remote_patient_image_url 'http://s1.static.gotsmile.net/images/2011/05/31/very-fat-woman-eating_130682670469.jpg'
     notes { generate(:random_paragraphs) }
@@ -149,20 +183,81 @@ FactoryGirl.define do
         FactoryGirl.create_list(:measurement, evaluator.num_measurements, :treatment_session => session)
       end            
     end 
+    
+    factory :first_session_with_measurements do
+      ignore do
+        num_measurements 4
+      end
+      
+      after(:create) do |session, evaluator|
+        FactoryGirl.create_list(:before_measurement, evaluator.num_measurements, :treatment_session => session)
+        FactoryGirl.create_list(:after_measurement, evaluator.num_measurements, :treatment_session => session)
+      end            
+    end
   end
   
+  factory :treatment_process, :class => Treatment do
+    treatment_session
+    protocol
+
+    duration 8    
+  end
+
+  factory :area_process, :class => TreatmentArea do
+    area_name { generate(:random_phrase) }
+  end
+  
+  factory :treatment_timer, :class => ProcessTimer do
+    process_state ProcessTimer::IDLE
+    duration_seconds 480
+    
+    process { FactoryGirl.create(:treatment_process) }
+  end
+
+  factory :area_timer, :class => ProcessTimer do
+    process_state ProcessTimer::IDLE
+    duration_seconds 600
+    
+    process { FactoryGirl.create(:area_process) }
+  end
+
   factory :treatment do
     treatment_session
     protocol
     
     duration 8
+
+    after(:create) do |process|
+      FactoryGirl.create(:process_timer, :process => process)
+    end
   end
 
+  factory :process_timer do
+    process_state ProcessTimer::IDLE
+    duration_seconds 600 
+  end
+  
+  factory :treatment_area do
+    area_name { generate(:random_phrase) }
+    
+    after(:create) do |process|
+      FactoryGirl.create(:process_timer, :process => process)
+    end
+  end
+  
   factory :measurement do
     treatment_session
     
-    location 'navel'
+    location { ['navel', '- 2cm', '+ 2cm', '+ 5cm'].sample }
     circumference 42.5
+    
+    factory :before_measurement do
+      label 'Before'
+    end
+    
+    factory :after_measurement do
+      label 'After'
+    end
   end  
   
   factory :user do

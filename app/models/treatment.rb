@@ -24,6 +24,7 @@ class Treatment < ActiveRecord::Base
   
   belongs_to :protocol
   belongs_to :treatment_session
+  has_one :process_timer, :as => :process, :dependent => :nullify
   
   validates :duration, :presence => true,
                        :numericality => { only_integer: true, greater_than: 0 }

@@ -8,11 +8,13 @@
 #  notes             :text
 #  created_at        :datetime        not null
 #  updated_at        :datetime        not null
+#  machine_id        :integer
 #
 
 describe 'TreatmentSession' do
   let(:plan) { FactoryGirl.create(:treatment_plan) }
-  let(:session) { FactoryGirl.create(:treatment_session, :treatment_plan => plan) }
+  let(:machine) { FactoryGirl.create(:machine) }
+  let(:session) { FactoryGirl.create(:treatment_session, :treatment_plan => plan, :machine => machine) }
   
   subject { session }
   
@@ -20,13 +22,29 @@ describe 'TreatmentSession' do
     session.should respond_to(:notes)
     session.should respond_to(:patient_image)
     session.should respond_to(:treatment_plan)
+    session.should respond_to(:machine)
     session.should respond_to(:measurements)
     session.should respond_to(:treatments)
+    session.should respond_to(:labeled_measurements)
   end
   
   its(:treatment_plan) { should == plan }
+  its(:machine) { should == machine }
   
   it { should be_valid }
+  
+  describe "first session" do
+    let(:session) { FactoryGirl.create(:first_session_with_measurements, :treatment_plan => plan) }   
+
+    it "should have 8 measurements" do
+      session.measurements.count.should be == 8
+      session.labeled_measurements('Before').count.should be == 4
+      session.labeled_measurements('After').count.should be == 4
+      session.labeled_measurements('Invalid').count.should be == 0
+      session.labeled_measurements('').count.should be == 0
+      session.labeled_measurements(nil).count.should be == 0
+    end
+  end
   
   describe "orphan" do
     before { session.treatment_plan_id = nil }
