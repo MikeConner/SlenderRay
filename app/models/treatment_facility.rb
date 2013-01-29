@@ -36,6 +36,7 @@ class TreatmentFacility < ActiveRecord::Base
   before_validation :downcase_email
   before_validation :upcase_state
   
+  has_many :patients, :dependent => :restrict
   has_many :machines, :dependent => :restrict
   has_many :treatment_areas, :dependent => :destroy
   
@@ -43,6 +44,7 @@ class TreatmentFacility < ActiveRecord::Base
   has_many :treatments, :through => :treatment_sessions
   
   accepts_nested_attributes_for :machines, :allow_destroy => true, :reject_if => :all_blank
+  accepts_nested_attributes_for :treatment_areas, :allow_destroy => true, :reject_if => :all_blank
   
   validates :facility_name, :presence => true,
                             :uniqueness => { case_sensitive: false },

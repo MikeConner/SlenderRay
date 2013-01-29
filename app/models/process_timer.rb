@@ -13,6 +13,14 @@
 #  duration_seconds :integer
 #
 
+# CHARTER
+#   Encapsulate timer logic; timers can be started, paused, and resumed. They expire, and can be marked "Completed" when expired.
+#
+# USAGE
+#   This is a polymorphic model that can be associated with either machines or treatment areas
+#
+# NOTES AND WARNINGS
+#
 class ProcessTimer < ActiveRecord::Base
   MAX_STATE_LEN = 16
   

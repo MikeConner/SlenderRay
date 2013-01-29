@@ -23,6 +23,7 @@ describe 'Treatment' do
     treatment.should respond_to(:protocol)
     treatment.should respond_to(:duration)
     treatment.should respond_to(:process_timer)
+    treatment.should respond_to(:complete?)
   end
   
   its(:protocol) { should == protocol }
@@ -32,6 +33,15 @@ describe 'Treatment' do
   
   it "should be idle" do
     treatment.process_timer.process_state.should be == ProcessTimer::IDLE
+    treatment.complete?.should be_false
+  end
+  
+  describe "completed" do
+    before { treatment.process_timer.process_state = ProcessTimer::COMPLETED }
+    
+    it "should be complete" do
+      treatment.complete?.should be_true
+    end
   end
   
   describe "missing protocol" do

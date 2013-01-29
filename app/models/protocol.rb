@@ -9,6 +9,15 @@
 #  updated_at :datetime        not null
 #
 
+# CHARTER
+#  Represent a SlenderRay treatment protocol
+#
+# USAGE
+#  Just a display name and frequency in Hz
+#
+# NOTES AND WARNINGS
+#   Sample values are in the db/seeds file
+#
 class Protocol < ActiveRecord::Base
   MAX_NAME_LEN = 32
   

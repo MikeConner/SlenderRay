@@ -41,10 +41,25 @@ class TreatmentPlan < TreatmentPlanTemplate
   
   belongs_to :patient
   has_many :treatment_sessions, :dependent => :restrict
+  has_many :treatments, :through => :treatment_sessions
   
   # Passed in options will override the template values (e.g., you can create a plan with an extra session or special price)
   def self.create_from_template(t, patient, options = {})
     TreatmentPlan.create({:patient_id => patient.id, :description => t.description, :num_sessions => t.num_sessions,
                          :treatments_per_session => t.treatments_per_session, :price => t.price}.merge(options))
+  end
+  
+  def complete?
+    if self.num_sessions * self.treatments_per_session == self.treatments.count
+      self.treatments.each do |treatment|
+        if !treatment.complete?
+          return false
+        end
+      end
+      
+      true
+    else
+      false
+    end
   end
 end

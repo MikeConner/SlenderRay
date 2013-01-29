@@ -2,57 +2,57 @@
 #
 # Table name: patients
 #
-#  id         :integer         not null, primary key
-#  id_key     :string(40)      not null
-#  name       :string(40)
-#  created_at :datetime        not null
-#  updated_at :datetime        not null
+#  id                    :integer         not null, primary key
+#  name                  :string(40)
+#  created_at            :datetime        not null
+#  updated_at            :datetime        not null
+#  treatment_facility_id :integer
 #
 
 describe 'Patient' do
-  let(:patient) { FactoryGirl.create(:patient) }
+  let(:facility) { FactoryGirl.create(:treatment_facility) }
+  let(:patient) { FactoryGirl.create(:patient, :treatment_facility => facility) }
   
   subject { patient }
   
   it "should respond to everything" do
-    patient.should respond_to(:id_key)
     patient.should respond_to(:name)
-    patient.should respond_to(:display_name)
+    patient.should respond_to(:treatment_facility)
+    facility.patients.should be == [patient]
   end
+  
+  describe "missing facility" do
+    before { patient.treatment_facility = nil }
+    
+    it { should_not be_valid }
+  end
+  
+  describe "should not be destroyed" do
+    before { patient }
+    
+    it "should have a patient" do
+      facility.patients.count.should be == 1
+      expect { facility.destroy }.to raise_exception(ActiveRecord::DeleteRestrictionError)
+    end    
+  end
+  
+  describe "destruction" do
+    before { facility.patients.destroy_all }
+    
+    it "should destroy now" do
+      expect { facility.reload.destroy }.to_not raise_exception
+    end
+  end
+  
+  its(:treatment_facility) { should == facility }
   
   it { should be_valid }
-  
-  it "should set the display name" do
-    patient.display_name.should be == patient.name
-  end
-  
-  describe "key" do
-    context "missing" do
-      before { patient.id_key = ' ' }
-      
-      it { should_not be_valid }
-    end
-    
-    context "too long" do
-      before { patient.id_key = 'k'*(Patient::MAX_ID_LEN + 1) }
-      
-      it { should_not be_valid }
-    end
-  end
   
   describe "name" do
     context "missing" do
       before { patient.name = ' ' }
       
       it { should be_valid }
-    end
-    
-    context "display with no name" do
-      before { patient.name = ' ' }
-      
-      it "should display the key" do
-        patient.display_name.should be == patient.id_key
-      end
     end
   end
   

@@ -11,6 +11,15 @@
 #  updated_at   :datetime        not null
 #
 
+# CHARTER
+#  Represent a customer's testimonial
+#
+# USAGE
+#  Should be publicly viewable; can be added/edited/deleted by technicians
+#
+# NOTES AND WARNINGS
+#
+#
 class Testimonial < ActiveRecord::Base
   attr_accessible :comment, :date_entered, :displayable,
                   :patient_id

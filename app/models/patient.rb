@@ -2,11 +2,11 @@
 #
 # Table name: patients
 #
-#  id         :integer         not null, primary key
-#  id_key     :string(40)      not null
-#  name       :string(40)
-#  created_at :datetime        not null
-#  updated_at :datetime        not null
+#  id                    :integer         not null, primary key
+#  name                  :string(40)
+#  created_at            :datetime        not null
+#  updated_at            :datetime        not null
+#  treatment_facility_id :integer
 #
 
 # CHARTER
@@ -21,16 +21,14 @@
 class Patient < ActiveRecord::Base
   MAX_ID_LEN = 40
   
-  attr_accessible :id_key, :name
+  attr_accessible :name,
+                  :treatment_facility_id
+                  
+  belongs_to :treatment_facility
   
   has_many :testimonials, :dependent => :destroy
   has_many :treatment_plans, :dependent => :restrict
   
-  validates :id_key, :presence => true,
-                     :length => { maximum: MAX_ID_LEN }
   validates :name, :length => { maximum: MAX_ID_LEN }
-  
-  def display_name
-    self.name.blank? ? self.id_key : self.name
-  end
+  validates_presence_of :treatment_facility_id
 end

@@ -17,14 +17,15 @@
 # NOTES AND WARNINGS
 #   A user does not need to have a role; role-less users are "customers"
 #   There are no such users now, since the application is not public-facing
+#   Roles are seeded from db/seed
 #
 class Role < ActiveRecord::Base
   MAX_ROLE_LEN = 16
   
   SUPER_ADMIN = "SuperAdmin"
-  INSTRUMENT_ADMIN = "InstrumentAdmin"
+  TECHNICIAN = "Technician"
   
-  ROLES = [SUPER_ADMIN, INSTRUMENT_ADMIN]
+  ROLES = [SUPER_ADMIN, TECHNICIAN]
   
   attr_accessible :name
 

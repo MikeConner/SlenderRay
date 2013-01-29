@@ -27,6 +27,8 @@ describe 'TreatmentPlan' do
     plan.should respond_to(:type)
     plan.should respond_to(:patient)
     plan.should respond_to(:treatment_sessions)
+    plan.should respond_to(:treatments)
+    plan.should respond_to(:complete?)
   end
   
   its(:patient) { should == patient}
@@ -120,6 +122,49 @@ describe 'TreatmentPlan' do
     it { should_not be_valid }
   end
 
+  describe "plan with treatments" do
+    let(:plan) { FactoryGirl.create(:plan_with_treatments) }
+    
+    it "should have sessions" do
+      plan.treatment_sessions.count.should be == 2
+      plan.treatments.count.should be == 4
+      
+      plan.treatment_sessions.each do |session|
+        session.treatment_plan.should be == plan
+      end
+      
+      plan.complete?.should be_false
+    end
+    
+    describe "complete one" do
+      before {
+        plan.treatment_sessions.first.treatments.each do |treatment|
+          treatment.process_timer.process_state = ProcessTimer::COMPLETED
+        end
+      }
+      
+      it "should not be complete" do
+        plan.complete?.should be_false
+      end
+    end
+    
+    describe "complete all" do
+      before {
+        plan.treatments.each do |treatment|
+          treatment.process_timer.process_state = ProcessTimer::COMPLETED
+        end
+      }
+      
+      it "should be complete" do
+        plan.treatments.each do |treatment|
+          treatment.complete?.should be_true
+        end
+        
+        plan.complete?.should be_true
+      end
+    end
+  end
+
   describe "plan with sessions" do
     let(:plan) { FactoryGirl.create(:plan_with_sessions) }
     
@@ -128,6 +173,9 @@ describe 'TreatmentPlan' do
       
       plan.treatment_sessions.each do |session|
         session.treatment_plan.should be == plan
+        session.treatments.each do |treatment|
+          treatment.treatment_session.should be == session
+        end
       end
     end
     

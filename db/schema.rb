@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130128040855) do
+ActiveRecord::Schema.define(:version => 20130129050508) do
 
   create_table "machines", :force => true do |t|
     t.string   "model",                 :limit => 64,                 :null => false
@@ -23,6 +23,13 @@ ActiveRecord::Schema.define(:version => 20130128040855) do
     t.string   "display_name",          :limit => 64, :default => "", :null => false
   end
 
+  create_table "machines_users", :id => false, :force => true do |t|
+    t.integer "machine_id"
+    t.integer "user_id"
+  end
+
+  add_index "machines_users", ["machine_id", "user_id"], :name => "index_machines_users_on_machine_id_and_user_id", :unique => true
+
   create_table "measurements", :force => true do |t|
     t.string   "location",             :limit => 16, :null => false
     t.decimal  "circumference",                      :null => false
@@ -33,10 +40,10 @@ ActiveRecord::Schema.define(:version => 20130128040855) do
   end
 
   create_table "patients", :force => true do |t|
-    t.string   "id_key",     :limit => 40, :null => false
-    t.string   "name",       :limit => 40
-    t.datetime "created_at",               :null => false
-    t.datetime "updated_at",               :null => false
+    t.string   "name",                  :limit => 40
+    t.datetime "created_at",                          :null => false
+    t.datetime "updated_at",                          :null => false
+    t.integer  "treatment_facility_id"
   end
 
   create_table "process_timers", :force => true do |t|

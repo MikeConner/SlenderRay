@@ -15,6 +15,8 @@
 describe "Machine" do
   let(:facility) { FactoryGirl.create(:treatment_facility) }
   let(:machine) { FactoryGirl.create(:machine, :treatment_facility => facility) }
+  let(:user) { FactoryGirl.create(:user_with_role, :role => Role.create(:name => Role::TECHNICIAN)) }
+  before { machine.users << user }
   
   subject { machine }
   
@@ -27,9 +29,17 @@ describe "Machine" do
     machine.should respond_to(:treatment_facility)
     machine.should respond_to(:display_name)
     machine.should respond_to(:treatment_sessions)
+    machine.should respond_to(:users)
   end
   
   its(:treatment_facility) { should == facility }
+  
+  it "should have a user" do
+    machine.users.count.should be == 1
+    machine.users.should be == [user]
+    user.machines.count.should be == 1
+    user.machines.should be == [machine]
+  end
   
   it "should allow deletion" do
     expect { machine.destroy }.to_not raise_exception

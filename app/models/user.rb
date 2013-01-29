@@ -19,6 +19,16 @@
 #  updated_at             :datetime        not null
 #
 
+# CHARTER
+#  Represent a user of the system, uniquely identified by an email address
+#
+# USAGE
+#   Users have roles; currently two. Super Admins are owners/administrators, who can do anything.
+#   Technicians are facility users. They are administrators at particular facilities, and can
+#   create patients, run treatments, configure treatment areas and names, etc.
+#
+# NOTES AND WARNINGS
+#
 class User < ActiveRecord::Base
   include ApplicationHelper
     
@@ -29,23 +39,24 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   belongs_to :role
-  belongs_to :machine
+  has_and_belongs_to_many :machines
   
-  # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me,
-                  :role_id, :machine_id
+                  :role_id, :machine_ids
   
   validates :email, :presence => true,
                     :uniqueness => { case_sensitive: false },
                     :format => { with: EMAIL_REGEX }
-  validates :machine_id, :presence => { :if => :instrument_admin? }
-  
+  validate :technicians_have_machines
+    
   def has_role?(role_name)
     return self.role.nil? ? false : self.role == Role.find_by_name(role_name)
   end
 
 private
-  def instrument_admin?
-    self.has_role?(Role::INSTRUMENT_ADMIN)
+  def technicians_have_machines
+    if !self.has_role?(Role::TECHNICIAN) && !self.machine_ids.empty?
+      self.errors.add :base, 'Only technicians can be assigned to machines'
+    end
   end
 end

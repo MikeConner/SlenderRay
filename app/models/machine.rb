@@ -24,9 +24,10 @@ class Machine < ActiveRecord::Base
   MAX_FIELD_LEN = 64
   
   attr_accessible :model, :serial_number, :display_name, :date_installed,
-                  :treatment_facility_id
+                  :treatment_facility_id, :user_ids
   
   belongs_to :treatment_facility
+  has_and_belongs_to_many :users
   has_many :treatment_sessions, :dependent => :restrict
   
   validates :model, :presence => true,

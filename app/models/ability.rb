@@ -8,7 +8,7 @@ class Ability
     
     if user.has_role?(Role::SUPER_ADMIN)
       can :manage, :all
-    elsif user.has_role?(Role::INSTRUMENT_ADMIN)
+    elsif user.has_role?(Role::TECHNICIAN)
       can :read, :all
       can :create, [Measurement, TreatmentPlan, TreatmentSession, Treatment]
       can :manage, [Patient, Measurement, TreatmentPlan, TreatmentSession, Treatment]

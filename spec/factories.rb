@@ -76,12 +76,13 @@ FactoryGirl.define do
   end
   
   factory :role do
-    name { [Role::SUPER_ADMIN, Role::INSTRUMENT_ADMIN].sample }
+    name { [Role::SUPER_ADMIN, Role::TECHNICIAN].sample }
   end
   
   factory :patient do
-    id_key '328742'
-    name "whole lotta Rosie"
+    treatment_facility
+    
+    name "Whole lotta Rosie"
     
     factory :patient_with_testimonials do
       ignore do
@@ -153,6 +154,16 @@ FactoryGirl.define do
       
       after(:create) do |plan, evaluator|
         FactoryGirl.create_list(:treatment_session, evaluator.num_treatment_sessions, :treatment_plan => plan)
+      end
+    end
+    
+    factory :plan_with_treatments do
+      ignore do
+        num_treatment_sessions 2
+      end
+      
+      after(:create) do |plan, evaluator|
+        FactoryGirl.create_list(:session_with_treatments, evaluator.num_treatment_sessions, :treatment_plan => plan)
       end
     end
   end
@@ -267,10 +278,6 @@ FactoryGirl.define do
      
     factory :user_with_role do
       role
-      
-      factory :instrument_admin do
-        machine
-      end
     end
   end  
 end

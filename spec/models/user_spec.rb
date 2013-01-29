@@ -23,7 +23,7 @@ describe 'User' do
   let(:user) { FactoryGirl.create(:user) }
   before do
     Role.create(:name => Role::SUPER_ADMIN)
-    Role.create(:name => Role::INSTRUMENT_ADMIN)
+    Role.create(:name => Role::TECHNICIAN)
   end
   
   subject { user }
@@ -34,6 +34,7 @@ describe 'User' do
     user.should respond_to(:password_confirmation)
     user.should respond_to(:remember_me)
     user.should respond_to(:role)
+    user.should respond_to(:machines)
   end
       
   it { should be_valid }
@@ -86,22 +87,26 @@ describe 'User' do
   describe "super admin" do
     let(:user) { FactoryGirl.create(:user_with_role, :role => Role.find_by_name(Role::SUPER_ADMIN)) }
     
+    it { should be_valid }
+    
     it "should have the role" do
       user.has_role?(Role::SUPER_ADMIN).should be_true
     end
-  end
-
-  describe "instrument admin" do
-    let(:user) { FactoryGirl.create(:instrument_admin, :role => Role.find_by_name(Role::INSTRUMENT_ADMIN)) }
     
-    it "should have the role" do
-      user.has_role?(Role::INSTRUMENT_ADMIN).should be_true
-    end
-    
-    context "without machine should be invalid" do
-      before { user.machine_id = nil }
+    describe "add machines" do
+      before { user.machines << FactoryGirl.create(:machine) }
       
       it { should_not be_valid }
+    end
+  end
+
+  describe "technician" do
+    let(:user) { FactoryGirl.create(:user_with_role, :role => Role.find_by_name(Role::TECHNICIAN)) }
+    
+    it { should be_valid }
+    
+    it "should have the role" do
+      user.has_role?(Role::TECHNICIAN).should be_true
     end
   end
 end

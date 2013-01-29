@@ -30,4 +30,8 @@ class Treatment < ActiveRecord::Base
                        :numericality => { only_integer: true, greater_than: 0 }
   validates_presence_of :protocol_id  
   validates_presence_of :treatment_session_id  
+  
+  def complete?
+    ProcessTimer::COMPLETED == self.process_timer.process_state
+  end
 end
