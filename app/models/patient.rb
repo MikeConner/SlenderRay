@@ -31,4 +31,19 @@ class Patient < ActiveRecord::Base
   
   validates :name, :length => { maximum: MAX_ID_LEN }
   validates_presence_of :treatment_facility_id
+  
+  # Are there any incomplete treatment plans?
+  def in_treatment?
+    if self.treatment_plans.empty?
+      false
+    else
+      self.treatment_plans.each do |plan|
+        if !plan.complete?
+          return true
+        end
+      end
+    end
+    
+    false
+  end
 end

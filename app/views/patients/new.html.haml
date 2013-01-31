@@ -1,0 +1,6 @@
+.offset2
+  = form_for @patient do |f|
+    = render :partial => 'shared/error_messages', :locals => { :errors => @patient.errors, :name => 'Patient' }
+    = render :partial => 'fields', :locals => { :f => f, :patient => @patient }
+    .actions
+      = f.submit 'Create Patient Record', :class => 'btn btn-large btn-success'

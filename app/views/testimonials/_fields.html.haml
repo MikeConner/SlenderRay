@@ -1,0 +1,9 @@
+.field
+  = f.label :patient_id
+  = f.select :patient_id, @patients.map { |patient| [patient.name, patient.id] }
+.field
+  = f.label :date_entered
+  = f.date_select :date_entered, :order => [:month, :day, :year]
+.field
+  = f.label :comment
+  = f.text_area :comment, :size => '80x4'

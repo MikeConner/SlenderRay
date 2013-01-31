@@ -2,6 +2,9 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
+  facility_deleted: 'Treatment facility deleted'
+  facility_updated: 'Treatment facility updated successfully'
+  facility_created: 'Treatment facility created successfully'
   machine_instructions: 'Create Machines and Users, Update Facility, then edit again to create user/machine assignments'
   patient_created: 'New patient created successfully'
   patient_deleted: 'Patient record deleted'
@@ -9,6 +12,4 @@ en:
   testimonial_deleted: 'Patient testimonial deleted'
   testimonial_updated: 'Patient testimonial updated successfully'
   testimonial_created: 'Patient testimonial created successfully'
-  facility_deleted: 'Treatment facility deleted'
-  facility_updated: 'Treatment facility updated successfully'
-  facility_created: 'Treatment facility created successfully'
+  technicians_only: 'This function only available to technicians'

@@ -1,0 +1,5 @@
+.offset2
+  - facility = @testimonial.patient.treatment_facility
+  %blockquote= @testimonial.comment
+  == - #{facility.facility_name}; #{facility.city}, #{facility.state}.
+  %em= @testimonial.date_entered.try(:strftime, '%b %d, %Y')

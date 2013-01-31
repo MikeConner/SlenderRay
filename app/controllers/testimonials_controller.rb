@@ -1,9 +1,11 @@
 class TestimonialsController < ApplicationController
-  before_filter :authenticate_user!
+  before_filter :authenticate_user!, :except => [:index]
   load_and_authorize_resource
 
   def index
-    @testimonials = Testimonial.all
+    @testimonials = Testimonial.where("displayable = #{ActiveRecord::Base.connection.quoted_true}").order('date_entered desc').paginate(:page => params[:page])
+    @can_create = !current_user.nil? and current_user.has_role?(Role::TECHNICIAN) and current_user.treatment_facility.patients.count > 0
+    @can_edit = !current_user.nil? && current_user.has_role?(Role::TECHNICIAN)
   end
   
   def show
@@ -11,10 +13,12 @@ class TestimonialsController < ApplicationController
   end
   
   def new
+    @patients = current_user.treatment_facility.patients
     @testimonial = Testimonial.new
   end
   
   def edit
+    @patients = current_user.treatment_facility.patients
     @testimonial = Testimonial.find(params[:id])
   end
   

@@ -1,2 +1,13 @@
 .offset2
-  %h1 Patient Intake
+  %h2 Manage Patients at #{@facility.facility_name}
+  %center
+    = will_paginate
+    = page_entries_info
+  - @patients.each do |patient|
+    == #{patient.id}. #{patient.name} #{link_to 'Show', patient_path(patient)} #{link_to 'Edit', edit_patient_path(patient)} #{link_to 'Delete', patient, :method => 'delete', :data => { confirm: 'Are you sure?'}}
+    - if patient.in_treatment?
+      = link_to 'Treat', '#'
+  %br/
+  %center= will_paginate
+  %br/
+  = link_to "<i class='icon-plus'></i> New Patient".html_safe, new_patient_path,{:class => 'btn btn-success '}  

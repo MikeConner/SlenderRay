@@ -1,0 +1,6 @@
+.offset2
+  = form_for @testimonial do |f|
+    = render :partial => 'shared/error_messages', :locals => { :errors => @testimonial.errors, :name => 'Testimonial' }
+    = render :partial => 'fields', :locals => { :f => f, :testimonial => @testimonial, :patients => @patients }
+    .actions
+      = f.submit 'Create Testimonial', :class => 'btn btn-large btn-success'

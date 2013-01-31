@@ -55,6 +55,9 @@ gem 'carrierwave', '0.6.2'
 # for Admin pages
 gem 'rails_admin'
 
+gem 'will_paginate', '3.0.3'
+gem 'bootstrap-will_paginate', '0.0.5'
+
 # To use Jbuilder templates for JSON
 # gem 'jbuilder'
 

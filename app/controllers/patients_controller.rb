@@ -1,9 +1,11 @@
 class PatientsController < ApplicationController
   before_filter :authenticate_user!
+  before_filter :ensure_technician
   load_and_authorize_resource
 
   def index
-    @patients = Patient.all
+    @facility = current_user.treatment_facility
+    @patients = Patient.where('treatment_facility_id = ?', @facility.id).order('updated_at desc').paginate(:page => params[:page])
   end
   
   def show
@@ -11,7 +13,7 @@ class PatientsController < ApplicationController
   end
   
   def new
-    @patient = Patient.new
+    @patient = current_user.treatment_facility.patients.build
   end
   
   def edit
@@ -42,4 +44,12 @@ class PatientsController < ApplicationController
 
     redirect_to patients_path, :notice => I18n.t('patient_deleted') 
   end  
+  
+private
+  def ensure_technician
+    if !current_user.has_role?(Role::TECHNICIAN)
+      redirect_to root_path, :alert => I18n.t('technicians_only')
+    end
+  end
 end
+
