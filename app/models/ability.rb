@@ -11,7 +11,7 @@ class Ability
     elsif user.has_role?(Role::TECHNICIAN)
       can :read, :all
       can :create, [Measurement, TreatmentPlan, TreatmentSession, Treatment]
-      can :manage, [Patient, Measurement, TreatmentPlan, TreatmentSession, Treatment]
+      can :manage, [TreatmentFacility, Patient, Measurement, TreatmentPlan, TreatmentSession, Treatment]
       cannot :destroy, [Machine, Measurement, Patient, Protocol, Role, Testimonial, TreatmentFacility, TreatmentPlan, TreatmentSession, Treatment, User]
     end
     #   if user.admin?

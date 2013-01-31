@@ -40,10 +40,23 @@
 .span10
   .span3
     %h4 Machines
-    #machines
-      = f.fields_for :machines do |machine_form|
-        = render :partial => 'machine', :locals => { :f => machine_form }
-      = add_machine(facility, f)
+    - if current_user.has_role?(Role::SUPER_ADMIN)
+      #machines
+        = f.fields_for :machines do |machine_form|
+          = render :partial => 'machine', :locals => { :f => machine_form }
+        = add_machine(facility, f)
+    - else
+      - if facility.machines.empty?
+        None
+      - else
+        - idx = 1
+        - facility.machines.each do |machine|
+          == #{idx}: #{machine.display_name}: #{machine.model} (#{machine.serial_number}), installed #{machine.date_installed.try(:strftime, '%b %d, %Y')}
+          %br/
+          - machine.users.each do |user|
+            == Operated by #{user.email}
+            %br/
+          - idx += 1
   .span3
     %h4 Treatment Areas
     #treatment_areas
@@ -52,7 +65,18 @@
       = add_treatment_area(facility, f)
   .span3
     %h4 Users
-    #users
-      = f.fields_for :users do |user_form|
-        = render :partial => 'user', :locals => { :f => user_form }
-      = add_user(facility, f)
+    - if current_user.has_role?(Role::SUPER_ADMIN)
+      #users
+        = f.fields_for :users do |user_form|
+          = render :partial => 'user', :locals => { :f => user_form }
+        = add_user(facility, f)
+    - else
+      - if @facility.users.empty?
+        None
+      - else
+        - idx = 1
+        - @facility.users.each do |user|
+          == #{idx}: #{user.email}
+          - user.machines do |machine|
+            == Assigned to #{machine.display_name}
+          - idx += 1

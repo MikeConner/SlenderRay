@@ -1,6 +1,10 @@
 .offset2
   %h1 Treatment Facilities
-  %ul
-    - @facilities.each do |facility|
-      %li== #{facility.facility_name}: #{facility.city}, #{facility.state} #{link_to 'Show', treatment_facility_path(facility)} #{link_to 'Edit', edit_treatment_facility_path(facility)} #{link_to 'Delete', facility, :method => 'delete', :data => { confirm: 'Are you sure?'}}
-  = link_to "<i class='icon-plus'></i> Create Treatment Facility".html_safe, new_treatment_facility_path,{:class => 'btn btn-success '}  
+  - if current_user.has_role?(Role::SUPER_ADMIN)
+    %ul
+      - @facilities.each do |facility|
+        %li== #{facility.facility_name}: #{facility.city}, #{facility.state} #{link_to 'Show', treatment_facility_path(facility)} #{link_to 'Edit', edit_treatment_facility_path(facility)} #{link_to 'Delete', facility, :method => 'delete', :data => { confirm: 'Are you sure?'}}
+    = link_to "<i class='icon-plus'></i> Create Treatment Facility".html_safe, new_treatment_facility_path,{:class => 'btn btn-success '}  
+  - else
+    - facility = current_user.treatment_facility
+    #{facility.facility_name}: #{facility.city}, #{facility.state} #{link_to 'Show', treatment_facility_path(facility)} #{link_to 'Edit', edit_treatment_facility_path(facility)}
