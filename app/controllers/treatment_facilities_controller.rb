@@ -16,31 +16,44 @@ class TreatmentFacilitiesController < ApplicationController
   
   def new
     @facility = TreatmentFacility.new
-    @facility.machines.build
   end
   
   def edit
     @facility = TreatmentFacility.find(params[:id])
-    @facility.machines.build
   end
   
+  # Users created this way are Technicians
   def create
-    @facility = TreatmentFacility.new(params[:treatment_facility])  
+    @facility = TreatmentFacility.new(params[:treatment_facility])
+    
     if @facility.save
+      @facility.users.each do |user|
+        if user.role.nil?
+          user.role = Role.find_by_name(Role::TECHNICIAN)
+          user.save!
+        end
+      end
+      
       redirect_to @facility, :notice => I18n.t('facility_created')
     else
-      @facility.machines.build
       render 'new'
     end
   end
 
+  # Users created this way are technicians
   def update
     @facility = TreatmentFacility.find(params[:id])
-
+    
     if @facility.update_attributes(params[:treatment_facility])
+      @facility.users.each do |user|
+        if user.role.nil?
+          user.role = Role.find_by_name(Role::TECHNICIAN)
+          user.save!
+        end
+      end
+      
       redirect_to @facility, :notice => I18n.t('facility_updated')
     else
-      @facility.machines.build unless @facility.machines.count > 0
       render 'edit'
     end
   end

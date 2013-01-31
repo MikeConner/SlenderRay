@@ -1,2 +1,7 @@
 .offset2
   %h1 Users
+  - @facilities.each do |facility|
+    %h4== #{link_to facility.facility_name, treatment_facility_path(facility)}: #{facility.city}, #{facility.state}. #{facility.first_name} #{facility.last_name}
+    %ol
+      - facility.users.each do |user|
+        %li== #{user.email}

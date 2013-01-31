@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
   def index
-    @users = User.all
+    @facilities = TreatmentFacility.order(:last_name)
   end
 end

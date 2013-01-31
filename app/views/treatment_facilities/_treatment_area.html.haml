@@ -1,0 +1,9 @@
+.treatment_area
+  = f.hidden_field :_destroy
+  = link_to_function "X", "if (confirm('Delete this treatment area?')) remove_treatment_area(this)", :class => "close"
+  .field
+    = f.label :area_name
+    = f.text_field :area_name, :maxlength => TreatmentArea::MAX_FIELD_LEN
+  .field
+    = f.label :process_name
+    = f.text_field :process_name, :maxlength => TreatmentArea::MAX_FIELD_LEN

@@ -34,6 +34,10 @@ describe "Machine" do
   
   its(:treatment_facility) { should == facility }
   
+  it "should enforce unique display names" do 
+    expect { FactoryGirl.create(:machine, :treatment_facility => facility, :display_name => machine.display_name) }.to raise_exception(ActiveRecord::RecordNotUnique)
+  end
+
   it "should have a user" do
     machine.users.count.should be == 1
     machine.users.should be == [user]

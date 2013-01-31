@@ -27,6 +27,10 @@ describe "TreatmentArea" do
   
   it { should be_valid }
   
+  it "should enforce unique display names" do 
+    expect { FactoryGirl.create(:treatment_area, :treatment_facility => facility, :area_name => area.area_name) }.to raise_exception(ActiveRecord::RecordNotUnique)
+  end
+  
   it "should have no process name" do
     area.process_name.should be_nil
   end

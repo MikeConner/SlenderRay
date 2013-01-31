@@ -272,6 +272,8 @@ FactoryGirl.define do
   end  
   
   factory :user do
+    treatment_facility
+    
     email { generate(:random_email) }
     password "Password"
     password_confirmation "Password"

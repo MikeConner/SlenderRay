@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130129050508) do
+ActiveRecord::Schema.define(:version => 20130129235133) do
 
   create_table "machines", :force => true do |t|
     t.string   "model",                 :limit => 64,                 :null => false
@@ -22,6 +22,8 @@ ActiveRecord::Schema.define(:version => 20130129050508) do
     t.datetime "updated_at",                                          :null => false
     t.string   "display_name",          :limit => 64, :default => "", :null => false
   end
+
+  add_index "machines", ["treatment_facility_id", "display_name"], :name => "index_machines_on_treatment_facility_id_and_display_name", :unique => true
 
   create_table "machines_users", :id => false, :force => true do |t|
     t.integer "machine_id"
@@ -102,6 +104,8 @@ ActiveRecord::Schema.define(:version => 20130129050508) do
     t.datetime "updated_at",                          :null => false
   end
 
+  add_index "treatment_areas", ["treatment_facility_id", "area_name"], :name => "index_treatment_areas_on_treatment_facility_id_and_area_name", :unique => true
+
   create_table "treatment_facilities", :force => true do |t|
     t.string   "facility_name", :limit => 50, :null => false
     t.string   "facility_url"
@@ -165,6 +169,7 @@ ActiveRecord::Schema.define(:version => 20130129050508) do
     t.integer  "machine_id"
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false
+    t.integer  "treatment_facility_id"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

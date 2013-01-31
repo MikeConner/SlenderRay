@@ -11,10 +11,35 @@
   - if !@facility.address_2.blank?
     %p= @facility.address_1
   %p== #{@facility.city}, #{@facility.state}  #{@facility.zipcode}
-  %br/
-  - idx = 1
-  - @facility.machines.each do |machine|
-    == #{idx}: #{machine.model} (#{machine.serial_number}), installed #{machine.date_installed.try(:strftime, '%b %d, %Y')}
-    - idx += 1
+  %h4 Machines
+  - if @facility.machines.empty?
+    None
+  - else
+    - idx = 1
+    - @facility.machines.each do |machine|
+      == #{idx}: #{machine.display_name}: #{machine.model} (#{machine.serial_number}), installed #{machine.date_installed.try(:strftime, '%b %d, %Y')}
+      %br/
+      - machine.users.each do |user|
+        == Operated by #{user.email}
+        %br/
+      - idx += 1
+  %h4 Treatment Areas
+  - if @facility.treatment_areas.empty?
+    None
+  - else
+    - idx = 1
+    - @facility.treatment_areas.each do |area|
+      == #{idx}: #{area.area_name}: #{area.process_name}
+      - idx += 1
+  %h4 Users
+  - if @facility.users.empty?
+    None
+  - else
+    - idx = 1
+    - @facility.users.each do |user|
+      == #{idx}: #{user.email}
+      - user.machines do |machine|
+        == Assigned to #{machine.display_name}
+      - idx += 1
   %br/
   = link_to 'Back', treatment_facilities_path

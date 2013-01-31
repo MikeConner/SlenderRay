@@ -1,0 +1,16 @@
+.user
+  = f.hidden_field :_destroy
+  = link_to_function "X", "if (confirm('Delete this user?')) remove_user(this)", :class => "close"
+  .field
+    = f.label :email
+    = f.text_field :email
+  - if f.object.new_record?
+    .field
+      = f.label :password
+      = f.password_field :password
+    .field
+      = f.label :password_confirmation
+      = f.password_field :password_confirmation
+  - machines = f.object.treatment_facility.machines
+  Machine assignments
+  = f.collection_select(:machine_ids, machines, :id, :display_name, { :selected => f.object.machine_ids }, { :multiple => true, :size => machines.count, :title => I18n.t('machine_instructions')})

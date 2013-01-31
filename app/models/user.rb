@@ -38,12 +38,13 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  belongs_to :role
-  has_and_belongs_to_many :machines
-  
   attr_accessible :email, :password, :password_confirmation, :remember_me,
-                  :role_id, :machine_ids
-  
+                  :treatment_facility_id, :machine_ids
+
+  belongs_to :role
+  belongs_to :treatment_facility
+  has_and_belongs_to_many :machines
+    
   validates :email, :presence => true,
                     :uniqueness => { case_sensitive: false },
                     :format => { with: EMAIL_REGEX }

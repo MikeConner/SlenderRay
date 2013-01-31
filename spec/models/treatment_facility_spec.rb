@@ -21,6 +21,7 @@
 
 describe "TreatmentFacility" do
   let(:facility) { FactoryGirl.create(:treatment_facility) }
+  before { Role.create(:name => Role::TECHNICIAN) }
   
   subject { facility }
   
@@ -40,9 +41,41 @@ describe "TreatmentFacility" do
     facility.should respond_to(:machines)
     facility.should respond_to(:treatment_sessions)
     facility.should respond_to(:treatments)
+    facility.should respond_to(:users)
   end
   
   it { should be_valid }
+  
+  describe "users" do
+    let(:user1) { FactoryGirl.create(:user_with_role, :treatment_facility => facility, :role => Role.find_by_name(Role::TECHNICIAN)) }
+    let(:user2) { FactoryGirl.create(:user_with_role, :treatment_facility => facility, :role => Role.find_by_name(Role::TECHNICIAN)) }
+    let(:user3) { FactoryGirl.create(:user_with_role, :treatment_facility => facility, :role => Role.find_by_name(Role::TECHNICIAN)) }
+    before do
+      m1 = FactoryGirl.create(:machine, :treatment_facility => facility)
+      m2 = FactoryGirl.create(:machine, :treatment_facility => facility)
+      
+      m1.users << user1
+      m1.users << user2
+      m1.users << user3
+      m2.users << user2
+    end
+    
+    it "should find unique users" do
+      facility.users.count.should be == 3
+      facility.users.should be == [user1, user2, user3]
+    end
+    
+    describe "delete" do
+      before do
+        facility.machines.destroy_all
+        facility.destroy
+      end
+      
+      it "should have no users" do
+        User.count.should be == 0
+      end
+    end
+  end
   
   describe "Facility name" do
     context "missing" do

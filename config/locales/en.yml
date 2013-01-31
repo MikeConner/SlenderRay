@@ -2,6 +2,7 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
+  machine_instructions: 'Create Machines and Users, Update Facility, then edit again to create user/machine assignments'
   patient_created: 'New patient created successfully'
   patient_deleted: 'Patient record deleted'
   patient_created: 'New patient created successfully'

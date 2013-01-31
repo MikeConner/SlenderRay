@@ -20,7 +20,8 @@
 #
 
 describe 'User' do
-  let(:user) { FactoryGirl.create(:user) }
+  let(:facility) { FactoryGirl.create(:treatment_facility) }
+  let(:user) { FactoryGirl.create(:user, :treatment_facility => facility) }
   before do
     Role.create(:name => Role::SUPER_ADMIN)
     Role.create(:name => Role::TECHNICIAN)
@@ -35,8 +36,11 @@ describe 'User' do
     user.should respond_to(:remember_me)
     user.should respond_to(:role)
     user.should respond_to(:machines)
+    user.should respond_to(:treatment_facility)
   end
-      
+     
+  its(:treatment_facility) { should == facility }
+   
   it { should be_valid }
   
   describe "duplicate email" do

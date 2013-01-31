@@ -37,8 +37,22 @@
     .field
       = f.label :zipcode
       = f.text_field :zipcode
-%br/
-= f.fields_for :machines do |machine_form|
+.span10
   .span3
-    = render :partial => 'machine', :locals => { :f => machine_form }
-
+    %h4 Machines
+    #machines
+      = f.fields_for :machines do |machine_form|
+        = render :partial => 'machine', :locals => { :f => machine_form }
+      = add_machine(facility, f)
+  .span3
+    %h4 Treatment Areas
+    #treatment_areas
+      = f.fields_for :treatment_areas do |area_form|
+        = render :partial => 'treatment_area', :locals => { :f => area_form }
+      = add_treatment_area(facility, f)
+  .span3
+    %h4 Users
+    #users
+      = f.fields_for :users do |user_form|
+        = render :partial => 'user', :locals => { :f => user_form }
+      = add_user(facility, f)

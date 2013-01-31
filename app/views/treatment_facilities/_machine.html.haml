@@ -1,14 +1,15 @@
-%h4 Machine
-.field
-  = f.label :model
-  = f.text_field :model, :maxlength => Machine::MAX_FIELD_LEN
-.field
-  = f.label :serial_number
-  = f.text_field :serial_number, :maxlength => Machine::MAX_FIELD_LEN
-.field
-  = f.label :date_installed
-  = f.date_select :date_installed, :order => [:month, :day, :year]
-- if !f.object.new_record?
+.machine
+  = f.hidden_field :_destroy
+  = link_to_function "X", "if (confirm('Delete this machine?')) remove_machine(this)", :class => "close"
   .field
-    = f.check_box :_destroy
-    = f.label :_destroy, 'Delete machine'
+    = f.label :model
+    = f.text_field :model, :maxlength => Machine::MAX_FIELD_LEN
+  .field
+    = f.label :serial_number
+    = f.text_field :serial_number, :maxlength => Machine::MAX_FIELD_LEN
+  .field
+    = f.label :display_name
+    = f.text_field :display_name
+  .field
+    = f.label :date_installed
+    = f.date_select :date_installed, :order => [:month, :day, :year]
