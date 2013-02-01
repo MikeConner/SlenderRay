@@ -51,6 +51,8 @@ gem 'devise', '2.1.2'
 gem 'cancan', '1.6.8'
 
 gem 'carrierwave', '0.6.2'
+gem 'rmagick', '2.13.1'
+gem 'mini_magick'
 
 # for Admin pages
 gem 'rails_admin'

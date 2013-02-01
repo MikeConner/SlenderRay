@@ -8,7 +8,7 @@ en:
   machine_instructions: 'Create Machines and Users, Update Facility, then edit again to create user/machine assignments'
   patient_created: 'New patient created successfully'
   patient_deleted: 'Patient record deleted'
-  patient_created: 'New patient created successfully'
+  patient_updated: 'Patient updated successfully'
   testimonial_deleted: 'Patient testimonial deleted'
   testimonial_updated: 'Patient testimonial updated successfully'
   testimonial_created: 'Patient testimonial created successfully'

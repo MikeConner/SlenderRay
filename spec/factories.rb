@@ -211,7 +211,7 @@ FactoryGirl.define do
     treatment_session
     protocol
 
-    duration 8    
+    duration_minutes 8    
   end
 
   factory :area_process, :class => TreatmentArea do
@@ -236,7 +236,7 @@ FactoryGirl.define do
     treatment_session
     protocol
     
-    duration 8
+    duration_minutes 8
 
     after(:create) do |process|
       FactoryGirl.create(:process_timer, :process => process)

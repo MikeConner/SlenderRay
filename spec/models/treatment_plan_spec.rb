@@ -152,14 +152,17 @@ describe 'TreatmentPlan' do
       before {
         plan.treatments.each do |treatment|
           treatment.process_timer.process_state = ProcessTimer::COMPLETED
+          treatment.process_timer.save!
         end
       }
       
       it "should be complete" do
+        plan.treatments.count.should be == 4 
+        
         plan.treatments.each do |treatment|
           treatment.complete?.should be_true
         end
-        
+
         plan.complete?.should be_true
       end
     end

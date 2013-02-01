@@ -14,20 +14,19 @@
 #  Represent a single treatment (e.g., 8-minute SlenderRay session), associated with a particular session (office visit)
 #
 # USAGE
-#   Duration is given in minutes
 #
 # NOTES AND WARNINGS
 #
 class Treatment < ActiveRecord::Base
-  attr_accessible :duration,
+  attr_accessible :duration_minutes,
                   :protocol_id, :treatment_session_id
   
   belongs_to :protocol
   belongs_to :treatment_session
   has_one :process_timer, :as => :process, :dependent => :nullify
   
-  validates :duration, :presence => true,
-                       :numericality => { only_integer: true, greater_than: 0 }
+  validates :duration_minutes, :presence => true,
+                               :numericality => { only_integer: true, greater_than: 0 }
   validates_presence_of :protocol_id  
   validates_presence_of :treatment_session_id  
   

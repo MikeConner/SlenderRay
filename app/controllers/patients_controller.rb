@@ -1,4 +1,6 @@
 class PatientsController < ApplicationController
+  respond_to :js, :html
+  
   before_filter :authenticate_user!
   before_filter :ensure_technician
   load_and_authorize_resource
@@ -10,6 +12,7 @@ class PatientsController < ApplicationController
   
   def show
     @patient = Patient.find(params[:id])  
+    @plans = @patient.treatment_plans.order('updated_at desc')
   end
   
   def new
@@ -44,6 +47,16 @@ class PatientsController < ApplicationController
 
     redirect_to patients_path, :notice => I18n.t('patient_deleted') 
   end  
+  
+  def clone_treatment_plan
+    @patient = Patient.find(params[:patient_id])
+    template = TreatmentPlanTemplate.find_by_description(params[:name])
+    TreatmentPlan.create_from_template(template, @patient)
+    
+    respond_to do |format|
+      format.js { render :js => "window.location.href=\"#{edit_patient_path(:id => @patient.id)}\"" }
+    end
+  end
   
 private
   def ensure_technician

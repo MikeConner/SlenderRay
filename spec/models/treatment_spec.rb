@@ -21,7 +21,7 @@ describe 'Treatment' do
   it "should respond to everything" do
     treatment.should respond_to(:treatment_session)
     treatment.should respond_to(:protocol)
-    treatment.should respond_to(:duration)
+    treatment.should respond_to(:duration_minutes)
     treatment.should respond_to(:process_timer)
     treatment.should respond_to(:complete?)
   end
@@ -57,7 +57,7 @@ describe 'Treatment' do
   end  
 
   describe "missing duration" do
-    before { treatment.duration = nil }
+    before { treatment.duration_minutes = nil }
     
     it { should_not be_valid }
   end    

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130129235133) do
+ActiveRecord::Schema.define(:version => 20130131181605) do
 
   create_table "machines", :force => true do |t|
     t.string   "model",                 :limit => 64,                 :null => false
@@ -149,7 +149,7 @@ ActiveRecord::Schema.define(:version => 20130129235133) do
   create_table "treatments", :force => true do |t|
     t.integer  "treatment_session_id"
     t.integer  "protocol_id"
-    t.integer  "duration"
+    t.integer  "duration_minutes"
     t.datetime "created_at",           :null => false
     t.datetime "updated_at",           :null => false
   end

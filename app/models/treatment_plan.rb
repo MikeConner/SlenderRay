@@ -49,9 +49,17 @@ class TreatmentPlan < TreatmentPlanTemplate
                          :treatments_per_session => t.treatments_per_session, :price => t.price}.merge(options))
   end
   
+  def date_completed
+    complete? ? self.treatments.order('updated_at desc').first.updated_at : nil
+  end
+  
+  def pct_complete
+    (self.treatments.count / (self.num_sessions * self.treatments_per_session) * 100).round
+  end
+  
   def complete?
     if self.num_sessions * self.treatments_per_session == self.treatments.count
-      self.treatments.each do |treatment|
+      self.treatments.order('updated_at desc').each do |treatment|
         if !treatment.complete?
           return false
         end

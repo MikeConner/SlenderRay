@@ -22,13 +22,15 @@ class Patient < ActiveRecord::Base
   MAX_ID_LEN = 40
   
   attr_accessible :name,
-                  :treatment_facility_id
+                  :treatment_facility_id, :treatment_plans_attributes
                   
   belongs_to :treatment_facility
   
   has_many :testimonials, :dependent => :destroy
   has_many :treatment_plans, :dependent => :restrict
   
+  accepts_nested_attributes_for :treatment_plans, :allow_destroy => true, :reject_if => :all_blank
+
   validates :name, :length => { maximum: MAX_ID_LEN }
   validates_presence_of :treatment_facility_id
   

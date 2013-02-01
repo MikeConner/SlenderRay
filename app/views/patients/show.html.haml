@@ -1,2 +1,10 @@
 .offset2
   %h1= @patient.name
+  - pct_complete = 40
+  - @plans.each do |plan|
+    - if plan.complete?
+      == #{plan.date_completed.try(:strftime, '%b %d, %Y')}. Completed #{plan.treatments.count} treatments of '#{plan.description}'
+    - else
+      = render :partial => 'shared/progress_bar', :locals => { :pct => plan.pct_complete, :text => plan.description }
+      - plan.treatment_sessions.order('created_at desc').each do |session|
+        = render :partial => 'session', :locals => { :session => session }

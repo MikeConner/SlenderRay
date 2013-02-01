@@ -33,6 +33,18 @@ class TreatmentSession < ActiveRecord::Base
   validates_presence_of :treatment_plan_id
   validates_presence_of :machine_id
   
+  # return set of labels used (or [])
+  def labels
+    label_set = Hash.new
+    measurements.each do |m|
+      if !m.label.nil?
+        label_set[m.label] = 1
+      end
+    end
+    
+    label_set.keys.sort
+  end
+  
   def labeled_measurements(label)
     measurements.where('label = ?', label)
   end  

@@ -25,6 +25,7 @@ describe 'TreatmentSession' do
     session.should respond_to(:machine)
     session.should respond_to(:measurements)
     session.should respond_to(:treatments)
+    session.should respond_to(:labels)
     session.should respond_to(:labeled_measurements)
   end
   
@@ -38,6 +39,7 @@ describe 'TreatmentSession' do
 
     it "should have 8 measurements" do
       session.measurements.count.should be == 8
+      session.labels.should be == ['After', 'Before']
       session.labeled_measurements('Before').count.should be == 4
       session.labeled_measurements('After').count.should be == 4
       session.labeled_measurements('Invalid').count.should be == 0
@@ -76,6 +78,8 @@ describe 'TreatmentSession' do
     
     it "should have measurements" do
       session.measurements.count.should be == 6
+      session.labels.should be == []
+      
       session.measurements.each do |measurement|
         measurement.treatment_session.should == session
       end
