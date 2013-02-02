@@ -16,11 +16,19 @@ class PatientsController < ApplicationController
   end
   
   def new
-    @patient = current_user.treatment_facility.patients.build
+    @facility = current_user.treatment_facility
+    @patient = @facility.patients.build
   end
   
   def edit
     @patient = Patient.find(params[:id])
+    @facility = @patient.treatment_facility
+  end
+  
+  def treat
+    @patient = Patient.find(params[:id])   
+    @plan = @patient.current_treatment_plan
+    @session = @plan.treatment_session.build
   end
   
   def create

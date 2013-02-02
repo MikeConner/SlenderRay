@@ -24,7 +24,10 @@
 # NOTES AND WARNINGS
 #
 class TreatmentPlanTemplate < ActiveRecord::Base
-  attr_accessible :description, :num_sessions, :treatments_per_session, :price
+  attr_accessible :description, :num_sessions, :treatments_per_session, :price,
+                  :treatment_facility_id
+  
+  belongs_to :treatment_facility
   
   validates_presence_of :description
   validates :num_sessions, :presence => true,
@@ -37,6 +40,8 @@ class TreatmentPlanTemplate < ActiveRecord::Base
 end
 
 class TreatmentPlan < TreatmentPlanTemplate
+  TREATMENT_DURATION_MINUTES = 8
+  
   attr_accessible :patient_id
   
   belongs_to :patient

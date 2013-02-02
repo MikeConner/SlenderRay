@@ -13,3 +13,10 @@ en:
   testimonial_updated: 'Patient testimonial updated successfully'
   testimonial_created: 'Patient testimonial created successfully'
   technicians_only: 'This function only available to technicians'
+  will_paginate:
+    models:
+      patient:
+        zero:  Patients
+        one:   Patient
+        few:   Patients
+        other: Patients        

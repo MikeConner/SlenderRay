@@ -15,6 +15,16 @@ module TreatmentFacilitiesHelper
     end
   end
 
+  def add_treatment_plan_template(facility, form_builder)
+    form_builder.fields_for :treatment_plan_templates, facility.treatment_plan_templates.build, :child_index => 'NEW_RECORD' do |template_form|
+      template_form.object.type = 'TreatmentPlanTemplate'
+      html = render(:partial => 'shared/treatment_plan', :locals => { :f => template_form })
+      link_to_function 'Add Treatment Plan Template', 
+                       "$('#{escape_javascript(html)}'.replace(/NEW_RECORD/g, $('.treatment_plan').length)).insertBefore('#add_treatment_plan_template')",
+                       :id  => "add_treatment_plan_template"
+    end
+  end
+
   def add_treatment_area(facility, form_builder)
     form_builder.fields_for :treatment_areas, facility.treatment_areas.build, :child_index => 'NEW_RECORD' do |area_form|
       html = render(:partial => 'treatment_area', :locals => { :f => area_form })
@@ -26,7 +36,7 @@ module TreatmentFacilitiesHelper
 
   def add_user(facility, form_builder)
     form_builder.fields_for :users, facility.users.build, :child_index => 'NEW_RECORD' do |user_form|
-      html = render(:partial => 'user', :locals => { :f => user_form })
+      html = render(:partial => 'user', :locals => { :f => user_form, :facility => facility })
       link_to_function 'Add User', 
                        "$('#{escape_javascript(html)}'.replace(/NEW_RECORD/g, $('.user').length)).insertBefore('#add_user')",
                        :id  => "add_user"

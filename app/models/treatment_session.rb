@@ -20,13 +20,15 @@
 #
 class TreatmentSession < ActiveRecord::Base
   attr_accessible :notes, :patient_image, :remote_patient_image_url,
-                  :machine_id
+                  :machine_id#, :protocol_id
   
   mount_uploader :patient_image, PatientImageUploader
 
   belongs_to :treatment_plan
   belongs_to :machine
+#  belongs_to :protocol
   
+#  has_one :process_timer, :as => :process, :dependent => :nullify
   has_many :measurements, :dependent => :destroy
   has_many :treatments, :dependent => :destroy
   

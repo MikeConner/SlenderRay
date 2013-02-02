@@ -7,8 +7,8 @@
   - patient.treatment_plans.each do |plan|
     - if !plan.complete?
       = f.fields_for :treatment_plans do |plan_form|
-        = render :partial => 'treatment_plan', :locals => { :f => plan_form }
+        = render :partial => 'shared/treatment_plan', :locals => { :f => plan_form }
   - if !patient.in_treatment?
     .btn.btn-large{:style => 'width:350px'}
-      = select_tag :plan_template, options_for_select(TreatmentPlanTemplate.all.map { |t| t.description })
+      = select_tag :plan_template, options_for_select(@facility.treatment_plan_templates.map { |t| t.description })
       = link_to 'Create Treatment Plan', '#', :onclick => "add_treatment_plan(#{patient.id}, $('#plan_template').val())"

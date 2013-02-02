@@ -31,7 +31,7 @@ class TreatmentFacility < ActiveRecord::Base
   include ApplicationHelper
     
   attr_accessible :facility_name, :facility_url, :first_name, :last_name, :email, :phone, :fax, :address_1, :address_2, :city, :state, :zipcode,
-                  :machines_attributes, :treatment_areas_attributes, :users_attributes
+                  :machines_attributes, :treatment_areas_attributes, :users_attributes, :treatment_plan_templates_attributes
   
   before_validation :downcase_email
   before_validation :upcase_state
@@ -43,10 +43,12 @@ class TreatmentFacility < ActiveRecord::Base
   has_many :treatment_sessions, :through => :machines
   has_many :treatments, :through => :treatment_sessions
   has_many :users, :dependent => :destroy
+  has_many :treatment_plan_templates, :dependent => :destroy
   
   accepts_nested_attributes_for :machines, :allow_destroy => true, :reject_if => :all_blank
   accepts_nested_attributes_for :treatment_areas, :allow_destroy => true, :reject_if => :all_blank
   accepts_nested_attributes_for :users, :allow_destroy => true, :reject_if => :all_blank
+  accepts_nested_attributes_for :treatment_plan_templates, :allow_destroy => true, :reject_if => :all_blank
   
   validates :facility_name, :presence => true,
                             :uniqueness => { case_sensitive: false },

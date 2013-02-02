@@ -37,6 +37,13 @@
     .field
       = f.label :zipcode
       = f.text_field :zipcode
+%br/
+- if current_user.has_role?(Role::TECHNICIAN)
+  %h4 Treatment Plan Templates
+  #treatment_plan_templates
+    = f.fields_for :treatment_plan_templates do |template_form|
+      = render :partial => 'shared/treatment_plan', :locals => { :f => template_form }
+    = add_treatment_plan_template(facility, f)
 .span10
   .span3
     %h4 Machines
@@ -50,7 +57,7 @@
         None
       - else
         - idx = 1
-        - facility.machines.each do |machine|
+        - facility.machines.all.each do |machine|
           == #{idx}: #{machine.display_name}: #{machine.model} (#{machine.serial_number}), installed #{machine.date_installed.try(:strftime, '%b %d, %Y')}
           %br/
           - machine.users.each do |user|
@@ -68,7 +75,7 @@
     - if current_user.has_role?(Role::SUPER_ADMIN)
       #users
         = f.fields_for :users do |user_form|
-          = render :partial => 'user', :locals => { :f => user_form }
+          = render :partial => 'user', :locals => { :f => user_form, :facility => facility }
         = add_user(facility, f)
     - else
       - if @facility.users.empty?
