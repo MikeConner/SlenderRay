@@ -55,11 +55,12 @@ class TreatmentPlan < TreatmentPlanTemplate
   end
   
   def date_completed
-    complete? ? self.treatments.order('updated_at desc').first.updated_at : nil
+    complete? ? self.treatment_sessions.order('updated_at desc').first.updated_at : nil
   end
   
   def pct_complete
-    (self.treatments.count / (self.num_sessions * self.treatments_per_session) * 100).round
+    #(self.treatments.count / (self.num_sessions * self.treatments_per_session) * 100).round
+    (self.treatment_sessions.count / self.num_sessions * 100).round
   end
   
   def complete?
