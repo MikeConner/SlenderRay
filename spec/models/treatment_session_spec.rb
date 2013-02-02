@@ -9,6 +9,7 @@
 #  created_at        :datetime        not null
 #  updated_at        :datetime        not null
 #  machine_id        :integer
+#  protocol_id       :integer
 #
 
 describe 'TreatmentSession' do
@@ -24,7 +25,6 @@ describe 'TreatmentSession' do
     session.should respond_to(:treatment_plan)
     session.should respond_to(:machine)
     session.should respond_to(:measurements)
-    session.should respond_to(:treatments)
     session.should respond_to(:labels)
     session.should respond_to(:labeled_measurements)
   end
@@ -33,6 +33,14 @@ describe 'TreatmentSession' do
   its(:machine) { should == machine }
   
   it { should be_valid }
+  
+  describe "completed session" do
+    let(:session) { FactoryGirl.create(:completed_session, :treatment_plan => plan) }
+    
+    it "should be complete" do
+      session.complete?.should be_true
+    end
+  end
   
   describe "first session" do
     let(:session) { FactoryGirl.create(:first_session_with_measurements, :treatment_plan => plan) }   
@@ -54,25 +62,6 @@ describe 'TreatmentSession' do
     it { should_not be_valid }
   end
   
-  describe "with treatments" do
-    let(:session) { FactoryGirl.create(:session_with_treatments, :treatment_plan => plan) }
-    
-    it "should have treatments" do
-      session.treatments.count.should be == 2
-      session.treatments.each do |treatment|
-        treatment.treatment_session.should == session
-      end
-    end
-    
-    describe "destroy should work" do
-      before { session.destroy }
-      
-      it "should be gone" do
-        Treatment.count.should be == 0
-      end
-    end
-  end
-
   describe "with measurements" do
     let(:session) { FactoryGirl.create(:session_with_measurements, :treatment_plan => plan) }
     

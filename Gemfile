@@ -5,7 +5,6 @@ gem 'rails', '3.2.11'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem 'sqlite3'
 gem 'sass-rails',   '3.2.5'
 
 # Gems used only for assets and not required
@@ -22,6 +21,7 @@ gem 'jquery-rails', '2.1.2'
 gem 'thin', '1.4.1'
 
 group :development, :test do
+  gem 'sqlite3'
   gem 'rspec-rails', '2.12.2'
   gem 'faker', '1.0.1'
   gem 'spork', '0.9.2'

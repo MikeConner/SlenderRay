@@ -12,5 +12,6 @@ class RemoveTreatment < ActiveRecord::Migration
       
       t.timestamps
     end
+    remove_column :treatment_sessions, :protocol_id
   end
 end

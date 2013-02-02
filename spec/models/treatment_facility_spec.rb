@@ -40,7 +40,6 @@ describe "TreatmentFacility" do
     facility.should respond_to(:zipcode)
     facility.should respond_to(:machines)
     facility.should respond_to(:treatment_sessions)
-    facility.should respond_to(:treatments)
     facility.should respond_to(:users)
   end
   
@@ -370,20 +369,6 @@ describe "TreatmentFacility" do
         end
       end
     end
-  end
-  
-  describe "treatments" do
-    let(:facility) { FactoryGirl.create(:facility_with_treatments) }
-    
-    it "should have all relationships" do
-      facility.machines.count.should be == 1
-      facility.treatment_sessions.count.should be == 4
-      facility.treatments.count.should be == 8
-    end
-    
-    it "should not delete" do
-      expect { facility.destroy }.to raise_exception(ActiveRecord::DeleteRestrictionError)
-    end    
   end
   
   it "should delete" do

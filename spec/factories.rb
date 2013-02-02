@@ -155,17 +155,7 @@ FactoryGirl.define do
       after(:create) do |plan, evaluator|
         FactoryGirl.create_list(:treatment_session, evaluator.num_treatment_sessions, :treatment_plan => plan)
       end
-    end
-    
-    factory :plan_with_treatments do
-      ignore do
-        num_treatment_sessions 2
-      end
-      
-      after(:create) do |plan, evaluator|
-        FactoryGirl.create_list(:session_with_treatments, evaluator.num_treatment_sessions, :treatment_plan => plan)
-      end
-    end
+    end    
   end
   
   factory :treatment_session do
@@ -174,17 +164,12 @@ FactoryGirl.define do
     
     remote_patient_image_url 'http://s1.static.gotsmile.net/images/2011/05/31/very-fat-woman-eating_130682670469.jpg'
     notes { generate(:random_paragraphs) }
+    process_timer { FactoryGirl.create(:process_timer) }
     
-    factory :session_with_treatments do
-      ignore do
-        num_treatments 2
-      end
-      
-      after(:create) do |session, evaluator|
-        FactoryGirl.create_list(:treatment, evaluator.num_treatments, :treatment_session => session)
-      end
-    end   
-    
+    factory :completed_session do
+      process_timer { FactoryGirl.create(:process_timer, :process_state => ProcessTimer::COMPLETED) }
+    end
+  
     factory :session_with_measurements do
       ignore do
         num_measurements 6
@@ -207,22 +192,21 @@ FactoryGirl.define do
     end
   end
   
-  factory :treatment_process, :class => Treatment do
-    treatment_session
+  factory :session_process, :class => TreatmentSession do
+    treatment_plan
+    machine
     protocol
-
-    duration_minutes 8    
   end
 
   factory :area_process, :class => TreatmentArea do
     area_name { generate(:random_phrase) }
   end
   
-  factory :treatment_timer, :class => ProcessTimer do
+  factory :session_timer, :class => ProcessTimer do
     process_state ProcessTimer::IDLE
     duration_seconds 480
     
-    process { FactoryGirl.create(:treatment_process) }
+    process { FactoryGirl.create(:session_process) }
   end
 
   factory :area_timer, :class => ProcessTimer do
@@ -230,17 +214,6 @@ FactoryGirl.define do
     duration_seconds 600
     
     process { FactoryGirl.create(:area_process) }
-  end
-
-  factory :treatment do
-    treatment_session
-    protocol
-    
-    duration_minutes 8
-
-    after(:create) do |process|
-      FactoryGirl.create(:process_timer, :process => process)
-    end
   end
 
   factory :process_timer do

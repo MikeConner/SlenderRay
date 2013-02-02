@@ -14,162 +14,162 @@
 #
 
 describe "ProcessTimer" do
-  let(:treatment_timer) { FactoryGirl.create(:treatment_timer) }
+  let(:session_timer) { FactoryGirl.create(:session_timer) }
   let(:area_timer) { FactoryGirl.create(:area_timer) }
   
-  subject { treatment_timer }
+  subject { session_timer }
   
   it "should respond to everything" do
-    treatment_timer.should respond_to(:process_state)
-    treatment_timer.should respond_to(:start_time)
-    treatment_timer.should respond_to(:elapsed_seconds)
-    treatment_timer.should respond_to(:duration_seconds)
-    treatment_timer.should respond_to(:process)
-    treatment_timer.should respond_to(:seconds_remaining)
-    treatment_timer.should respond_to(:startable?)
-    treatment_timer.should respond_to(:start)
-    treatment_timer.should respond_to(:pausable?)
-    treatment_timer.should respond_to(:pause)
-    treatment_timer.should respond_to(:resumable?)
-    treatment_timer.should respond_to(:resume)
-    treatment_timer.should respond_to(:expireable?)
-    treatment_timer.should respond_to(:expire)
-    treatment_timer.should respond_to(:completeable?)
-    treatment_timer.should respond_to(:complete)
+    session_timer.should respond_to(:process_state)
+    session_timer.should respond_to(:start_time)
+    session_timer.should respond_to(:elapsed_seconds)
+    session_timer.should respond_to(:duration_seconds)
+    session_timer.should respond_to(:process)
+    session_timer.should respond_to(:seconds_remaining)
+    session_timer.should respond_to(:startable?)
+    session_timer.should respond_to(:start)
+    session_timer.should respond_to(:pausable?)
+    session_timer.should respond_to(:pause)
+    session_timer.should respond_to(:resumable?)
+    session_timer.should respond_to(:resume)
+    session_timer.should respond_to(:expireable?)
+    session_timer.should respond_to(:expire)
+    session_timer.should respond_to(:completeable?)
+    session_timer.should respond_to(:complete)
   end
   
   it { should be_valid }
   
   describe "missing duration" do
-    before { treatment_timer.duration_seconds = ' ' }
+    before { session_timer.duration_seconds = ' ' }
     
     it { should_not be_valid }
   end
   
   it "should have the right types" do
-    treatment_timer.process.class.should be == Treatment
+    session_timer.process.class.should be == TreatmentSession
     area_timer.process.class.should be == TreatmentArea
   end
   
   it "should have correct statuses" do
-    treatment_timer.startable?.should be_true
-    treatment_timer.pausable?.should be_false
-    treatment_timer.resumable?.should be_false
-    treatment_timer.expireable?.should be_false
-    treatment_timer.completeable?.should be_false
+    session_timer.startable?.should be_true
+    session_timer.pausable?.should be_false
+    session_timer.resumable?.should be_false
+    session_timer.expireable?.should be_false
+    session_timer.completeable?.should be_false
   end
   
   describe "valid states" do
     ProcessTimer::PROCESS_STATES.each do |state|
-      before { treatment_timer.process_state = state }
+      before { session_timer.process_state = state }
       
       it { should be_valid }
     end
   end
   
   describe "Invalid state" do 
-    before { treatment_timer.process_state = 'Not in List' }
+    before { session_timer.process_state = 'Not in List' }
     
     it { should_not be_valid }
   end
   
   describe "timing" do
     it "should not have remaining time" do
-      treatment_timer.seconds_remaining.should be_nil
+      session_timer.seconds_remaining.should be_nil
     end
     
     describe "No time when expired" do
-      before { treatment_timer.process_state = ProcessTimer::EXPIRED }
+      before { session_timer.process_state = ProcessTimer::EXPIRED }
       
       it "should not have remaining time" do
-        treatment_timer.seconds_remaining.should be_nil
-        treatment_timer.startable?.should be_false
-        treatment_timer.pausable?.should be_false
-        treatment_timer.resumable?.should be_false
-        treatment_timer.expireable?.should be_false
-        treatment_timer.completeable?.should be_true
+        session_timer.seconds_remaining.should be_nil
+        session_timer.startable?.should be_false
+        session_timer.pausable?.should be_false
+        session_timer.resumable?.should be_false
+        session_timer.expireable?.should be_false
+        session_timer.completeable?.should be_true
       end
     end
     
     describe "No time when completed" do
-      before { treatment_timer.process_state = ProcessTimer::COMPLETED }
+      before { session_timer.process_state = ProcessTimer::COMPLETED }
       
       it "should not have remaining time" do
-        treatment_timer.seconds_remaining.should be_nil
-        treatment_timer.startable?.should be_false
-        treatment_timer.pausable?.should be_false
-        treatment_timer.resumable?.should be_false
-        treatment_timer.expireable?.should be_false
-        treatment_timer.completeable?.should be_false
+        session_timer.seconds_remaining.should be_nil
+        session_timer.startable?.should be_false
+        session_timer.pausable?.should be_false
+        session_timer.resumable?.should be_false
+        session_timer.expireable?.should be_false
+        session_timer.completeable?.should be_false
       end
       
       describe "reset" do
-        before { treatment_timer.reset }
+        before { session_timer.reset }
         
         it "should have correct status" do
-          treatment_timer.startable?.should be_true
-          treatment_timer.pausable?.should be_false
-          treatment_timer.resumable?.should be_false
-          treatment_timer.expireable?.should be_false
-          treatment_timer.completeable?.should be_false          
+          session_timer.startable?.should be_true
+          session_timer.pausable?.should be_false
+          session_timer.resumable?.should be_false
+          session_timer.expireable?.should be_false
+          session_timer.completeable?.should be_false          
         end
       end
     end
     
     describe "start timer" do
       before do
-        treatment_timer.start
+        session_timer.start
         sleep 5
       end
       
       it "should show correct remaining time" do
-        treatment_timer.process_state.should be == ProcessTimer::STARTED
-        treatment_timer.seconds_remaining.should be == treatment_timer.duration_seconds - 5
+        session_timer.process_state.should be == ProcessTimer::STARTED
+        session_timer.seconds_remaining.should be == session_timer.duration_seconds - 5
       end
     end
     
     describe "pause" do
       before do
-        treatment_timer.start
-        treatment_timer.startable?.should be_false
-        treatment_timer.pausable?.should be_true
-        treatment_timer.resumable?.should be_false
-        treatment_timer.expireable?.should be_true
-        treatment_timer.completeable?.should be_false
+        session_timer.start
+        session_timer.startable?.should be_false
+        session_timer.pausable?.should be_true
+        session_timer.resumable?.should be_false
+        session_timer.expireable?.should be_true
+        session_timer.completeable?.should be_false
         sleep 5
-        treatment_timer.pause
-        treatment_timer.startable?.should be_false
-        treatment_timer.pausable?.should be_false
-        treatment_timer.resumable?.should be_true
-        treatment_timer.expireable?.should be_false
-        treatment_timer.completeable?.should be_false
+        session_timer.pause
+        session_timer.startable?.should be_false
+        session_timer.pausable?.should be_false
+        session_timer.resumable?.should be_true
+        session_timer.expireable?.should be_false
+        session_timer.completeable?.should be_false
         sleep 5
       end
       
       it "should still show the same time" do
-        treatment_timer.process_state.should be == ProcessTimer::PAUSED
-        treatment_timer.seconds_remaining.should be == treatment_timer.duration_seconds - 5          
+        session_timer.process_state.should be == ProcessTimer::PAUSED
+        session_timer.seconds_remaining.should be == session_timer.duration_seconds - 5          
       end
     end
       
     describe "resume" do
       before do
-        treatment_timer.start
+        session_timer.start
         sleep 5
-        treatment_timer.pause
+        session_timer.pause
         sleep 5
-        treatment_timer.resume
-        treatment_timer.startable?.should be_false
-        treatment_timer.pausable?.should be_true
-        treatment_timer.resumable?.should be_false
-        treatment_timer.expireable?.should be_true
-        treatment_timer.completeable?.should be_false
+        session_timer.resume
+        session_timer.startable?.should be_false
+        session_timer.pausable?.should be_true
+        session_timer.resumable?.should be_false
+        session_timer.expireable?.should be_true
+        session_timer.completeable?.should be_false
         sleep 5
       end
       
       it "should show the right remaining time" do
-        treatment_timer.process_state.should be == ProcessTimer::RESUMED
-        treatment_timer.seconds_remaining.should be == treatment_timer.duration_seconds - 10                    
+        session_timer.process_state.should be == ProcessTimer::RESUMED
+        session_timer.seconds_remaining.should be == session_timer.duration_seconds - 10                    
       end
     end
   end

@@ -41,7 +41,6 @@ class TreatmentFacility < ActiveRecord::Base
   has_many :treatment_areas, :dependent => :destroy
   
   has_many :treatment_sessions, :through => :machines
-  has_many :treatments, :through => :treatment_sessions
   has_many :users, :dependent => :destroy
   has_many :treatment_plan_templates, :dependent => :destroy
   

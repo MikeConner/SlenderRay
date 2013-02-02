@@ -11,6 +11,7 @@
 #  type                   :string(255)
 #  created_at             :datetime        not null
 #  updated_at             :datetime        not null
+#  treatment_facility_id  :integer
 #
 
 describe 'TreatmentPlan' do
@@ -27,7 +28,6 @@ describe 'TreatmentPlan' do
     plan.should respond_to(:type)
     plan.should respond_to(:patient)
     plan.should respond_to(:treatment_sessions)
-    plan.should respond_to(:treatments)
     plan.should respond_to(:complete?)
   end
   
@@ -123,11 +123,10 @@ describe 'TreatmentPlan' do
   end
 
   describe "plan with treatments" do
-    let(:plan) { FactoryGirl.create(:plan_with_treatments) }
+    let(:plan) { FactoryGirl.create(:plan_with_sessions) }
     
     it "should have sessions" do
       plan.treatment_sessions.count.should be == 2
-      plan.treatments.count.should be == 4
       
       plan.treatment_sessions.each do |session|
         session.treatment_plan.should be == plan
@@ -137,11 +136,7 @@ describe 'TreatmentPlan' do
     end
     
     describe "complete one" do
-      before {
-        plan.treatment_sessions.first.treatments.each do |treatment|
-          treatment.process_timer.process_state = ProcessTimer::COMPLETED
-        end
-      }
+      before { plan.treatment_sessions.first.process_timer.process_state = ProcessTimer::COMPLETED }
       
       it "should not be complete" do
         plan.complete?.should be_false
@@ -150,19 +145,15 @@ describe 'TreatmentPlan' do
     
     describe "complete all" do
       before {
-        plan.treatments.each do |treatment|
-          treatment.process_timer.process_state = ProcessTimer::COMPLETED
-          treatment.process_timer.save!
+        plan.treatment_sessions.each do |session|
+          session.process_timer.process_state = ProcessTimer::COMPLETED
+          session.process_timer.save!
         end
       }
       
       it "should be complete" do
-        plan.treatments.count.should be == 4 
+        plan.treatment_sessions.count.should be == 2
         
-        plan.treatments.each do |treatment|
-          treatment.complete?.should be_true
-        end
-
         plan.complete?.should be_true
       end
     end
@@ -176,9 +167,6 @@ describe 'TreatmentPlan' do
       
       plan.treatment_sessions.each do |session|
         session.treatment_plan.should be == plan
-        session.treatments.each do |treatment|
-          treatment.treatment_session.should be == session
-        end
       end
     end
     

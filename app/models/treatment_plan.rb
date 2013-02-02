@@ -1,16 +1,17 @@
 # == Schema Information
 #
-# Table name: treatment_facilities
+# Table name: treatment_plan_templates
 #
-#  id                      :integer         not null, primary key
-#  patient_id              :integer
-#  num_sessions            :integer         not null
-#  treatments_per_session  :integer         not null
-#  description             :text            not null
-#  price                   :decimal
-#  type                    :string
-#  created_at              :datetime        not null
-#  updated_at              :datetime        not null
+#  id                     :integer         not null, primary key
+#  patient_id             :integer
+#  num_sessions           :integer         not null
+#  treatments_per_session :integer         not null
+#  description            :text            not null
+#  price                  :decimal(, )
+#  type                   :string(255)
+#  created_at             :datetime        not null
+#  updated_at             :datetime        not null
+#  treatment_facility_id  :integer
 #
 
 # CHARTER
@@ -46,7 +47,6 @@ class TreatmentPlan < TreatmentPlanTemplate
   
   belongs_to :patient
   has_many :treatment_sessions, :dependent => :restrict
-  has_many :treatments, :through => :treatment_sessions
   
   # Passed in options will override the template values (e.g., you can create a plan with an extra session or special price)
   def self.create_from_template(t, patient, options = {})
@@ -63,9 +63,9 @@ class TreatmentPlan < TreatmentPlanTemplate
   end
   
   def complete?
-    if self.num_sessions * self.treatments_per_session == self.treatments.count
-      self.treatments.order('updated_at desc').each do |treatment|
-        if !treatment.complete?
+    if self.num_sessions == self.treatment_sessions.count
+      self.treatment_sessions.order('updated_at desc').each do |session|
+        if !session.complete?
           return false
         end
       end
