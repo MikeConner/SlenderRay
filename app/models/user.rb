@@ -40,7 +40,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   attr_accessible :email, :password, :password_confirmation, :remember_me,
-                  :treatment_facility_id, :machine_ids
+                  :treatment_facility_id, :machine_ids, :role_ids
 
   belongs_to :role
   belongs_to :treatment_facility
