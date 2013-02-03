@@ -34,6 +34,8 @@ class Patient < ActiveRecord::Base
   validates :name, :length => { maximum: MAX_ID_LEN }
   validates_presence_of :treatment_facility_id
   
+  validates_associated :treatment_plans
+  
   def current_treatment_plan
     if in_treatment?
       self.treatment_plans.each do |plan|

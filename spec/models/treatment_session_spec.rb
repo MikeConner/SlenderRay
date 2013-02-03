@@ -34,6 +34,17 @@ describe 'TreatmentSession' do
   
   it { should be_valid }
   
+  describe "no navel" do
+    let(:measurement) { FactoryGirl.create(:measurement, :location => 'blah', :treatment_session => session) }
+    
+    before { measurement }
+    
+    it "should have a measurement" do
+      session.measurements.count.should be == 1
+      session.reload.valid?.should be_false
+    end
+  end
+  
   describe "completed session" do
     let(:session) { FactoryGirl.create(:completed_session, :treatment_plan => plan) }
     
@@ -44,10 +55,10 @@ describe 'TreatmentSession' do
   
   describe "first session" do
     let(:session) { FactoryGirl.create(:first_session_with_measurements, :treatment_plan => plan) }   
-
+    
     it "should have 8 measurements" do
       session.measurements.count.should be == 8
-      session.labels.should be == ['After', 'Before']
+      session.reload.labels.should be == ['After', 'Before']
       session.labeled_measurements('Before').count.should be == 4
       session.labeled_measurements('After').count.should be == 4
       session.labeled_measurements('Invalid').count.should be == 0
@@ -75,7 +86,7 @@ describe 'TreatmentSession' do
     end
     
     describe "destroy should work" do
-      before { session.destroy }
+      before { session.reload.destroy }
       
       it "should be gone" do
         Measurement.count.should be == 0

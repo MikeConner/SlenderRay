@@ -1,0 +1,12 @@
+.measurement
+  = f.hidden_field :_destroy
+  = link_to_function "X", "if (confirm('Delete this measurement?')) remove_measurement(this)", :class => "close"
+  .field
+    = f.label :label
+    = f.select :label, options_for_select(['Before', 'After']), { :include_blank => true }
+  .field
+    = f.label :location
+    = f.text_field :location, :maxlength => Measurement::MAX_LOCATION_LEN
+  .field
+    = f.label :circumference
+    = f.number_field :circumference, :min => 1

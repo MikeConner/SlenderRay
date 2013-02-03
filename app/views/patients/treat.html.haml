@@ -1,2 +1,14 @@
-.offset2
-  
+.span12
+  .span6
+    %h3 Current Session
+    .row
+      = form_for @patient do |f|
+        = render :partial => 'shared/error_messages', :locals => { :errors => @patient.errors, :name => 'Patient' }
+        = f.fields_for :treatment_plans do |plan_form|
+          = plan_form.fields_for :treatment_sessions do |session_form|
+            = render :partial => 'session_fields', :locals => { :f => session_form, :facility => @patient.treatment_facility, :session => @session, :plan => @plan }
+        .actions
+          = f.submit 'Update Patient Session', :class => 'btn btn-large btn-success'
+  - if !@past_sessions.empty?
+    .span6
+      %h3 Previous Session

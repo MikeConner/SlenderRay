@@ -20,3 +20,8 @@ en:
         one:   Patient
         few:   Patients
         other: Patients        
+      testimonial:
+        zero:  Testimonials
+        one:   Testimonial
+        few:   Testimonials
+        other: Testimonials        

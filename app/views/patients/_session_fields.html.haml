@@ -1,0 +1,26 @@
+.span12
+  .span6
+    = @plan.treatment_sessions.count + 1
+    .field
+      = f.label :machine_id
+      %br/
+      = f.collection_select :machine_id, facility.machines, :id, :display_name 
+    %br/
+    .field
+      = f.label :protocol_id
+      %br/
+      = f.collection_select :protocol_id, Protocol.all, :id, :name 
+    %br/
+    %em Measurements
+    %br/
+    = f.fields_for :measurements do |measurement_form|
+      = render :partial => 'measurement', :locals => { :f => measurement_form }
+    = add_measurement(session, f)
+    %br/
+    = f.label :notes
+    = f.text_area :notes, :size => '40x4'
+  .span6
+    = f.label :patient_image
+    %br/
+    = f.file_field :patient_image
+  

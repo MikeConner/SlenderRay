@@ -79,16 +79,16 @@ describe 'Patient' do
     
     it "should have plans" do
       patient.treatment_plans.count.should be == 2
-      patient.in_treatment?.should be_true
-      patient.current_treatment_plan.should be == patient.treatment_plans.first
+      patient.reload.in_treatment?.should be_true
+      patient.reload.current_treatment_plan.should be == patient.treatment_plans.first
     end
 
     it "should not be able to destroy" do
-      expect { patient.destroy }.to raise_exception(ActiveRecord::DeleteRestrictionError)
+      expect { patient.reload.destroy }.to raise_exception(ActiveRecord::DeleteRestrictionError)
     end
     
     context "destroy plans first" do
-      before { patient.treatment_plans.destroy_all }
+      before { patient.reload.treatment_plans.destroy_all }
       
       it "should allow it now" do
         expect { patient.reload.destroy }.to_not raise_exception

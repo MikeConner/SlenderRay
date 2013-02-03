@@ -26,9 +26,12 @@ class PatientsController < ApplicationController
   end
   
   def treat
-    @patient = Patient.find(params[:id])   
+    @patient = Patient.find(params[:patient_id])   
     @plan = @patient.current_treatment_plan
-    @session = @plan.treatment_session.build
+    @past_sessions = @plan.treatment_sessions.order('created_at desc')
+    @session = @plan.treatment_sessions.build
+    
+    render :layout => 'treatment'
   end
   
   def create

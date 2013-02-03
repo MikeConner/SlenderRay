@@ -43,10 +43,14 @@ end
 class TreatmentPlan < TreatmentPlanTemplate
   TREATMENT_DURATION_MINUTES = 8
   
-  attr_accessible :patient_id
+  attr_accessible :patient_id, :treatment_sessions_attributes
   
   belongs_to :patient
   has_many :treatment_sessions, :dependent => :restrict
+
+  accepts_nested_attributes_for :treatment_sessions, :allow_destroy => true, :reject_if => :all_blank
+  
+  validates_associated :treatment_sessions
   
   # Passed in options will override the template values (e.g., you can create a plan with an extra session or special price)
   def self.create_from_template(t, patient, options = {})
@@ -59,7 +63,6 @@ class TreatmentPlan < TreatmentPlanTemplate
   end
   
   def pct_complete
-    #(self.treatments.count / (self.num_sessions * self.treatments_per_session) * 100).round
     (self.treatment_sessions.count / self.num_sessions * 100).round
   end
   

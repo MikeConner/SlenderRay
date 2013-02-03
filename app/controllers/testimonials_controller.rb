@@ -44,6 +44,6 @@ class TestimonialsController < ApplicationController
     @testimonial = Testimonial.find(params[:id])
     @testimonial.destroy
 
-    redirect_to patients_path, :notice => I18n.t('testimonial_deleted') 
+    redirect_to testimonials_path, :notice => I18n.t('testimonial_deleted') 
   end  
 end

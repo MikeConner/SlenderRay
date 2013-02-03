@@ -10,7 +10,7 @@ SlenderRay::Application.routes.draw do
   
   resources :treatment_facilities
   resources :patients do
-    get 'clone_treatment_plan'
+    put 'clone_treatment_plan'
     get 'treat'
   end
   resources :testimonials

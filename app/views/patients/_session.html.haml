@@ -9,6 +9,3 @@
     .span#{width}
       %h3== Measurements (#{label})
       = render :partial => 'measurements', :locals => { :measurements => session.labeled_measurements(label) }
-%h2 Treatments
-- session.treatments.order('created_at desc').each do |treatment|
-  == #{treatment.duration_minutes} minutes, #{treatment.protocol.name}: #{treatment.process_timer.process_state}

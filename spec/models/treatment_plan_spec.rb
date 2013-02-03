@@ -136,7 +136,7 @@ describe 'TreatmentPlan' do
     end
     
     describe "complete one" do
-      before { plan.treatment_sessions.first.process_timer.process_state = ProcessTimer::COMPLETED }
+      before { plan.reload.treatment_sessions.first.process_timer.process_state = ProcessTimer::COMPLETED }
       
       it "should not be complete" do
         plan.complete?.should be_false
@@ -144,12 +144,12 @@ describe 'TreatmentPlan' do
     end
     
     describe "complete all" do
-      before {
-        plan.treatment_sessions.each do |session|
+      before do
+        plan.reload.treatment_sessions.each do |session|
           session.process_timer.process_state = ProcessTimer::COMPLETED
           session.process_timer.save!
         end
-      }
+      end
       
       it "should be complete" do
         plan.treatment_sessions.count.should be == 2
@@ -171,11 +171,11 @@ describe 'TreatmentPlan' do
     end
     
     it "should not be able to delete" do
-      expect { plan.destroy }.to raise_exception(ActiveRecord::DeleteRestrictionError)
+      expect { plan.reload.destroy }.to raise_exception(ActiveRecord::DeleteRestrictionError)
     end
     
     context "delete sessions first" do
-      before { plan.treatment_sessions.destroy_all }
+      before { plan.reload.treatment_sessions.destroy_all }
   
       it "should allow destroy" do
         expect { plan.reload.destroy }.to_not raise_exception
