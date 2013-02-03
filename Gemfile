@@ -19,6 +19,7 @@ gem 'haml', '3.1.7'
 gem 'jquery-rails', '2.1.2'
 #for heroku-> have to use thin
 gem 'thin', '1.4.1'
+gem 'activerecord-postgresql-adapter'
 
 group :development, :test do
   gem 'sqlite3'
