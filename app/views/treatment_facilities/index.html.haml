@@ -6,8 +6,8 @@
         %li== #{facility.facility_name}: #{facility.city}, #{facility.state} #{link_to 'Show', treatment_facility_path(facility)} #{link_to 'Edit', edit_treatment_facility_path(facility)} #{link_to 'Delete', facility, :method => 'delete', :data => { confirm: 'Are you sure?'}}
     = link_to "<i class='icon-plus'></i> Create Treatment Facility".html_safe, new_treatment_facility_path,{:class => 'btn btn-success '}  
   - else
-  	- if current_user.treatment_facity.nil?
+    - if current_user.treatment_facity.nil?
       We should probably redirect your somewhere OR not show the button?  
-  	- else
+    - else
       - facility = current_user.treatment_facility
       #{facility.facility_name}: #{facility.city}, #{facility.state} #{link_to 'Show', treatment_facility_path(facility)} #{link_to 'Edit', edit_treatment_facility_path(facility)}
