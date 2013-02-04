@@ -21,7 +21,10 @@
 
 describe "TreatmentFacility" do
   let(:facility) { FactoryGirl.create(:treatment_facility) }
-  before { Role.create(:name => Role::TECHNICIAN) }
+  before do
+    Role.create(:name => Role::SUPER_ADMIN)
+    Role.create(:name => Role::TECHNICIAN)
+  end
   
   subject { facility }
   
@@ -46,10 +49,12 @@ describe "TreatmentFacility" do
   it { should be_valid }
   
   describe "users" do
+    let(:user) { FactoryGirl.create(:user_with_role, :treatment_facility => facility, :role => Role.find_by_name(Role::SUPER_ADMIN)) }
     let(:user1) { FactoryGirl.create(:user_with_role, :treatment_facility => facility, :role => Role.find_by_name(Role::TECHNICIAN)) }
     let(:user2) { FactoryGirl.create(:user_with_role, :treatment_facility => facility, :role => Role.find_by_name(Role::TECHNICIAN)) }
     let(:user3) { FactoryGirl.create(:user_with_role, :treatment_facility => facility, :role => Role.find_by_name(Role::TECHNICIAN)) }
     before do
+      user
       m1 = FactoryGirl.create(:machine, :treatment_facility => facility)
       m2 = FactoryGirl.create(:machine, :treatment_facility => facility)
       
@@ -60,8 +65,10 @@ describe "TreatmentFacility" do
     end
     
     it "should find unique users" do
-      facility.users.count.should be == 3
-      facility.users.should be == [user1, user2, user3]
+      facility.technicians.count.should be == 3
+      facility.technicians.should be == [user1, user2, user3]
+      facility.users.count.should be == 4
+      facility.users.should be == [user, user1, user2, user3]
     end
     
     describe "delete" do

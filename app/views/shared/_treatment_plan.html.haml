@@ -1,18 +1,21 @@
 .treatment_plan
   = f.hidden_field :_destroy
   = link_to_function "X", "if (confirm('Delete this plan?')) remove_treatment_plan(this)", :class => "close", :style => 'margin-right:450px'
-  - if f.object.type == 'TreatmentPlanTemplate'
+  = f.hidden_field :type, :value => type
+  - if 'TreatmentPlanTemplate' == type
     .field
       = f.label :description
       = f.text_field :description
+    .field
+      = f.label :treatments_per_session
+      = f.number_field :treatments_per_session, :min => 1
   - else
     = f.object.description
+    %br/
+    == #{f.object.treatments_per_session} treatments/session
   .field
     = f.label :num_sessions, 'Number of Sessions'
     = f.number_field :num_sessions, :min => 1
-  .field
-    = f.label :treatments_per_session
-    = f.number_field :treatments_per_session, :min => 1
   .field
     = f.label :price
     = f.text_field :price

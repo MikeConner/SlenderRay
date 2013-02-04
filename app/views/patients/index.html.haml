@@ -5,8 +5,6 @@
     = page_entries_info
   - @patients.each do |patient|
     == #{patient.id}. #{patient.name} #{link_to 'Show', patient_path(patient)} #{link_to 'Edit', edit_patient_path(patient)} #{link_to 'Delete', patient, :method => 'delete', :data => { confirm: 'Are you sure?'}}
-    - if patient.in_treatment?
-      = link_to 'Treat', patient_treat_path(patient)
     %br/
   %br/
   %center= will_paginate

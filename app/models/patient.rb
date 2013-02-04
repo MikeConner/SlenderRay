@@ -31,7 +31,8 @@ class Patient < ActiveRecord::Base
   
   accepts_nested_attributes_for :treatment_plans, :allow_destroy => true, :reject_if => :all_blank
 
-  validates :name, :length => { maximum: MAX_ID_LEN }
+  validates :name, :presence => true,
+                   :length => { maximum: MAX_ID_LEN }
   validates_presence_of :treatment_facility_id
   
   validates_associated :treatment_plans

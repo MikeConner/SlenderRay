@@ -17,6 +17,9 @@ class PatientsController < ApplicationController
   
   def new
     @facility = current_user.treatment_facility
+    if 0 == @facility.treatment_plan_templates.count
+      redirect_to root_path, :alert => I18n.t('no_templates_found')
+    end
     @patient = @facility.patients.build
   end
   
@@ -24,7 +27,7 @@ class PatientsController < ApplicationController
     @patient = Patient.find(params[:id])
     @facility = @patient.treatment_facility
   end
-  
+=begin  
   def treat
     @patient = Patient.find(params[:patient_id])   
     @plan = @patient.current_treatment_plan
@@ -33,13 +36,20 @@ class PatientsController < ApplicationController
     
     render :layout => 'treatment'
   end
-  
-  def create
+=end  
+  def create    
     if @patient.save
+      template = TreatmentPlanTemplate.find_by_description(params[:plan_template])
+      TreatmentPlan.create_from_template(template, @patient)
+      
       redirect_to @patient, :notice => I18n.t('patient_created')
     else
+      @facility = current_user.treatment_facility
       render 'new'
     end
+    
+    rescue
+      redirect_to new_patient_path, :alert => I18n.t('cannot_create_patient')
   end
 
   def update
@@ -48,8 +58,13 @@ class PatientsController < ApplicationController
     if @patient.update_attributes(params[:patient])
       redirect_to @patient, :notice => I18n.t('patient_updated')
     else
+      @facility = @patient.treatment_facility
       render 'edit'
     end
+    
+    #rescue
+    #  @patient.errors.add :base, "Cannot delete treatment plan with sessions"
+    #  render 'edit'
   end
   
   def destroy
@@ -57,6 +72,9 @@ class PatientsController < ApplicationController
     @patient.destroy
 
     redirect_to patients_path, :notice => I18n.t('patient_deleted') 
+    
+  rescue
+    redirect_to root_path, :alert => I18n.t('cannot_delete_patient')
   end  
   
   def clone_treatment_plan

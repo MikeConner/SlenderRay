@@ -73,6 +73,10 @@ class TreatmentFacility < ActiveRecord::Base
                     :format => { with: US_PHONE_REGEX }
   validates :fax, :format => { with: US_PHONE_REGEX }, :allow_blank => true                       
 
+  def technicians
+    self.users.where('role_id = ?', Role.find_by_name(Role::TECHNICIAN).id)
+  end
+  
 private
   def downcase_email
     self.email.downcase!

@@ -25,7 +25,7 @@
 # NOTES AND WARNINGS
 #
 class TreatmentPlanTemplate < ActiveRecord::Base
-  attr_accessible :description, :num_sessions, :treatments_per_session, :price,
+  attr_accessible :description, :num_sessions, :treatments_per_session, :price, :type,
                   :treatment_facility_id
   
   belongs_to :treatment_facility
@@ -55,7 +55,8 @@ class TreatmentPlan < TreatmentPlanTemplate
   # Passed in options will override the template values (e.g., you can create a plan with an extra session or special price)
   def self.create_from_template(t, patient, options = {})
     TreatmentPlan.create({:patient_id => patient.id, :description => t.description, :num_sessions => t.num_sessions,
-                         :treatments_per_session => t.treatments_per_session, :price => t.price}.merge(options))
+                          :treatment_facility_id => t.treatment_facility.id, 
+                          :treatments_per_session => t.treatments_per_session, :price => t.price}.merge(options))
   end
   
   def date_completed

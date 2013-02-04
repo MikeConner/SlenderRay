@@ -23,6 +23,14 @@ describe 'Patient' do
     facility.patients.should be == [patient]
   end
   
+  it "Do not allow duplicates in the same facility" do
+    expect { FactoryGirl.create(:patient, :name => patient.name, :treatment_facility => facility) }.to raise_exception(ActiveRecord::RecordNotUnique)
+  end
+
+  it "Allow duplicates in different facilities" do
+    expect { FactoryGirl.create(:patient, :name => patient.name) }.to_not raise_exception
+  end
+  
   describe "missing facility" do
     before { patient.treatment_facility = nil }
     
@@ -54,7 +62,7 @@ describe 'Patient' do
     context "missing" do
       before { patient.name = ' ' }
       
-      it { should be_valid }
+      it { should_not be_valid }
     end
   end
   

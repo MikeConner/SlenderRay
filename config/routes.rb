@@ -11,9 +11,9 @@ SlenderRay::Application.routes.draw do
   resources :treatment_facilities
   resources :patients do
     put 'clone_treatment_plan'
-    get 'treat'
   end
   resources :testimonials
+  resources :treatment_sessions
   
   # The priority is based upon order of creation:
   # first created -> highest priority.

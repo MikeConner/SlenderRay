@@ -1,7 +1,13 @@
 .offset2
   = form_for @patient do |f|
     = render :partial => 'shared/error_messages', :locals => { :errors => @patient.errors, :name => 'Patient' }
-    = render :partial => 'fields', :locals => { :f => f, :patient => @patient }
+    = f.hidden_field :treatment_facility_id
+    .field
+      = f.label :name
+      = f.text_field :name
+    Select a treatment plan (you can edit the patient to customize if necessary)
+    %br/
+    = select_tag :plan_template, options_for_select(@facility.treatment_plan_templates.map { |t| t.description })
     %br/
     .actions
-      = f.submit 'Create Patient Record', :class => 'btn btn-large btn-success'
+      = f.submit 'Create Patient', :class => 'btn btn-large btn-success'

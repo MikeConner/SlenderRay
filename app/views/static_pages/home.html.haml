@@ -1,8 +1,8 @@
 %center
   .row
     = image_tag '/assets/LaunchPad.png'
-    = link_to(image_tag('/assets/Intake.png'), patients_path)
-    = image_tag '/assets/treatment.png'
+    = link_to(image_tag('/assets/Intake.png'), new_patient_path)
+    = link_to(image_tag('/assets/treatment.png'), new_treatment_session_path)
     = image_tag '/assets/training.png'
   .row
     = image_tag '/assets/faces.png'
@@ -12,5 +12,5 @@
   .row
     = image_tag '/assets/flower.png'
     = image_tag '/assets/photos.png'
-    = image_tag '/assets/payments.png'
+    = link_to(image_tag('/assets/manage_patients.png'), patients_path)
     = image_tag '/assets/shoes.png'

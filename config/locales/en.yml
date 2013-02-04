@@ -2,10 +2,13 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
+  cannot_create_patient: 'Unable to create patient (duplicate name?)'
+  cannot_delete_patient: 'Patient cannot be deleted'
   facility_deleted: 'Treatment facility deleted'
   facility_updated: 'Treatment facility updated successfully'
   facility_created: 'Treatment facility created successfully'
   machine_instructions: 'Create Machines and Users, Update Facility, then edit again to create user/machine assignments'
+  no_templates_found: 'You must create some treatment plan templates before creating patients'
   patient_created: 'New patient created successfully'
   patient_deleted: 'Patient record deleted'
   patient_updated: 'Patient updated successfully'

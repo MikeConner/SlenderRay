@@ -1,6 +1,9 @@
 .user
-  = f.hidden_field :_destroy
-  = link_to_function "X", "if (confirm('Delete this user?')) remove_user(this)", :class => "close"
+  = f.hidden_field :treatment_facility_id
+  - technician = f.object.role_id != Role.find_by_name(Role::SUPER_ADMIN).id
+  - if technician
+    = f.hidden_field :_destroy
+    = link_to_function "X", "if (confirm('Delete this user?')) remove_user(this)", :class => "close"
   .field
     = f.label :email
     = f.text_field :email
@@ -11,5 +14,6 @@
     .field
       = f.label :password_confirmation
       = f.password_field :password_confirmation
-  Machine assignments
-  = f.collection_select(:machine_ids, facility.machines, :id, :display_name, { :selected => f.object.machine_ids }, { :multiple => true, :size => facility.machines.count, :title => I18n.t('machine_instructions')})
+  - if technician
+    Machine assignments
+    = f.collection_select(:machine_ids, facility.machines, :id, :display_name, { :selected => f.object.machine_ids }, { :multiple => true, :size => facility.machines.count, :title => I18n.t('machine_instructions')})

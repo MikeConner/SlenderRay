@@ -17,8 +17,7 @@ module TreatmentFacilitiesHelper
 
   def add_treatment_plan_template(facility, form_builder)
     form_builder.fields_for :treatment_plan_templates, facility.treatment_plan_templates.build, :child_index => 'NEW_RECORD' do |template_form|
-      template_form.object.type = 'TreatmentPlanTemplate'
-      html = render(:partial => 'shared/treatment_plan', :locals => { :f => template_form })
+      html = render(:partial => 'shared/treatment_plan', :locals => { :f => template_form, :type => 'TreatmentPlanTemplate' })
       link_to_function 'Add Treatment Plan Template', 
                        "$('#{escape_javascript(html)}'.replace(/NEW_RECORD/g, $('.treatment_plan').length)).insertBefore('#add_treatment_plan_template')",
                        :id  => "add_treatment_plan_template"

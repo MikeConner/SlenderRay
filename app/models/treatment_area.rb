@@ -26,7 +26,8 @@
 class TreatmentArea < ActiveRecord::Base
   MAX_FIELD_LEN = 64
   
-  attr_accessible :area_name, :process_name
+  attr_accessible :area_name, :process_name,
+                  :treatment_facility_id
   
   belongs_to :treatment_facility
   has_one :process_timer, :as => :process, :dependent => :nullify

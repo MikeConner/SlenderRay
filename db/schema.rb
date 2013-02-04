@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130202201843) do
+ActiveRecord::Schema.define(:version => 20130204050112) do
 
   create_table "machines", :force => true do |t|
     t.string   "model",                 :limit => 64,                 :null => false
@@ -47,6 +47,8 @@ ActiveRecord::Schema.define(:version => 20130202201843) do
     t.datetime "updated_at",                          :null => false
     t.integer  "treatment_facility_id"
   end
+
+  add_index "patients", ["treatment_facility_id", "name"], :name => "index_patients_on_treatment_facility_id_and_name", :unique => true
 
   create_table "process_timers", :force => true do |t|
     t.string   "process_state",    :limit => 16, :default => "Idle", :null => false

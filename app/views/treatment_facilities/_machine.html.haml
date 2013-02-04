@@ -1,4 +1,5 @@
 .machine
+  = f.hidden_field :treatment_facility_id
   = f.hidden_field :_destroy
   = link_to_function "X", "if (confirm('Delete this machine?')) remove_machine(this)", :class => "close"
   .field

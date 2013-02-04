@@ -1,0 +1,16 @@
+.offset2
+  %h2 New Treatment Session
+  = form_for @treatment_session do |f|
+    = render :partial => 'shared/error_messages', :locals => { :errors => @treatment_session.errors, :name => 'Treatment Session' }
+    .field
+      = label_tag :patient_id
+      = select_tag :patient_id, options_from_collection_for_select(@patients, :id, :name)
+    .field
+      = f.label :machine_id
+      = f.collection_select :machine_id, @facility.machines, :id, :display_name
+    .field
+      = f.label :protocol_id
+      = f.collection_select :protocol_id, Protocol.all, :id, :name
+    %br/
+    .actions
+      = f.submit 'Create Treatment Session', :class => 'btn btn-large btn-success'
