@@ -1,16 +1,49 @@
 %center
-  .row
-    = image_tag '/assets/LaunchPad.png'
-    = link_to(image_tag('/assets/Intake.png'), new_patient_path)
-    = link_to(image_tag('/assets/treatment.png'), new_treatment_session_path)
-    = image_tag '/assets/training.png'
-  .row
-    = image_tag '/assets/faces.png'
-    = image_tag '/assets/smile.png'
-    = link_to(image_tag('/assets/testimonials.png'), testimonials_path)
-    = image_tag '/assets/schedule.png'
-  .row
-    = image_tag '/assets/flower.png'
-    = image_tag '/assets/photos.png'
-    = link_to(image_tag('/assets/manage_patients.png'), patients_path)
-    = image_tag '/assets/shoes.png'
+  .row-fluid
+    .span3.box
+      = image_tag '/assets/LaunchPad.png'
+    .span3.box.greenbox
+      .boxtop
+        .icon-download-alt.white-icon.icon-4x.pull-right
+      .boxtext
+        = link_to "new patient intake", new_patient_path
+    .span2.box.orangebox
+      .boxtop
+        .icon-hospital.white-icon.icon-4x.pull-right
+      .boxtext
+        = link_to "treatment", new_treatment_session_path
+    .span2.box.redbox
+      .boxtop
+        .icon-desktop.white-icon.icon-4x.pull-right
+      .boxtext
+        =link_to "Training Videos", "#"
+  .row-fluid
+    .span3.box
+      = image_tag '/assets/faces.png'
+    .span3.box
+      = image_tag '/assets/smile.png'
+    .span2.box.darkgreenbox
+      .boxtop
+        .icon-comments.white-icon.icon-4x.pull-right
+      .boxtext
+        =link_to "Testimonials", testimonials_path
+    .span2.box.pinkbox
+      .boxtop
+        .icon-calendar.white-icon.icon-4x.pull-right
+      .boxtext
+        =link_to "Schedule", "#"
+  .row-fluid
+    .span2.box
+      = image_tag '/assets/flower.png'
+    .span2.box.greenbox
+      .boxtop
+        .icon-camera-retro.white-icon.icon-4x.pull-right
+      .boxtext
+        = link_to "Pictures", "#"
+    .span3.box.greenbox
+      .boxtop
+        .icon-download-alt.white-icon.icon-4x.pull-right
+      .boxtext
+        = link_to "Manage Patients", patients_path
+    .span3.box
+      = image_tag '/assets/shoes.png'

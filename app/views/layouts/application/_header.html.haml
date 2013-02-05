@@ -1,14 +1,14 @@
-.space-large
+
+.row-fluid
+  .span5
+    = link_to(image_tag('/assets/logo.png'), root_path)   
+  .span5.pull-right
+    - if current_user.nil?
+      %br
+      = link_to 'Log in', new_user_session_path, :class => 'btn btn-large btn-success'
+    - else
+      %br
+      = link_to 'Manage Facilities', treatment_facilities_path, :class => 'btn'
+      = link_to 'Log out', destroy_user_session_path, :method => :delete, :class => 'btn btn-large btn-success'
+.row-fluid
   = render :partial => 'shared/flash_messages'
-  .span12
-    .span2
-    .span5
-      = link_to(image_tag('/assets/logo.png'), root_path)   
-    .span2
-      - if current_user.nil?
-        = link_to 'Log in', new_user_session_path, :class => 'btn btn-large btn-success'
-      - else
-        .span4.pull-left
-          = link_to 'Manage Facilities', treatment_facilities_path, :class => 'btn'
-          = link_to 'Log out', destroy_user_session_path, :method => :delete, :class => 'btn btn-large btn-success'
-  %br/
