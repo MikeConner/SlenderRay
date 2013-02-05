@@ -1,5 +1,6 @@
 class TreatmentSessionsController < ApplicationController
   before_filter :authenticate_user!
+  before_filter :ensure_technician
   load_and_authorize_resource
   
   # Need to check for active session and not create another one over top of it!
@@ -26,5 +27,12 @@ class TreatmentSessionsController < ApplicationController
   
   def show
     @treatment_session = TreatmentSession.find(params[:id])      
+  end
+  
+private
+  def ensure_technician
+    if !current_user.has_role?(Role::TECHNICIAN)
+      redirect_to root_path, :alert => I18n.t('technicians_only')
+    end
   end
 end

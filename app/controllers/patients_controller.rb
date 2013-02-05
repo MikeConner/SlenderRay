@@ -42,7 +42,7 @@ class PatientsController < ApplicationController
       template = TreatmentPlanTemplate.find_by_description(params[:plan_template])
       TreatmentPlan.create_from_template(template, @patient)
       
-      redirect_to @patient, :notice => I18n.t('patient_created')
+      redirect_to edit_patient_path(@patient), :notice => I18n.t('patient_created')
     else
       @facility = current_user.treatment_facility
       render 'new'
