@@ -42,8 +42,8 @@ describe 'Measurement' do
     let(:measurement) { FactoryGirl.create(:before_measurement, :treatment_session => session) }
     
     it "should say before" do
-      measurement.label.should be == 'Before'
-      session.labeled_measurements('Before').should be == [measurement]
+      measurement.label.should be == Measurement::BEFORE_LABEL
+      session.labeled_measurements(Measurement::BEFORE_LABEL).should be == [measurement]
     end
   end
 
@@ -51,8 +51,8 @@ describe 'Measurement' do
     let(:measurement) { FactoryGirl.create(:after_measurement, :treatment_session => session) }
     
     it "should say after" do
-      measurement.label.should be == 'After'
-      session.labeled_measurements('After').should be == [measurement]
+      measurement.label.should be == Measurement::AFTER_LABEL
+      session.labeled_measurements(Measurement::AFTER_LABEL).should be == [measurement]
     end
   end
 

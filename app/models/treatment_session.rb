@@ -20,6 +20,8 @@
 # NOTES AND WARNINGS
 #
 class TreatmentSession < ActiveRecord::Base
+  REQUIRED_MEASUREMENT = 'Navel'
+  
   attr_accessible :notes, :patient_image, :remote_patient_image_url,
                   :machine_id, :protocol_id, :measurements_attributes
   
@@ -32,7 +34,8 @@ class TreatmentSession < ActiveRecord::Base
   has_one :process_timer, :as => :process, :dependent => :nullify
   has_many :measurements, :dependent => :destroy
 
-  accepts_nested_attributes_for :measurements, :allow_destroy => true, :reject_if => :all_blank
+  # Going to fill in common measurements, if they don't put a value, through it away
+  accepts_nested_attributes_for :measurements, :allow_destroy => true, :reject_if => proc { |attributes| attributes['circumference'].blank? }
   
   validates_presence_of :treatment_plan_id
   validates_presence_of :machine_id
@@ -56,16 +59,44 @@ class TreatmentSession < ActiveRecord::Base
     label_set.keys.sort
   end
   
+  # Use select to get ones that are unsaved
   def labeled_measurements(label)
-    measurements.where('label = ?', label)
+    self.measurements.select { |m| label == m.label }
   end
 
+  def add_measurement_prototypes(first)
+    if self.measurements.empty?
+      if first
+        # Build 2 sets, before/after
+        self.measurements.build(:location => '+4cm', :label => Measurement::BEFORE_LABEL)
+        self.measurements.build(:location => '+2cm', :label => Measurement::BEFORE_LABEL)
+        self.measurements.build(:location => REQUIRED_MEASUREMENT, :label => Measurement::BEFORE_LABEL)
+        self.measurements.build(:location => '-2cm', :label => Measurement::BEFORE_LABEL)
+        self.measurements.build(:location => '-4cm', :label => Measurement::BEFORE_LABEL)
+        
+        self.measurements.build(:location => '+4cm', :label => Measurement::AFTER_LABEL)
+        self.measurements.build(:location => '+2cm', :label => Measurement::AFTER_LABEL)
+        self.measurements.build(:location => REQUIRED_MEASUREMENT, :label => Measurement::AFTER_LABEL)
+        self.measurements.build(:location => '-2cm', :label => Measurement::AFTER_LABEL)
+        self.measurements.build(:location => '-4cm', :label => Measurement::AFTER_LABEL)
+        
+        puts "#{self.measurements.count} measurements"
+      else
+        # Build 1 set
+        self.measurements.build(:location => '+4cm')
+        self.measurements.build(:location => '+2cm')
+        self.measurements.build(:location => REQUIRED_MEASUREMENT)
+        self.measurements.build(:location => '-2cm')
+        self.measurements.build(:location => '-4cm')
+      end
+    end    
+  end
 private
   # If there are measurements, one has to be the navel
   def navel_measurement
     if !self.measurements.empty?
       self.measurements.each do |m|
-        if m.location.downcase.strip =~ /navel/
+        if m.location.strip =~ /#{REQUIRED_MEASUREMENT}/i
           return
         end
       end

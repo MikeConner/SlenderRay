@@ -58,9 +58,9 @@ describe 'TreatmentSession' do
     
     it "should have 8 measurements" do
       session.measurements.count.should be == 8
-      session.reload.labels.should be == ['After', 'Before']
-      session.labeled_measurements('Before').count.should be == 4
-      session.labeled_measurements('After').count.should be == 4
+      session.reload.labels.should be == [Measurement::AFTER_LABEL, Measurement::BEFORE_LABEL]
+      session.labeled_measurements(Measurement::BEFORE_LABEL).count.should be == 4
+      session.labeled_measurements(Measurement::AFTER_LABEL).count.should be == 4
       session.labeled_measurements('Invalid').count.should be == 0
       session.labeled_measurements('').count.should be == 0
       session.labeled_measurements(nil).count.should be == 0

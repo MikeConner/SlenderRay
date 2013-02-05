@@ -30,16 +30,7 @@ class PatientsController < ApplicationController
       redirect_to root_path, :alert => I18n.t('no_templates_found')
     end
   end
-=begin  
-  def treat
-    @patient = Patient.find(params[:patient_id])   
-    @plan = @patient.current_treatment_plan
-    @past_sessions = @plan.treatment_sessions.order('created_at desc')
-    @session = @plan.treatment_sessions.build
-    
-    render :layout => 'treatment'
-  end
-=end  
+
   def create    
     if @patient.save
       template = TreatmentPlanTemplate.find_by_description(params[:plan_template])
@@ -82,16 +73,18 @@ class PatientsController < ApplicationController
     redirect_to root_path, :alert => I18n.t('cannot_delete_patient')
   end  
   
-  def clone_treatment_plan
-    @patient = Patient.find(params[:patient_id])
-    template = TreatmentPlanTemplate.find_by_description(params[:name])
-    TreatmentPlan.create_from_template(template, @patient)
+  # On new treatment session page, when resuming an existing session, select the current machine associated with that session
+  def current_session_machine
+    patient = Patient.find(params[:patient_id])
+    
+    # Return something (on error, 0 should not be found, so it just won't do anything)
+    machine_id = (!patient.nil? and !patient.unfinished_session.nil?) ? patient.unfinished_session.machine_id : '0'
     
     respond_to do |format|
-      format.js { render :js => "window.location.href=\"#{edit_patient_path(:id => @patient.id)}\"" }
+      format.js { render :text => machine_id, :content_type => Mime::TEXT }
     end
   end
-  
+
 private
   def ensure_technician
     if !current_user.has_role?(Role::TECHNICIAN)

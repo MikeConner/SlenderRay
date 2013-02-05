@@ -8,11 +8,16 @@ function remove_measurement(link) {
   $(link).closest(".measurement").hide();
 }
 
-function add_treatment_plan(patient_id, plan_name) {
- 	jQuery.ajax({url:"/patients/" + patient_id + "/clone_treatment_plan",
-	             data: "name=" + plan_name,
-		         type: "PUT",
+function update_machine() {
+    var patient_id = $('#resume_patient_id').val();
+	jQuery.ajax({url:"/patients/" + patient_id + "/current_session_machine",
+	             //data: "key=" + name,
+		         type: "GET",
+	             success: function(data) { 
+	               $('#resume_machine_id').val(data)
+	             },
 	             error: function(xhr, ajaxOptions, thrownError) //{ alert('Oh noes!') },
 	               { alert('error code: ' + xhr.status + ' \n'+'error:\n' + thrownError ); },
-	             async: false}); 	    		  
+	             async: false}); 	    	
+	
 }

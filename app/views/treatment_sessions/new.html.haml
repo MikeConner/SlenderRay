@@ -27,11 +27,10 @@
         - else
           .field
             = label_tag :resume_machine_id, 'Machine'
-            -#TODO OnChange to set resume machine id
             = select_tag :resume_machine_id, options_from_collection_for_select(@facility.machines, :id, :display_name, @resume_machine_id)
           .field
             = label_tag :resume_patient_id, 'Patient'
-            = select_tag :resume_patient_id, options_from_collection_for_select(@resume_session, :id, :name)
+            = select_tag :resume_patient_id, options_from_collection_for_select(@resume_session, :id, :name), :onchange => 'update_machine()'
           %br/
           .actions
             = f.submit I18n.t('resume_session'), :class => 'btn btn-large btn-success'

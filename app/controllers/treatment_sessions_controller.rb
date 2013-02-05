@@ -1,7 +1,7 @@
 class TreatmentSessionsController < ApplicationController
   before_filter :authenticate_user!
   before_filter :ensure_technician
-  before_filter :ensure_own_facility, :only => [:show]
+  before_filter :ensure_own_facility, :only => [:edit, :update]
   load_and_authorize_resource
   
   # Clicking on "Treatment" before we know which patient it is
@@ -23,34 +23,67 @@ class TreatmentSessionsController < ApplicationController
       @resume_machine_id = @resume_session.first.unfinished_session.machine.id
     end
   end
-  
+
   def create    
     if I18n.t('start_session') == params[:commit]
       @patient = Patient.find(params[:new_patient_id])
       @treatment_session.treatment_plan = @patient.unfinished_plan
       @treatment_session.machine_id = params[:new_machine_id]
       @treatment_session.build_process_timer(:duration_seconds => @treatment_session.treatment_plan.treatments_per_session * TreatmentPlan::TREATMENT_DURATION_MINUTES * 60)
-  
+      
       if @treatment_session.save
-        redirect_to @treatment_session
-      else
-        render 'new'
+        redirect_to edit_treatment_session_path(@treatment_session) and return
       end    
     elsif I18n.t('resume_session') == params[:commit]
       @patient = Patient.find(params[:resume_patient_id])
       @patient.unfinished_session.machine_id = params[:resume_machine_id]
       if @patient.unfinished_session.save
-        redirect_to @patient.unfinished_session
-      else
-        render 'new'
+        redirect_to edit_treatment_session_path(@patient.unfinished_session) and return
       end
     end
+    
+    @facility = current_user.treatment_facility
+    patients = Patient.where('treatment_facility_id = ?', @facility.id).order('updated_at desc').select { |p| !p.unfinished_plan.nil? }
+    @resume_session = patients.select { |p| !p.unfinished_session.nil? }
+    @new_session = patients - @resume_session
+    @treatment_session = TreatmentSession.new
+    if !@resume_session.empty?
+      @resume_machine_id = @resume_session.first.unfinished_session.machine.id
+    end
+    render 'new' 
   end
-  
-  def show
+
+  def edit
     # filter sets @treatment_session
+    @plan = @treatment_session.treatment_plan
+    @patient = @plan.patient
+    @facility = @patient.treatment_facility
+    @current_session_idx = @plan.treatment_sessions.count
+    @total_sessions = @plan.treatments_per_session
+    @first_session = 1 == @current_session_idx
+    # Fill in defaults
+    @treatment_session.add_measurement_prototypes(@first_session)
+    
+    render :layout => 'treatment'
   end
-  
+
+  def update
+    @treatment_session = TreatmentSession.find(params[:id])
+
+    #TODO Why is this returning true when the measurements don't validate???
+    if @treatment_session.update_attributes(params[:treatment_session]) and @treatment_session.valid?
+      redirect_to edit_treatment_session_path(@treatment_session), :notice => I18n.t('session_updated')
+    else
+      @plan = @treatment_session.treatment_plan
+      @patient = @plan.patient
+      @facility = @patient.treatment_facility
+      @current_session_idx = @plan.treatment_sessions.count
+      @total_sessions = @plan.treatments_per_session
+      @first_session = 1 == @current_session_idx
+      render 'edit'
+    end    
+  end
+
 private
   def ensure_technician
     if !current_user.has_role?(Role::TECHNICIAN)

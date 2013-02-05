@@ -1,0 +1,53 @@
+= form_for @treatment_session do |f|
+  = render :partial => 'shared/error_messages', :locals => { :errors => @treatment_session.errors, :name => 'Treatment Session' }
+  .row-fluid
+    .span7
+      .span12
+        .span8
+          %h4== #{@patient.name}. Session #{@current_session_idx} of #{@total_sessions}, '#{@plan.description}' plan
+          .field
+            = f.label :machine_id
+            %br/
+            = f.collection_select :machine_id, @facility.machines, :id, :display_name 
+          %br/
+          - if @first_session
+            -# Before table
+            = render :partial => 'table_header', :locals => { :caption => 'Before Measurements' }
+            - @treatment_session.labeled_measurements(Measurement::BEFORE_LABEL).each do |m|
+              = f.fields_for :measurements, m do |measurement_form|
+                = render :partial => 'measurement_row', :locals => { :f => measurement_form, :label => Measurement::BEFORE_LABEL }
+            = render :partial => 'table_footer', :locals => { :session => @treatment_session, :f => f, :label => Measurement::BEFORE_LABEL, :tag => 'last_before' }
+            -# After table
+            = render :partial => 'table_header', :locals => { :caption => 'After Measurements' }
+            - @treatment_session.labeled_measurements(Measurement::AFTER_LABEL).each do |m|
+              = f.fields_for :measurements, m do |measurement_form|
+                = render :partial => 'measurement_row', :locals => { :f => measurement_form, :label => Measurement::AFTER_LABEL }
+            = render :partial => 'table_footer', :locals => { :session => @treatment_session, :f => f, :label => Measurement::AFTER_LABEL, :tag => 'last_after' }
+          - else
+            = render :partial => 'table_header', :locals => { :caption => 'Measurements' }
+            - @treatment_session.measurements.each do |m|
+              = f.fields_for :measurements, m do |measurement_form|
+                = render :partial => 'measurement_row', :locals => { :f => measurement_form }
+            = render :partial => 'table_footer', :locals => { :session => @treatment_session, :f => f, :tag => 'last_measurement' }
+          %br/
+          = f.label :notes
+          = f.text_area :notes, :size => '80x4', :style => "width:100%"
+        .span4
+          -# Show current image
+          - if !@treatment_session.patient_image.file.nil? and @treatment_session.patient_image.file.exists?
+            = image_tag @treatment_session.patient_image_url(:standard).to_s
+          = f.label :patient_image
+          = f.file_field :patient_image, :accept => 'image/*;capture-camera'
+    .span5
+      %h4 Previous Sessions
+  .row-fluid
+    -#.navbar-fixed-bottom
+    .span2.offset3
+      .field
+        = f.label :protocol_id
+        %br/
+        = f.collection_select :protocol_id, Protocol.all, :id, :name 
+    .span2
+      %h1 Timer
+      = f.submit 'Update Session', :class => 'btn btn-large btn-success'
+

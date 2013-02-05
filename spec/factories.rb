@@ -236,11 +236,11 @@ FactoryGirl.define do
     circumference 42.5
     
     factory :before_measurement do
-      label 'Before'
+      label Measurement::BEFORE_LABEL
     end
     
     factory :after_measurement do
-      label 'After'
+      label Measurement::AFTER_LABEL
     end
   end  
   

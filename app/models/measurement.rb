@@ -24,6 +24,8 @@
 class Measurement < ActiveRecord::Base
   MAX_LOCATION_LEN = 16
   MAX_LABEL_LEN = 16
+  BEFORE_LABEL = 'Before'
+  AFTER_LABEL = 'After'
   
   attr_accessible :location, :circumference, :label,
                   :treatment_session_id
