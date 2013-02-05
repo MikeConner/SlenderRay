@@ -3,47 +3,54 @@
     .span3.box
       = image_tag '/assets/LaunchPad.png'
     .span3.box.greenbox
-      .boxtop
-        .icon-download-alt.white-icon.icon-4x.pull-right
-      .boxtext
-        = link_to "new patient intake", new_patient_path
+      = link_to new_patient_path do
+        .boxtop
+          .icon-download-alt.white-icon.icon-4x.pull-right
+        .boxtext
+          new patient intake
     .span2.box.orangebox
-      .boxtop
-        .icon-hospital.white-icon.icon-4x.pull-right
-      .boxtext
-        = link_to "treatment", new_treatment_session_path
+      = link_to  new_treatment_session_path do
+        .boxtop
+          .icon-hospital.white-icon.icon-4x.pull-right
+        .boxtext
+          treatment
     .span2.box.redbox
-      .boxtop
-        .icon-desktop.white-icon.icon-4x.pull-right
-      .boxtext
-        =link_to "Training Videos", "#"
+      =link_to "#" do
+        .boxtop
+          .icon-desktop.white-icon.icon-4x.pull-right
+        .boxtext
+          Training Videos
   .row-fluid
     .span3.box
       = image_tag '/assets/faces.png'
     .span3.box
       = image_tag '/assets/smile.png'
     .span2.box.darkgreenbox
-      .boxtop
-        .icon-comments.white-icon.icon-4x.pull-right
-      .boxtext
-        =link_to "Testimonials", testimonials_path
+      =link_to testimonials_path do
+        .boxtop
+          .icon-comments.white-icon.icon-4x.pull-right
+        .boxtext
+          Testimonials
     .span2.box.pinkbox
-      .boxtop
-        .icon-calendar.white-icon.icon-4x.pull-right
-      .boxtext
-        =link_to "Schedule", "#"
+      =link_to  "#" do  
+        .boxtop
+          .icon-calendar.white-icon.icon-4x.pull-right
+        .boxtext
+          Schedule
   .row-fluid
     .span2.box
       = image_tag '/assets/flower.png'
     .span2.box.greenbox
-      .boxtop
-        .icon-camera-retro.white-icon.icon-4x.pull-right
-      .boxtext
-        = link_to "Pictures", "#"
+      = link_to  "#" do
+        .boxtop
+          .icon-camera-retro.white-icon.icon-4x.pull-right
+        .boxtext
+          Photos
     .span3.box.greenbox
-      .boxtop
-        .icon-download-alt.white-icon.icon-4x.pull-right
-      .boxtext
-        = link_to "Manage Patients", patients_path
+      = link_to  patients_path do
+        .boxtop
+          .icon-download-alt.white-icon.icon-4x.pull-right
+        .boxtext
+          Manage Patients
     .span3.box
       = image_tag '/assets/shoes.png'

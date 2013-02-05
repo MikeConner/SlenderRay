@@ -1,13 +1,47 @@
-.offset2
-  %h1 Treatment Facilities
+.span12.facilitypage
+  %h2 Treatment Facilities
   - if current_user.has_role?(Role::SUPER_ADMIN)
-    %ul
+    %table.table-striped.table-hover
+      %thead
+        %tr
+          %th #
+          %th Facility Name
+          %th Location
+          %th Machines
+          %th Users
+          %th Action
       - @facilities.each do |facility|
-        %li== #{facility.facility_name}: #{facility.city}, #{facility.state} #{link_to 'Show', treatment_facility_path(facility)} #{link_to 'Edit', edit_treatment_facility_path(facility)} #{link_to 'Delete', facility, :method => 'delete', :data => { confirm: 'Are you sure?'}}
-    = link_to "<i class='icon-plus'></i> Create Treatment Facility".html_safe, new_treatment_facility_path,{:class => 'btn btn-success '}  
+        %tr
+          %td=facility.id
+          %td=facility.facility_name
+          %td=facility.city + ' ' + facility.state
+          %td
+            =facility.machines.count
+            %ul
+              -facility.machines do |machine|
+                %li=machine.display_name 
+          %td
+            %ul
+              = facility.users.count
+              -facility.users do |user|
+                %li=user.email                
+          %td
+            = link_to treatment_facility_path(facility), :title => "Show", :rel => "Show" do
+              .icon-eye-open.icon-2x
+              &nbsp;
+            = link_to edit_treatment_facility_path(facility), :title => "Edit", :rel => "Edit" do
+              .icon-edit.icon-2x
+              &nbsp;
+            = link_to facility, :method => 'delete', :data => { confirm: 'Are you sure?'}, :title => "Edit", :rel => "Edit" do
+              .icon-trash.icon-2x
+      %tr
+        %td{:colspan=>6}
+          .pull-right
+            = link_to "<i class='icon-plus'></i> Create Treatment Facility".html_safe, new_treatment_facility_path,{:class => 'btn btn-success '}  
+
   - else
     - if current_user.treatment_facility.nil?
-      We should probably redirect your somewhere OR not show the button?  
+      Your User is not Set Up.  Please contact SlenderRay. 
     - else
       - facility = current_user.treatment_facility
       #{facility.facility_name}: #{facility.city}, #{facility.state} #{link_to 'Show', treatment_facility_path(facility)} #{link_to 'Edit', edit_treatment_facility_path(facility)}
