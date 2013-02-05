@@ -21,6 +21,11 @@ gem 'jquery-rails', '2.1.2'
 gem 'thin', '1.4.1'
 gem 'activerecord-postgresql-adapter'
 
+group :development do
+  gem "better_errors"
+  gem "binding_of_caller"
+end
+
 group :development, :test do
   gem 'sqlite3'
   gem 'rspec-rails', '2.12.2'
