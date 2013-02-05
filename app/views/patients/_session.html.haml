@@ -6,6 +6,6 @@
 - else
   - width = 9 / session.labels.count
   - session.labels.each do |label|
-    .span#{width}
+    .span
       %h3== Measurements (#{label})
       = render :partial => 'measurements', :locals => { :measurements => session.labeled_measurements(label) }

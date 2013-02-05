@@ -3,6 +3,7 @@ class PatientsController < ApplicationController
   
   before_filter :authenticate_user!
   before_filter :ensure_technician
+  before_filter :ensure_own_patient, :only => [:edit, :update]
   load_and_authorize_resource
 
   def index
@@ -24,8 +25,10 @@ class PatientsController < ApplicationController
   end
   
   def edit
-    @patient = Patient.find(params[:id])
-    @facility = @patient.treatment_facility
+    # Filter sets patient and facility
+    if 0 == @facility.treatment_plan_templates.count
+      redirect_to root_path, :alert => I18n.t('no_templates_found')
+    end
   end
 =begin  
   def treat
@@ -53,12 +56,14 @@ class PatientsController < ApplicationController
   end
 
   def update
-    @patient = Patient.find(params[:id])
-
+    # Filter sets @patient and @facility
     if @patient.update_attributes(params[:patient])
+      if params[:plan_template]
+        template = TreatmentPlanTemplate.find_by_description(params[:plan_template])
+        TreatmentPlan.create_from_template(template, @patient)        
+      end
       redirect_to @patient, :notice => I18n.t('patient_updated')
     else
-      @facility = @patient.treatment_facility
       render 'edit'
     end
     
@@ -91,6 +96,15 @@ private
   def ensure_technician
     if !current_user.has_role?(Role::TECHNICIAN)
       redirect_to root_path, :alert => I18n.t('technicians_only')
+    end
+  end
+  
+  def ensure_own_patient
+    @patient = Patient.find(params[:id])
+    @facility = @patient.treatment_facility    
+    
+    if @facility != current_user.treatment_facility
+      @patient.errors.add :base, "Cannot edit patients at other facilities"
     end
   end
 end

@@ -37,30 +37,28 @@ class Patient < ActiveRecord::Base
   
   validates_associated :treatment_plans
   
-  def current_treatment_plan
-    if in_treatment?
-      self.treatment_plans.each do |plan|
-        if !plan.complete?
-          return plan
-        end
+  # Return the currently active plan, or nil
+  def unfinished_plan
+    self.treatment_plans.each do |plan|
+      if !plan.complete?
+        return plan
+      end
+    end
+    
+    nil    
+  end
+  
+  # Return the currently active session, or nil
+  def unfinished_session
+    plan = unfinished_plan
+    if !plan.nil?
+      plan.treatment_sessions.each do |session|
+        if !session.complete?
+          return session
+        end      
       end
     end
     
     nil
-  end
-  
-  # Are there any incomplete treatment plans?
-  def in_treatment?
-    if self.treatment_plans.empty?
-      false
-    else
-      self.treatment_plans.each do |plan|
-        if !plan.complete?
-          return true
-        end
-      end
-    end
-    
-    false
   end
 end

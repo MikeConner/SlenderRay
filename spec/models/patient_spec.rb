@@ -19,7 +19,8 @@ describe 'Patient' do
     patient.should respond_to(:name)
     patient.should respond_to(:treatment_facility)
     patient.should respond_to(:current_treatment_plan)
-    patient.should respond_to(:in_treatment?)
+    patient.should respond_to(:unfinished_plan)
+    patient.should respond_to(:unfinished_session)
     facility.patients.should be == [patient]
   end
   

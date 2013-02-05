@@ -1,17 +1,37 @@
 .offset2
-  %h2 New Treatment Session
-  = form_for @treatment_session do |f|
-    = render :partial => 'shared/error_messages', :locals => { :errors => @treatment_session.errors, :name => 'Treatment Session' }
-    .field
-      = label_tag :patient_id
-      = select_tag :patient_id, options_from_collection_for_select(@patients, :id, :name)
-    .field
-      = f.label :machine_id
-      = f.collection_select :machine_id, @facility.machines, :id, :display_name
-    -#
-      .field
-        = f.label :protocol_id
-        = f.collection_select :protocol_id, Protocol.all, :id, :name
-    %br/
-    .actions
-      = f.submit 'Start Session', :class => 'btn btn-large btn-success'
+  .span10
+    = form_for @treatment_session do |f|
+      = render :partial => 'shared/error_messages', :locals => { :errors => @treatment_session.errors, :name => 'Treatment Session' }
+      .span5
+        %h4 Start New Session
+        - if @new_session.empty?
+          %em No patients are ready to start new sessions
+        - else
+          .field
+            = label_tag :new_machine_id, 'Machine'
+            = select_tag :new_machine_id, options_from_collection_for_select(@facility.machines, :id, :display_name)
+          -#
+            .field
+              = f.label :protocol_id
+              = f.collection_select :protocol_id, Protocol.all, :id, :name
+          .field
+            = label_tag :new_patient_id, 'Patient'
+            = select_tag :new_patient_id, options_from_collection_for_select(@new_session, :id, :name)
+          %br/
+          .actions
+            = f.submit I18n.t('start_session'), :class => 'btn btn-large btn-success'
+      .span5
+        %h4 Resume Current Session
+        - if @resume_session.empty?
+          %em No patients have unfinished sessions
+        - else
+          .field
+            = label_tag :resume_machine_id, 'Machine'
+            -#TODO OnChange to set resume machine id
+            = select_tag :resume_machine_id, options_from_collection_for_select(@facility.machines, :id, :display_name, @resume_machine_id)
+          .field
+            = label_tag :resume_patient_id, 'Patient'
+            = select_tag :resume_patient_id, options_from_collection_for_select(@resume_session, :id, :name)
+          %br/
+          .actions
+            = f.submit I18n.t('resume_session'), :class => 'btn btn-large btn-success'

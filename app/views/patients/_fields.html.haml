@@ -1,10 +1,9 @@
+-# Unused *************
 = f.hidden_field :treatment_facility_id
 .field
   = f.label :name
   = f.text_field :name
 %h4 Treatment Plans
 #treatment_plans
-  - patient.treatment_plans.each do |plan|
-    - if !plan.complete?
-      = f.fields_for :treatment_plans do |plan_form|
-        = render :partial => 'shared/treatment_plan', :locals => { :f => plan_form, :type => 'TreatmentPlan' }
+  = f.fields_for :treatment_plans do |plan_form|
+    = render :partial => 'shared/treatment_plan', :locals => { :f => plan_form, :type => 'TreatmentPlan' }
