@@ -13,7 +13,9 @@ SlenderRay::Application.routes.draw do
     get 'current_session_machine'
   end
   resources :testimonials
-  resources :treatment_sessions
+  resources :treatment_sessions do
+    put 'timer_expired'
+  end
   
   # The priority is based upon order of creation:
   # first created -> highest priority.

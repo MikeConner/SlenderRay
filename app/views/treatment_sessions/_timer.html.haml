@@ -1,0 +1,10 @@
+- case timer.process_state
+  - when ProcessTimer::IDLE
+    = f.submit 'Start Timer', :class => 'btn btn-large btn-success'
+  - when ProcessTimer::STARTED, ProcessTimer::RESUMED
+    = f.submit 'Pause Timer', :class => 'btn btn-large btn-danger'
+  - when ProcessTimer::PAUSED
+    = f.submit 'Resume Timer', :class => 'btn btn-large btn-success'
+  - when ProcessTimer::EXPIRED
+    = f.submit 'Complete Session', :class => 'btn btn-large btn-danger'
+    = f.submit 'Reset Session', :class => 'btn btn-large btn-danger'

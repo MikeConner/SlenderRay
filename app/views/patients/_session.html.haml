@@ -1,3 +1,4 @@
+-# Unused
 %p== #{session.created_at.try(:strftime, '%b %d, %Y')} on #{session.machine.display_name}
 = image_tag session.patient_image_url(:standard).to_s
 - if session.labels.empty?

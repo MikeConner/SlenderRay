@@ -1,5 +1,6 @@
 %tr.measurement
-  = f.hidden_field :label, :value => label
+  - if !label.nil?
+    = f.hidden_field :label, :value => label
   %td= f.text_field :location, :maxlength => Measurement::MAX_LOCATION_LEN
   %td= f.text_field :circumference
   %td

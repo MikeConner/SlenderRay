@@ -10,6 +10,11 @@
             %br/
             = f.collection_select :machine_id, @facility.machines, :id, :display_name 
           %br/
+          %h1#countdown_timer
+            - seconds_remaining = @treatment_session.process_timer.seconds_remaining || 0
+            - elapsed_seconds = @treatment_session.process_timer.elapsed_seconds || 0
+            - running = @treatment_session.process_timer.pausable? ? 'true' : 'false'
+            #time_remaining{:elapsed => elapsed_seconds, :remaining => seconds_remaining, :running => running, :session => @treatment_session.id}
           - if @first_session
             -# Before table
             = render :partial => 'table_header', :locals => { :caption => 'Before Measurements' }
@@ -25,10 +30,10 @@
             = render :partial => 'table_footer', :locals => { :session => @treatment_session, :f => f, :label => Measurement::AFTER_LABEL, :tag => 'last_after' }
           - else
             = render :partial => 'table_header', :locals => { :caption => 'Measurements' }
-            - @treatment_session.measurements.each do |m|
-              = f.fields_for :measurements, m do |measurement_form|
-                = render :partial => 'measurement_row', :locals => { :f => measurement_form }
-            = render :partial => 'table_footer', :locals => { :session => @treatment_session, :f => f, :tag => 'last_measurement' }
+            -# @treatment_session.measurements.each do |m|
+            = f.fields_for :measurements do |measurement_form|
+              = render :partial => 'measurement_row', :locals => { :f => measurement_form, :label => nil }
+            = render :partial => 'table_footer', :locals => { :session => @treatment_session, :f => f, :label => nil, :tag => 'last_measurement' }
           %br/
           = f.label :notes
           = f.text_area :notes, :size => '80x4', :style => "width:100%"
@@ -42,12 +47,13 @@
       %h4 Previous Sessions
   .row-fluid
     -#.navbar-fixed-bottom
-    .span2.offset3
+    .span2
+      = f.submit 'Update Session Data', :class => 'btn btn-large btn-success'
+    .span2.offset2
       .field
         = f.label :protocol_id
         %br/
         = f.collection_select :protocol_id, Protocol.all, :id, :name 
-    .span2
-      %h1 Timer
-      = f.submit 'Update Session', :class => 'btn btn-large btn-success'
+    .span4
+      = render :partial => 'timer', :locals => { :f => f, :timer => @treatment_session.process_timer }
 

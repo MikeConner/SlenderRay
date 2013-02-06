@@ -1,4 +1,6 @@
 class TreatmentSessionsController < ApplicationController
+  respond_to :js, :html
+  
   before_filter :authenticate_user!
   before_filter :ensure_technician
   before_filter :ensure_own_facility, :only => [:edit, :update]
@@ -67,12 +69,37 @@ class TreatmentSessionsController < ApplicationController
     render :layout => 'treatment'
   end
 
+  def timer_expired
+    @treatment_session = TreatmentSession.find(params[:treatment_session_id])
+    @treatment_session.process_timer.expire
+
+    respond_to do |format|
+      format.js { render :js => "window.location.href = \"#{edit_treatment_session_path(@treatment_session)}\"" }
+    end
+  end
+  
   def update
     @treatment_session = TreatmentSession.find(params[:id])
 
     #TODO Why is this returning true when the measurements don't validate???
+    notice = nil
     if @treatment_session.update_attributes(params[:treatment_session]) and @treatment_session.valid?
-      redirect_to edit_treatment_session_path(@treatment_session), :notice => I18n.t('session_updated')
+      if 'Start Timer' == params[:commit]
+        @treatment_session.process_timer.start
+      elsif 'Pause Timer' == params[:commit]
+        @treatment_session.process_timer.pause
+      elsif 'Resume Timer' == params[:commit]
+        @treatment_session.process_timer.resume
+      elsif 'Reset Session' == params[:commit]
+        @treatment_session.process_timer.reset
+      elsif 'Complete Session' == params[:commit]
+        @treatment_session.process_timer.complete
+        redirect_to root_path and return
+      elsif 'Update Session Data' == params[:commit]
+        notice = I18n.t('session_updated')
+      end
+      
+      redirect_to edit_treatment_session_path(@treatment_session), :notice => notice
     else
       @plan = @treatment_session.treatment_plan
       @patient = @plan.patient
