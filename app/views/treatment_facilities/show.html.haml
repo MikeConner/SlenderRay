@@ -9,7 +9,7 @@
   %br/
   %p= @facility.address_1
   - if !@facility.address_2.blank?
-    %p= @facility.address_1
+    %p= @facility.address_2
   %p== #{@facility.city}, #{@facility.state}  #{@facility.zipcode}
   %h4 Machines
   - if @facility.machines.empty?
@@ -41,6 +41,7 @@
       == #{idx}: #{user.email}
       - user.machines do |machine|
         == Assigned to #{machine.display_name}
+      %br/
       - idx += 1
   %br/
   = link_to 'Back', treatment_facilities_path

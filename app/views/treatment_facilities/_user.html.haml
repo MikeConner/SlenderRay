@@ -14,6 +14,3 @@
     .field
       = f.label :password_confirmation
       = f.password_field :password_confirmation
-  - if technician
-    Machine assignments
-    = f.collection_select(:machine_ids, facility.machines, :id, :display_name, { :selected => f.object.machine_ids }, { :multiple => true, :size => facility.machines.count, :title => I18n.t('machine_instructions')})

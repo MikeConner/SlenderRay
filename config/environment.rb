@@ -5,11 +5,11 @@ require File.expand_path('../application', __FILE__)
 SlenderRay::Application.initialize!
 
 ActionMailer::Base.smtp_settings = { 
-  :address => 'smtp.gmail.com', 
-  :domain  => 'machovy.com',
+  :address => 'smtp.webfaction.com', 
+  :domain  => 'slenderray.com',
   :port      => 587, 
-  :user_name => ApplicationHelper::MAILER_FROM_ADDRESS,
+  :user_name => ApplicationHelper::SMTP_USERNAME,
   :password => ApplicationHelper::SMTP_PASSWORD, 
-  :authentication => :plain,
+  :authentication => :login,
   :enable_starttls_auto => true
 } 

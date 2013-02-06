@@ -7,7 +7,7 @@
       = f.text_field :name
     Select a treatment plan (you can edit the patient to customize if necessary)
     %br/
-    = select_tag :plan_template, options_for_select(@facility.treatment_plan_templates.map { |t| t.description })
+    = select_tag :plan_template, options_for_select(@facility.treatment_plan_templates.where("type = 'TreatmentPlanTemplate'").map { |t| t.description })
     %br/
     .actions
       = f.submit 'Create Patient', :class => 'btn btn-large btn-success'

@@ -70,7 +70,7 @@ class TreatmentSessionsController < ApplicationController
   end
 
   def timer_expired
-    @treatment_session = TreatmentSession.find(params[:treatment_session_id])
+    @treatment_session = TreatmentSession.find(params[:id])
     @treatment_session.process_timer.expire
 
     respond_to do |format|

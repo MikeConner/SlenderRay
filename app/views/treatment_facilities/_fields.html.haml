@@ -53,8 +53,10 @@
       - if current_user.has_role?(Role::TECHNICIAN)
         %h4 Treatment Plan Templates
         #treatment_plan_templates
-          = f.fields_for :treatment_plan_templates do |template_form|
-            = render :partial => 'shared/treatment_plan', :locals => { :f => template_form, :type => 'TreatmentPlanTemplate' }
+          - facility.treatment_plan_templates.each do |template|
+            - if 'TreatmentPlanTemplate' == template.type
+              = f.fields_for :treatment_plan_templates, template do |template_form|
+                = render :partial => 'shared/treatment_plan', :locals => { :f => template_form, :type => 'TreatmentPlanTemplate' }
           = add_treatment_plan_template(facility, f)
       .span10
         .span3

@@ -32,6 +32,9 @@
             = link_to edit_treatment_facility_path(facility), :title => "Edit", :rel => "Edit" do
               .icon-edit.icon-2x
               &nbsp;
+            = link_to edit_assignments_treatment_facility_path(facility), :title => "Assign users to machines", :rel => "Assign" do
+              .icon-user.icon-2x
+              &nbsp;
             = link_to facility, :method => 'delete', :data => { confirm: 'Are you sure?'}, :title => "Edit", :rel => "Edit" do
               .icon-trash.icon-2x
       %tr

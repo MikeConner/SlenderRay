@@ -22,6 +22,10 @@ class TreatmentFacilitiesController < ApplicationController
     @facility = TreatmentFacility.find(params[:id])
   end
   
+  def edit_assignments
+    @facility = TreatmentFacility.find(params[:id])    
+  end
+
   # Users created this way are Technicians
   def create
     @facility = TreatmentFacility.new(params[:treatment_facility])
@@ -44,6 +48,7 @@ class TreatmentFacilitiesController < ApplicationController
   def update
     @facility = TreatmentFacility.find(params[:id])
     
+    total_before = @facility.machines.count + @facility.users.count
     if @facility.update_attributes(params[:treatment_facility])
       @facility.users.each do |user|
         if user.role.nil?
@@ -52,9 +57,24 @@ class TreatmentFacilitiesController < ApplicationController
         end
       end
       
-      redirect_to @facility, :notice => I18n.t('facility_updated')
+      total_after = @facility.machines.count + @facility.users.count
+      if (total_after == total_before) or (0 == @facility.machines.count) or (0 == @facility.users.count)
+        redirect_to @facility, :notice => I18n.t('facility_updated')
+      else
+        redirect_to edit_assignments_treatment_facility_path(@facility)
+      end
     else
       render 'edit'
+    end
+  end
+  
+  def update_assignments
+    @facility = TreatmentFacility.find(params[:id])    
+    
+    if @facility.update_attributes(params[:treatment_facility])
+      redirect_to @facility, :notice => I18n.t('facility_updated')
+    else
+      render 'edit_assignments'
     end
   end
   

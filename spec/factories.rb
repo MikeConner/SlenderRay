@@ -123,6 +123,8 @@ FactoryGirl.define do
   end
   
   factory :plan1, :class => TreatmentPlanTemplate do
+    treatment_facility 
+    
     description { generate(:random_paragraphs) }
     num_sessions 2
     treatments_per_session 2
@@ -131,6 +133,8 @@ FactoryGirl.define do
   end
   
   factory :plan2, :class => TreatmentPlanTemplate do
+    treatment_facility 
+
     description { generate(:random_paragraphs) }
     num_sessions 3
     treatments_per_session 2

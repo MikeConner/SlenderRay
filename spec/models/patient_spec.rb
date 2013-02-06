@@ -18,7 +18,6 @@ describe 'Patient' do
   it "should respond to everything" do
     patient.should respond_to(:name)
     patient.should respond_to(:treatment_facility)
-    patient.should respond_to(:current_treatment_plan)
     patient.should respond_to(:unfinished_plan)
     patient.should respond_to(:unfinished_session)
     facility.patients.should be == [patient]
@@ -88,8 +87,7 @@ describe 'Patient' do
     
     it "should have plans" do
       patient.treatment_plans.count.should be == 2
-      patient.reload.in_treatment?.should be_true
-      patient.reload.current_treatment_plan.should be == patient.treatment_plans.first
+      patient.reload.unfinished_plan.should be == patient.treatment_plans.first
     end
 
     it "should not be able to destroy" do

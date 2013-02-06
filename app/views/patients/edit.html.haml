@@ -9,7 +9,7 @@
     - if current_plan.nil?
       Select a new treatment plan
       %br/
-      = select_tag :plan_template, options_for_select(@facility.treatment_plan_templates.map { |t| t.description })
+      = select_tag :plan_template, options_for_select(@facility.treatment_plan_templates.where("type = 'TreatmentPlanTemplate'").map { |t| t.description })
     - else
       = f.fields_for :treatment_plans, current_plan do |plan_form|
         = render :partial => 'shared/treatment_plan', :locals => { :f => plan_form, :type => 'TreatmentPlan' }

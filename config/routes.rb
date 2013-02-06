@@ -8,13 +8,18 @@ SlenderRay::Application.routes.draw do
   devise_for :users
   resources :users, :only => [:index]
   
-  resources :treatment_facilities
+  resources :treatment_facilities do
+    member do
+      get 'edit_assignments'
+      put 'update_assignments'
+    end
+  end
   resources :patients do
-    get 'current_session_machine'
+    get 'current_session_machine', :on => :member
   end
   resources :testimonials
   resources :treatment_sessions do
-    put 'timer_expired'
+    put 'timer_expired', :on => :member
   end
   
   # The priority is based upon order of creation:

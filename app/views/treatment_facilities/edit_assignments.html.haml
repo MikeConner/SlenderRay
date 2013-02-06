@@ -1,0 +1,14 @@
+.span12
+  .form-horizontal
+    = form_for @facility, :url => update_assignments_treatment_facility_path(@facility) do |f|
+      = render :partial => 'shared/error_messages', :locals => { :errors => @facility.errors, :name => 'Treatment Facility' }
+      %h3 Assign Users to Machines
+      - @facility.users.each do |user|
+        - if user.has_role?(Role::TECHNICIAN)
+          %h4= user.email
+          = f.fields_for :users, user do |user_form|
+            = user_form.collection_select(:machine_ids, @facility.machines, :id, :display_name, { :selected => user.machine_ids }, { :multiple => true, :size => @facility.machines.count})
+          %br/
+      %br/
+      .actions
+        = f.submit 'Update Assignments', :class => 'btn btn-large btn-success'

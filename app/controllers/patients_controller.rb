@@ -18,7 +18,7 @@ class PatientsController < ApplicationController
   
   def new
     @facility = current_user.treatment_facility
-    if 0 == @facility.treatment_plan_templates.count
+    if 0 == @facility.treatment_plan_templates.where("type == 'TreatmentPlanTemplate'").count
       redirect_to root_path, :alert => I18n.t('no_templates_found')
     end
     @patient = @facility.patients.build
@@ -26,7 +26,7 @@ class PatientsController < ApplicationController
   
   def edit
     # Filter sets patient and facility
-    if 0 == @facility.treatment_plan_templates.count
+    if 0 == @facility.treatment_plan_templates.where("type == 'TreatmentPlanTemplate'").count
       redirect_to root_path, :alert => I18n.t('no_templates_found')
     end
   end
@@ -75,7 +75,7 @@ class PatientsController < ApplicationController
   
   # On new treatment session page, when resuming an existing session, select the current machine associated with that session
   def current_session_machine
-    patient = Patient.find(params[:patient_id])
+    patient = Patient.find(params[:id])
     
     # Return something (on error, 0 should not be found, so it just won't do anything)
     machine_id = (!patient.nil? and !patient.unfinished_session.nil?) ? patient.unfinished_session.machine_id : '0'

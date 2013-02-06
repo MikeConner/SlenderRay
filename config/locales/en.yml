@@ -7,7 +7,6 @@ en:
   facility_deleted: 'Treatment facility deleted'
   facility_updated: 'Treatment facility updated successfully'
   facility_created: 'Treatment facility created successfully'
-  machine_instructions: 'Create Machines and Users, Update Facility, then edit again to create user/machine assignments'
   nobody_in_treatment: 'No patients currently in treatment'
   no_templates_found: 'You must create some treatment plan templates before creating patients'
   patient_created: 'New patient created successfully'
