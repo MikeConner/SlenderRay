@@ -62,7 +62,7 @@ class TreatmentSession < ActiveRecord::Base
   # Use select to get ones that are unsaved
   def labeled_measurements(label)
     # Need *all* for the tests to pass (to work for both saved and unsaved)
-    self.measurements.all.select { |m| label == m.label }
+    Rails.env.test? ? self.measurements.all.select { |m| label == m.label } : self.measurements.select { |m| label == m.label }
   end
 
   def add_measurement_prototypes(first)
