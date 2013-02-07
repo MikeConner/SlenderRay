@@ -36,6 +36,7 @@ describe "ProcessTimer" do
     session_timer.should respond_to(:expire)
     session_timer.should respond_to(:completeable?)
     session_timer.should respond_to(:complete)
+    session_timer.should respond_to(:display_status)
   end
   
   it { should be_valid }
@@ -57,6 +58,33 @@ describe "ProcessTimer" do
     session_timer.resumable?.should be_false
     session_timer.expireable?.should be_false
     session_timer.completeable?.should be_false
+  end
+  
+  describe "display status" do
+    before do
+      session_timer.duration_seconds = 600
+      session_timer.start
+    end
+    
+    it "should show full value" do
+      session_timer.display_status.should be == 'Started: 10:00'
+    end
+    
+    context "One second gone" do
+      before { sleep 1 }
+      
+      it "should show 1 second" do
+        session_timer.display_status.should be == 'Started: 9:59'
+      end
+    end
+    
+    context "55 seconds gone" do
+      before { session_timer.start_time = 55.seconds.ago }
+      
+      it "should show leading zeroes" do
+        session_timer.display_status.should be == 'Started: 9:05'
+      end
+    end
   end
   
   describe "valid states" do

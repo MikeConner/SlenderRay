@@ -28,6 +28,7 @@ class Patient < ActiveRecord::Base
   
   has_many :testimonials, :dependent => :destroy
   has_many :treatment_plans, :dependent => :restrict
+  has_many :treatment_sessions, :through => :treatment_plans
   
   accepts_nested_attributes_for :treatment_plans, :allow_destroy => true, :reject_if => :all_blank
 

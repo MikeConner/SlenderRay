@@ -45,6 +45,7 @@
           = f.file_field :patient_image, :accept => 'image/*;capture-camera'
     .span5
       %h4 Previous Sessions
+      %iframe{:src => completed_sessions_patient_url(@patient)}
   .row-fluid
     -#.navbar-fixed-bottom
     .span2
@@ -55,5 +56,5 @@
         %br/
         = f.collection_select :protocol_id, Protocol.all, :id, :name 
     .span4
-      = render :partial => 'timer', :locals => { :f => f, :timer => @treatment_session.process_timer }
+      = render :partial => 'shared/timer', :locals => { :f => f, :timer => @treatment_session.process_timer }
 

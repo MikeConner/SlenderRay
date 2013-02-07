@@ -8,3 +8,6 @@
   .field
     = f.label :process_name
     = f.text_field :process_name, :maxlength => TreatmentArea::MAX_FIELD_LEN
+  .field
+    = f.label :duration_minutes, 'Process Duration (minutes)'
+    = f.number_field :duration_minutes, :min => 1

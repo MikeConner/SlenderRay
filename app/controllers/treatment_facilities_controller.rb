@@ -31,10 +31,18 @@ class TreatmentFacilitiesController < ApplicationController
     @facility = TreatmentFacility.new(params[:treatment_facility])
     
     if @facility.save
+      # Set roles for new users
       @facility.users.each do |user|
         if user.role.nil?
           user.role = Role.find_by_name(Role::TECHNICIAN)
           user.save!
+        end
+      end
+      # Create timers for new treatment areas
+      @facility.treatment_areas.each do |area|
+        if area.process_timer.nil?
+          area.build_process_timer(:duration_seconds => area.duration_minutes * 60)
+          area.save!
         end
       end
       
@@ -50,10 +58,18 @@ class TreatmentFacilitiesController < ApplicationController
     
     total_before = @facility.machines.count + @facility.users.count
     if @facility.update_attributes(params[:treatment_facility])
+      # Set roles for new users
       @facility.users.each do |user|
         if user.role.nil?
           user.role = Role.find_by_name(Role::TECHNICIAN)
           user.save!
+        end
+      end
+      # Create timers for new treatment areas
+      @facility.treatment_areas.each do |area|
+        if area.process_timer.nil?
+          area.build_process_timer(:duration_seconds => area.duration_minutes * 60)
+          area.save!
         end
       end
       
@@ -85,6 +101,44 @@ class TreatmentFacilitiesController < ApplicationController
     redirect_to treatment_facilities_path, :notice => I18n.t('facility_deleted') 
   end  
 
+  def dashboard
+    if current_user.has_role?(Role::SUPER_ADMIN)
+      @facilities = TreatmentFacility.order(:facility_name)
+    else
+      @facilities = [current_user.treatment_facility]
+    end
+    
+    # Look for expired timers, since JS does not have individual ones for all of them
+    @facilities.each do |facility|
+      facility.treatment_areas.each do |area|
+        if area.process_timer.pausable? and (0 == area.process_timer.seconds_remaining)
+          area.process_timer.expire
+        end
+      end
+    end
+  end
+  
+  def update_dashboard
+    @facility = TreatmentFacility.find(params[:id])
+    
+    puts params[:commit]
+    if @facility.update_attributes(params[:treatment_facility])
+      @area = TreatmentArea.find(params[:treatment_facility][:treatment_areas_attributes]['0'][:id])
+      if 'Start Timer' == params[:commit]
+        @area.process_timer.start
+      elsif 'Pause Timer' == params[:commit]
+        @area.process_timer.pause
+      elsif 'Resume Timer' == params[:commit]
+        @area.process_timer.resume
+      elsif 'Reset Session' == params[:commit]
+        @area.process_timer.reset
+      elsif 'Complete Session' == params[:commit]
+        @area.process_timer.complete
+      end
+      
+      redirect_to dashboard_treatment_facilities_path
+    end   
+  end
 private
   def transform_phones
     if !params[:treatment_facility].nil?

@@ -6,5 +6,6 @@
   - when ProcessTimer::PAUSED
     = f.submit 'Resume Timer', :class => 'btn btn-large btn-success'
   - when ProcessTimer::EXPIRED
-    = f.submit 'Complete Session', :class => 'btn btn-large btn-danger'
+    - if 'TreatmentSession' == timer.process_type
+      = f.submit 'Complete Session', :class => 'btn btn-large btn-danger'
     = f.submit 'Reset Session', :class => 'btn btn-large btn-danger'

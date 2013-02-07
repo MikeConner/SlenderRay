@@ -20,6 +20,9 @@ describe 'Patient' do
     patient.should respond_to(:treatment_facility)
     patient.should respond_to(:unfinished_plan)
     patient.should respond_to(:unfinished_session)
+    patient.should respond_to(:treatment_plans)
+    patient.should respond_to(:treatment_sessions)
+    patient.should respond_to(:testimonials)
     facility.patients.should be == [patient]
   end
   

@@ -44,6 +44,19 @@ class ProcessTimer < ActiveRecord::Base
                            :allow_nil => true
   validates_presence_of :duration_seconds
   
+  # Text form of the current status, for the dashboard view
+  def display_status
+    s = seconds_remaining
+    if s.nil?
+      self.process_state
+    else
+      min= (s/60).floor
+      sec = s - min*60;
+      time = sprintf("%d:%02d", min, sec)
+      "#{self.process_state}: #{time}"
+    end
+  end
+  
   def startable?
     IDLE == self.process_state
   end

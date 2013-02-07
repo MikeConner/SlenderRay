@@ -26,13 +26,15 @@
 class TreatmentArea < ActiveRecord::Base
   MAX_FIELD_LEN = 64
   
-  attr_accessible :area_name, :process_name,
+  attr_accessible :area_name, :process_name, :duration_minutes,
                   :treatment_facility_id
   
   belongs_to :treatment_facility
-  has_one :process_timer, :as => :process, :dependent => :nullify
+  has_one :process_timer, :as => :process, :dependent => :destroy
   
   validates :area_name, :presence => true,
                         :length => { maximum: MAX_FIELD_LEN }
   validates :process_name, :length => { maximum: MAX_FIELD_LEN }
+  validates :duration_minutes, :presence => true,
+                               :numericality => { only_integer: true, greater_than: 0 }
 end

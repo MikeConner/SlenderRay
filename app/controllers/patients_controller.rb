@@ -85,6 +85,13 @@ class PatientsController < ApplicationController
     end
   end
 
+  def completed_sessions
+    @patient = Patient.find(params[:id])
+
+    @sessions = @patient.treatment_sessions.select { |s| s.complete? }
+    
+    render :layout => false
+  end
 private
   def ensure_technician
     if !current_user.has_role?(Role::TECHNICIAN)

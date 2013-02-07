@@ -1,0 +1,23 @@
+.row
+  - idx = 1
+  - @sessions.each do |session|
+    %h1== #{idx}.
+    - if !session.patient_image.file.nil? and session.patient_image.file.exists?
+      = image_tag session.patient_image_url(:standard).to_s
+    = session.machine.display_name
+    %br/
+    %br/
+    - if session.labels.empty?
+      - session.measurements.each do |m|
+        == #{m.location} #{m.circumference}cm
+        %br/
+    - else 
+      - session.labels.reverse.each do |label|
+        %em= label
+        %br/
+        - session.labeled_measurements(label).each do |m|
+          == #{m.location} #{m.circumference}cm
+          %br/
+        %br/
+    %br/
+    = session.notes

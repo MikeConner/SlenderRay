@@ -1,0 +1,6 @@
+= f.object.area_name
+= f.text_field :process_name, :maxlength => TreatmentArea::MAX_FIELD_LEN
+%br/
+== #{f.object.duration_minutes} minutes
+= render :partial => 'shared/timer', :locals => { :f => f, :timer => f.object.process_timer }
+= f.object.process_timer.display_status

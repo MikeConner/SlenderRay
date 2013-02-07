@@ -1,6 +1,7 @@
 /* Variables */
 var countdown_id = 0;
 var seconds_remaining = 0;
+var dashboard_id = 0;
 
 $(function() {
 	if ("onpagehide" in window) {
@@ -38,7 +39,7 @@ function countdown() {
 
 function myLoadHandler(evt) {
 	var tr_remaining = document.getElementById('time_remaining');
-	
+	var tr_dashboard = document.getElementById('dashboard_marker');
 	if (evt.persisted) {
 		// This is actually a pageshow event and the page is coming out of the page cache
 		// Don't do "one-time" work we'd normally do in OnLoad
@@ -49,6 +50,13 @@ function myLoadHandler(evt) {
 		return;
 	}
 	
+	if (tr_dashboard && 0 == dashboard_id) {
+		dashboard_id = setInterval("window.location.reload()", 10000);
+	}
+	else {
+		clearInterval(dashboard_id);
+		dashboard_id = 0;
+	}
 	// Either a load event for older browsers,
 	// or a pageshow event for the initial load in supported browsers
 	// Do everything a regular load event handler does here

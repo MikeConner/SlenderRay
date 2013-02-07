@@ -31,7 +31,7 @@ class TreatmentSession < ActiveRecord::Base
   belongs_to :machine
   belongs_to :protocol
   
-  has_one :process_timer, :as => :process, :dependent => :nullify
+  has_one :process_timer, :as => :process, :dependent => :destroy
   has_many :measurements, :dependent => :destroy
 
   # Going to fill in common measurements, if they don't put a value, through it away

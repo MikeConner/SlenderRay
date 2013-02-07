@@ -204,6 +204,7 @@ FactoryGirl.define do
 
   factory :area_process, :class => TreatmentArea do
     area_name { generate(:random_phrase) }
+    duration_minutes 5
   end
   
   factory :session_timer, :class => ProcessTimer do
@@ -227,6 +228,7 @@ FactoryGirl.define do
   
   factory :treatment_area do
     area_name { generate(:random_phrase) }
+    duration_minutes { Random.rand(10) + 1 }
     
     after(:create) do |process|
       FactoryGirl.create(:process_timer, :process => process)

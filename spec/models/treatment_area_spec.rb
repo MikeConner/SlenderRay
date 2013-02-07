@@ -19,6 +19,7 @@ describe "TreatmentArea" do
   it "should respond to everything" do
     area.should respond_to(:area_name)
     area.should respond_to(:process_name)
+    area.should respond_to(:duration_minutes)
     area.should respond_to(:process_timer)
     area.should respond_to(:treatment_facility)
   end
@@ -33,6 +34,20 @@ describe "TreatmentArea" do
   
   it "should have no process name" do
     area.process_name.should be_nil
+  end
+  
+  describe "Missing duration" do
+    before { area.duration_minutes = nil }
+    
+    it { should_not be_valid }
+  end
+  
+  describe "Invalid duration" do
+    [0, -1, 2.5].each do |duration|
+      before { area.duration_minutes = duration }
+      
+      it { should_not be_valid }
+    end
   end
   
   describe "missing area name" do

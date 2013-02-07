@@ -12,10 +12,16 @@ SlenderRay::Application.routes.draw do
     member do
       get 'edit_assignments'
       put 'update_assignments'
+      put 'update_dashboard'
     end
+    
+    get 'dashboard', :on => :collection
   end
   resources :patients do
-    get 'current_session_machine', :on => :member
+    member do
+      get 'current_session_machine'
+      get 'completed_sessions'
+    end
   end
   resources :testimonials
   resources :treatment_sessions do
