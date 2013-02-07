@@ -1,16 +1,24 @@
 .machine
-  = f.hidden_field :treatment_facility_id
-  = f.hidden_field :_destroy
-  = link_to_function "X", "if (confirm('Delete this machine?')) remove_machine(this)", :class => "close"
-  .field
+  .control-label
     = f.label :model
+  .controls   
     = f.text_field :model, :maxlength => Machine::MAX_FIELD_LEN
-  .field
+  .control-label
     = f.label :serial_number
+  .controls   
     = f.text_field :serial_number, :maxlength => Machine::MAX_FIELD_LEN
-  .field
+  .control-label
     = f.label :display_name
+  .controls   
     = f.text_field :display_name
-  .field
+  .control-label
     = f.label :date_installed
+  .controls   
     = f.date_select :date_installed, :order => [:month, :day, :year]
+  .control-label
+    Remove:
+  .controls 
+    = link_to_function "X", "if (confirm('Delete this machine?')) remove_machine(this)", :class => "close"
+    %br/
+    = f.hidden_field :treatment_facility_id
+    = f.hidden_field :_destroy

@@ -1,16 +1,23 @@
 .user
-  = f.hidden_field :treatment_facility_id
-  - technician = f.object.role_id != Role.find_by_name(Role::SUPER_ADMIN).id
-  - if technician
-    = f.hidden_field :_destroy
-    = link_to_function "X", "if (confirm('Delete this user?')) remove_user(this)", :class => "close"
-  .field
-    = f.label :email
-    = f.text_field :email
-  - if f.object.new_record?
-    .field
-      = f.label :password
-      = f.password_field :password
-    .field
-      = f.label :password_confirmation
-      = f.password_field :password_confirmation
+  .control-group
+    = f.hidden_field :treatment_facility_id
+    - technician = f.object.role_id != Role.find_by_name(Role::SUPER_ADMIN).id
+    .control-label
+      = f.label :email
+    .control
+      = f.text_field :email
+    - if f.object.new_record?
+      .control-label
+        = f.label :password
+      .control
+        = f.password_field :password
+      .control-label
+        = f.label :password_confirmation
+      .control
+        = f.password_field :password_confirmation
+    - if technician
+      .control-label
+        Remove
+      .control     
+      = f.hidden_field :_destroy
+      = link_to_function "X", "if (confirm('Delete this user?')) remove_user(this)", :class => "close"

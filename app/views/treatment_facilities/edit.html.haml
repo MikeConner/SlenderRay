@@ -4,5 +4,6 @@
       = render :partial => 'shared/error_messages', :locals => { :errors => @facility.errors, :name => 'Treatment Facility' }
       = render :partial => 'fields', :locals => { :f => f, :facility => @facility }
       %br/
-      .actions
-        = f.submit 'Update Facility', :class => 'btn btn-large btn-success'
+      .row
+        .actions
+          = f.submit 'Update Facility', :class => 'btn btn-large btn-success'
