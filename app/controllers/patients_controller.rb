@@ -18,7 +18,7 @@ class PatientsController < ApplicationController
   
   def new
     @facility = current_user.treatment_facility
-    if 0 == @facility.treatment_plan_templates.where("type == 'TreatmentPlanTemplate'").count
+    if 0 == @facility.treatment_plan_templates.where("type = 'TreatmentPlanTemplate'").count
       redirect_to root_path, :alert => I18n.t('no_templates_found')
     end
     @patient = @facility.patients.build
@@ -26,7 +26,7 @@ class PatientsController < ApplicationController
   
   def edit
     # Filter sets patient and facility
-    if 0 == @facility.treatment_plan_templates.where("type == 'TreatmentPlanTemplate'").count
+    if 0 == @facility.treatment_plan_templates.where("type = 'TreatmentPlanTemplate'").count
       redirect_to root_path, :alert => I18n.t('no_templates_found')
     end
   end
