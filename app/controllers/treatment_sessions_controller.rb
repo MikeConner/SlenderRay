@@ -92,13 +92,21 @@ class TreatmentSessionsController < ApplicationController
         @treatment_session.process_timer.resume
       elsif 'Reset Session' == params[:commit]
         @treatment_session.process_timer.reset
+      elsif 'Expire Timer' == params[:commit]
+        @treatment_session.process_timer.expire
       elsif 'Complete Session' == params[:commit]
-        @treatment_session.process_timer.complete
-        redirect_to root_path and return
+        if @treatment_session.measurements.empty?
+          @treatment_session.errors.add :base, 'Navel measurement required'
+        else
+          @treatment_session.process_timer.complete
+          redirect_to root_path and return
+        end
       elsif 'Update Session Data' == params[:commit]
         notice = I18n.t('session_updated')
       end
-      
+    end
+    
+    if @treatment_session.errors.empty?
       redirect_to edit_treatment_session_path(@treatment_session), :notice => notice
     else
       @plan = @treatment_session.treatment_plan
@@ -107,6 +115,8 @@ class TreatmentSessionsController < ApplicationController
       @current_session_idx = @plan.treatment_sessions.count
       @total_sessions = @plan.treatments_per_session
       @first_session = 1 == @current_session_idx
+      # Fill in defaults
+      @treatment_session.add_measurement_prototypes(@first_session)
       render 'edit'
     end    
   end

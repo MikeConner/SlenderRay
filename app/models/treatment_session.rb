@@ -97,7 +97,7 @@ private
   def navel_measurement
     if !self.measurements.empty?
       self.measurements.each do |m|
-        if m.location.strip =~ /#{REQUIRED_MEASUREMENT}/i
+        if m.location.strip =~ /#{REQUIRED_MEASUREMENT}/i and m.valid?
           return
         end
       end
