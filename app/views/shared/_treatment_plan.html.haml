@@ -10,9 +10,11 @@
       .controls  
         = f.number_field :treatments_per_session, :min => 1
     - else
-      = f.object.description
-      %br/
-      == #{f.object.treatments_per_session} treatments/session
+      .control-label
+        = f.object.description
+        &nbsp;:&nbsp; 
+        == #{f.object.treatments_per_session} treatments/session
+        %hr
     .control-label
       = f.label :num_sessions, 'Number of Sessions'
     .controls

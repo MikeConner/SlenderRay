@@ -5,12 +5,8 @@
       .span12
         .span8
           %h4== #{@patient.name}. Session #{@current_session_idx} of #{@total_sessions}, '#{@plan.description}' plan
-          .field
-            = f.label :machine_id
-            %br/
-            = f.collection_select :machine_id, @facility.machines, :id, :display_name 
-          %br/
-          %h1#countdown_timer
+
+          %h1#countdown_timer.timer
             - seconds_remaining = @treatment_session.process_timer.seconds_remaining || 0
             - elapsed_seconds = @treatment_session.process_timer.elapsed_seconds || 0
             - running = @treatment_session.process_timer.pausable? ? 'true' : 'false'
@@ -37,12 +33,15 @@
           %br/
           = f.label :notes
           = f.text_area :notes, :size => '80x4', :style => "width:100%"
-        .span4
+        .span3.control-group
           -# Show current image
-          - if !@treatment_session.patient_image.file.nil? and @treatment_session.patient_image.file.exists?
-            = image_tag @treatment_session.patient_image_url(:standard).to_s
-          = f.label :patient_image
-          = f.file_field :patient_image, :accept => 'image/*;capture-camera'
+          .control-label= f.label :patient_image
+          .control.inputFile= f.file_field :patient_image, :accept => 'image/*;capture-camera'
+          %br/
+          .patientImg
+            - if !@treatment_session.patient_image.file.nil? and @treatment_session.patient_image.file.exists?
+              = image_tag @treatment_session.patient_image_url(:standard).to_s
+
     .span5
       %h4 Previous Sessions
       %iframe{:src => completed_sessions_patient_url(@patient)}
@@ -50,11 +49,16 @@
     -#.navbar-fixed-bottom
     .span2
       = f.submit 'Update Session Data', :class => 'btn btn-large btn-success'
-    .span2.offset2
+    .span4.offset1
+      = render :partial => 'shared/timer', :locals => { :f => f, :timer => @treatment_session.process_timer }
+    .span3.offset1
+      .field
+        = f.label :machine_id
+        %br/
+        = f.collection_select :machine_id, @facility.machines, :id, :display_name 
       .field
         = f.label :protocol_id
         %br/
         = f.collection_select :protocol_id, Protocol.all, :id, :name 
-    .span4
-      = render :partial => 'shared/timer', :locals => { :f => f, :timer => @treatment_session.process_timer }
+
 

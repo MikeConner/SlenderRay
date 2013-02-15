@@ -3,7 +3,7 @@
     = f.submit 'Start Timer', :class => 'btn btn-large btn-success'
   - when ProcessTimer::STARTED, ProcessTimer::RESUMED
     = f.submit 'Pause Timer', :class => 'btn btn-large btn-danger'
-    = f.submit 'Expire Timer', :class => 'btn btn-danger'
+    = f.submit 'Expire Timer', :class => 'btn btn-danger btn-large '
   - when ProcessTimer::PAUSED
     = f.submit 'Resume Timer', :class => 'btn btn-large btn-success'
   - when ProcessTimer::EXPIRED

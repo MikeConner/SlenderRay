@@ -1,13 +1,13 @@
 
 .row-fluid
-  .span5
+  .span6
     = link_to(image_tag('/assets/logo.jpg'), root_path)   
-  .span5.pull-right
+  .span6.pull-right
     - if current_user.nil?
-      %br
+      %br/
       = link_to 'Log in', new_user_session_path, :class => 'btn btn-large btn-success'
     - else
-      %br
+      %br/
       = link_to 'Manage Facilities', treatment_facilities_path, :class => 'btn'
       = link_to 'Log out', destroy_user_session_path, :method => :delete, :class => 'btn btn-large btn-success'
 .row-fluid

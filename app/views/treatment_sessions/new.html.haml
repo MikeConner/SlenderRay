@@ -1,5 +1,5 @@
 .offset2
-  .span10
+  .span12.control-group
     = form_for @treatment_session do |f|
       = render :partial => 'shared/error_messages', :locals => { :errors => @treatment_session.errors, :name => 'Treatment Session' }
       .span5
@@ -7,15 +7,18 @@
         - if @new_session.empty?
           %em No patients are ready to start new sessions
         - else
-          .field
+          .control-label
             = label_tag :new_machine_id, 'Machine'
+          .control
             = select_tag :new_machine_id, options_from_collection_for_select(@facility.machines, :id, :display_name)
           -#
-            .field
+            .control-label
               = f.label :protocol_id
+            .control
               = f.collection_select :protocol_id, Protocol.all, :id, :name
-          .field
+          .control-label
             = label_tag :new_patient_id, 'Patient'
+          .control
             = select_tag :new_patient_id, options_from_collection_for_select(@new_session, :id, :name)
           %br/
           .actions
@@ -25,11 +28,13 @@
         - if @resume_session.empty?
           %em No patients have unfinished sessions
         - else
-          .field
+          .control-label
             = label_tag :resume_machine_id, 'Machine'
+          .control
             = select_tag :resume_machine_id, options_from_collection_for_select(@facility.machines, :id, :display_name, @resume_machine_id)
-          .field
+          .control-label
             = label_tag :resume_patient_id, 'Patient'
+          .control
             = select_tag :resume_patient_id, options_from_collection_for_select(@resume_session, :id, :name), :onchange => 'update_machine()'
           %br/
           .actions
