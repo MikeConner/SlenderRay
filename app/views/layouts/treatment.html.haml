@@ -14,7 +14,10 @@
 .container-fluid
   .row-fluid
     .span5
-      = link_to(image_tag('/assets/logo.jpg'), root_path)   
+      = link_to root_path do
+        =image_tag('/assets/logo.jpg')
+        &nbsp;&nbsp;&nbsp;&nbsp;  
+        .icon-home.icon-4x 
     .span5.pull-right
       %br
       = link_to 'Log out', destroy_user_session_path, :method => :delete, :class => 'btn btn-large btn-success'
