@@ -45,8 +45,6 @@ class PatientsController < ApplicationController
         if @treatment_session.save
           redirect_to edit_treatment_session_path(@treatment_session) and return
         end    
-        # If they want to select the machine first...
-        #redirect_to new_treatment_session_path, :notice => I18n.t('patient_created')
       else
         redirect_to edit_patient_path(@patient), :notice => I18n.t('patient_created')
       end
@@ -55,8 +53,8 @@ class PatientsController < ApplicationController
       render 'new'
     end
     
-    #rescue
-      #redirect_to new_patient_path, :alert => I18n.t('cannot_create_patient')
+    rescue
+      redirect_to new_patient_path, :alert => I18n.t('cannot_create_patient')
   end
 
   def update
