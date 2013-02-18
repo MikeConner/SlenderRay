@@ -34,16 +34,29 @@ class PatientsController < ApplicationController
   def create    
     if @patient.save
       template = TreatmentPlanTemplate.find_by_description(params[:plan_template])
-      TreatmentPlan.create_from_template(template, @patient)
+      @plan = TreatmentPlan.create_from_template(template, @patient)
       
-      redirect_to edit_patient_path(@patient), :notice => I18n.t('patient_created')
+      if I18n.t('create_and_treat') == params[:commit]
+        @treatment_session = @plan.treatment_sessions.build
+        # Just pick the first machine; they can change it later
+        @treatment_session.machine_id = @patient.treatment_facility.machines.first.id
+        @treatment_session.build_process_timer(:duration_seconds => @treatment_session.treatment_plan.treatments_per_session * TreatmentPlan::TREATMENT_DURATION_MINUTES * 60)
+        
+        if @treatment_session.save
+          redirect_to edit_treatment_session_path(@treatment_session) and return
+        end    
+        # If they want to select the machine first...
+        #redirect_to new_treatment_session_path, :notice => I18n.t('patient_created')
+      else
+        redirect_to edit_patient_path(@patient), :notice => I18n.t('patient_created')
+      end
     else
       @facility = current_user.treatment_facility
       render 'new'
     end
     
-    rescue
-      redirect_to new_patient_path, :alert => I18n.t('cannot_create_patient')
+    #rescue
+      #redirect_to new_patient_path, :alert => I18n.t('cannot_create_patient')
   end
 
   def update

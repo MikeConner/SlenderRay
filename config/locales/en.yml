@@ -4,6 +4,7 @@
 en:
   cannot_create_patient: 'Unable to create patient (duplicate name?)'
   cannot_delete_patient: 'Patient cannot be deleted'
+  create_and_treat: 'Create Patient and Treat'
   facility_deleted: 'Treatment facility deleted'
   facility_updated: 'Treatment facility updated successfully'
   facility_created: 'Treatment facility created successfully'
