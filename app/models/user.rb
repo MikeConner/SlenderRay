@@ -18,6 +18,7 @@
 #  created_at             :datetime        not null
 #  updated_at             :datetime        not null
 #  treatment_facility_id  :integer
+#  time_zone              :string(32)
 #
 
 # CHARTER
@@ -32,6 +33,15 @@
 #
 class User < ActiveRecord::Base
   include ApplicationHelper
+  
+  MAX_TIMEZONE_LEN = 32
+  
+  EASTERN = 'Eastern Time (US & Canada)'
+  CENTRAL = 'Central Time (US & Canada)'
+  MOUNTAIN = 'Mountain Time (US & Canada)'
+  PACIFIC = 'Pacific Time (US & Canada)'
+  
+  VALID_TIMEZONES = [EASTERN, CENTRAL, MOUNTAIN, PACIFIC]
     
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
@@ -39,7 +49,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  attr_accessible :email, :password, :password_confirmation, :remember_me,
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :time_zone,
                   :treatment_facility_id, :machine_ids, :role_id
 
   belongs_to :role
@@ -49,6 +59,9 @@ class User < ActiveRecord::Base
   validates :email, :presence => true,
                     :uniqueness => { case_sensitive: false },
                     :format => { with: EMAIL_REGEX }
+  validates :time_zone, :presence => true,
+                        :length => { maximum: MAX_TIMEZONE_LEN },
+                        :inclusion => { in: VALID_TIMEZONES }
   validate :technicians_have_machines
     
   def has_role?(role_name)

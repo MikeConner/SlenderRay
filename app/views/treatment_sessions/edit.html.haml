@@ -11,7 +11,13 @@
             - elapsed_seconds = @treatment_session.process_timer.elapsed_seconds || 0
             - running = @treatment_session.process_timer.pausable? ? 'true' : 'false'
             #time_remaining{:elapsed => elapsed_seconds, :remaining => seconds_remaining, :running => running, :session => @treatment_session.id}
-          - if @first_session
+          - if @treatment_session.labels.empty?
+            = render :partial => 'table_header', :locals => { :caption => 'Measurements' }
+            -# @treatment_session.measurements.each do |m|
+            = f.fields_for :measurements do |measurement_form|
+              = render :partial => 'measurement_row', :locals => { :f => measurement_form, :label => nil }
+            = render :partial => 'table_footer', :locals => { :session => @treatment_session, :f => f, :label => nil, :tag => 'last_measurement' }
+          - else
             -# Before table
             = render :partial => 'table_header', :locals => { :caption => 'Before Measurements' }
             - @treatment_session.labeled_measurements(Measurement::BEFORE_LABEL).each do |m|
@@ -24,12 +30,6 @@
               = f.fields_for :measurements, m do |measurement_form|
                 = render :partial => 'measurement_row', :locals => { :f => measurement_form, :label => Measurement::AFTER_LABEL }
             = render :partial => 'table_footer', :locals => { :session => @treatment_session, :f => f, :label => Measurement::AFTER_LABEL, :tag => 'last_after' }
-          - else
-            = render :partial => 'table_header', :locals => { :caption => 'Measurements' }
-            -# @treatment_session.measurements.each do |m|
-            = f.fields_for :measurements do |measurement_form|
-              = render :partial => 'measurement_row', :locals => { :f => measurement_form, :label => nil }
-            = render :partial => 'table_footer', :locals => { :session => @treatment_session, :f => f, :label => nil, :tag => 'last_measurement' }
           %br/
           = f.label :notes
           = f.text_area :notes, :size => '80x4', :style => "width:100%"

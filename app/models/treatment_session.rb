@@ -21,6 +21,9 @@
 #
 class TreatmentSession < ActiveRecord::Base
   REQUIRED_MEASUREMENT = 'Navel'
+  # Whitehall only takes before/after on the first session
+  #   Others might be different, so create prototypes for Before/After for every session, if this is set; otherwise only for the first session
+  ALWAYS_PROMPT_BEFORE_AFTER = true
   
   attr_accessible :notes, :patient_image, :remote_patient_image_url,
                   :machine_id, :protocol_id, :measurements_attributes
@@ -42,6 +45,14 @@ class TreatmentSession < ActiveRecord::Base
   validate :navel_measurement
   
   validates_associated :measurements
+  
+  def date_completed
+    if complete?
+      self.process_timer.updated_at
+    else
+      nil
+    end
+  end
   
   def complete?
     ProcessTimer::COMPLETED == self.process_timer.process_state
@@ -67,7 +78,7 @@ class TreatmentSession < ActiveRecord::Base
 
   def add_measurement_prototypes(first)
     if self.measurements.empty?
-      if first
+      if true# first or ALWAYS_PROMPT_BEFORE_AFTER
         # Build 2 sets, before/after
         self.measurements.build(:location => '+4cm', :label => Measurement::BEFORE_LABEL)
         self.measurements.build(:location => '+2cm', :label => Measurement::BEFORE_LABEL)
@@ -96,14 +107,22 @@ private
   # If there are measurements, one has to be the navel
   def navel_measurement
     if !self.measurements.empty?
+      has_valid_measurements = false
+      
       self.measurements.each do |m|
-        if m.location.strip =~ /#{REQUIRED_MEASUREMENT}/i and m.valid?
-          return
-        end
+        if m.valid?
+          has_valid_measurements = true
+          if m.location.strip =~ /#{REQUIRED_MEASUREMENT}/i
+            return
+          end
+        end        
       end
       
       # If we get here, it wasn't found
-      self.errors.add :base, 'Navel measurement required'
+      # Only require a navel measurement if there are other valid measurements: completely empty is ok
+      if has_valid_measurements
+        self.errors.add :base, 'Navel measurement required'
+      end
     end
   end  
 end

@@ -8,6 +8,7 @@
 #  treatment_facility_id :integer
 #  created_at            :datetime        not null
 #  updated_at            :datetime        not null
+#  duration_minutes      :integer
 #
 
 describe "TreatmentArea" do

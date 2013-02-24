@@ -64,7 +64,7 @@ class ProcessTimer < ActiveRecord::Base
   def start
     if startable?
       self.process_state = STARTED
-      self.start_time = Time.now
+      self.start_time = Time.zone.now
       self.save!
     end
   end
@@ -76,7 +76,7 @@ class ProcessTimer < ActiveRecord::Base
   def pause
     if pausable?
       self.process_state = PAUSED
-      latest_elapsed = (Time.now - self.start_time).round
+      latest_elapsed = (Time.zone.now - self.start_time).round
       self.elapsed_seconds = self.elapsed_seconds.nil? ? latest_elapsed : self.elapsed_seconds + latest_elapsed
       self.save!
     end
@@ -89,7 +89,7 @@ class ProcessTimer < ActiveRecord::Base
   def resume
     if resumable?
       self.process_state = RESUMED
-      self.start_time = Time.now
+      self.start_time = Time.zone.now
       self.save!
     end
   end
@@ -129,11 +129,11 @@ class ProcessTimer < ActiveRecord::Base
     when IDLE, EXPIRED, COMPLETED
       nil
     when STARTED
-      [0, self.duration_seconds - (Time.now - self.start_time).round].max
+      [0, self.duration_seconds - (Time.zone.now - self.start_time).round].max
     when PAUSED
       [0, self.duration_seconds - self.elapsed_seconds].max
     when RESUMED
-      [0, self.duration_seconds - (Time.now - self.start_time).round - self.elapsed_seconds].max
+      [0, self.duration_seconds - (Time.zone.now - self.start_time).round - self.elapsed_seconds].max
     end
   end
 end

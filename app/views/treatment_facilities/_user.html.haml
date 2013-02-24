@@ -8,6 +8,10 @@
       = f.text_field :email
     - if f.object.new_record?
       .control-label
+        = f.label :time_zone
+      .control
+        = f.time_zone_select :time_zone, ActiveSupport::TimeZone::us_zones, :default => SlenderRay::Application.config.time_zone
+      .control-label
         = f.label :password
       .control
         = f.password_field :password

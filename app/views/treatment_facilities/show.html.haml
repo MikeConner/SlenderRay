@@ -17,7 +17,7 @@
   - else
     - idx = 1
     - @facility.machines.each do |machine|
-      == #{idx}: #{machine.display_name}: #{machine.model} (#{machine.serial_number}), installed #{machine.date_installed.try(:strftime, '%b %d, %Y')}
+      == #{idx}: #{machine.display_name}: #{machine.model} (#{machine.serial_number}), installed #{machine.date_installed.try(:strftime, ApplicationHelper::DATE_FORMAT)}
       %br/
       - machine.users.each do |user|
         == Operated by #{user.email}

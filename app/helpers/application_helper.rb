@@ -20,4 +20,7 @@ module ApplicationHelper
   MAILER_FROM_ADDRESS = 'app@slenderray.com'
   SMTP_USERNAME = 'slenderapp'
   SMTP_PASSWORD = 'sharklaser'
+  
+  DATE_FORMAT = '%b %d, %Y'
+  DATETIME_FORMAT = '%b %d, %Y %0l:%0M %Z'
 end

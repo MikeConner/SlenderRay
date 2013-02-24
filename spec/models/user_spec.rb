@@ -18,6 +18,7 @@
 #  created_at             :datetime        not null
 #  updated_at             :datetime        not null
 #  treatment_facility_id  :integer
+#  time_zone              :string(32)
 #
 
 describe 'User' do
@@ -38,11 +39,32 @@ describe 'User' do
     user.should respond_to(:role)
     user.should respond_to(:machines)
     user.should respond_to(:treatment_facility)
+    user.should respond_to(:time_zone)
   end
      
   its(:treatment_facility) { should == facility }
    
   it { should be_valid }
+  
+  describe "No time zone" do
+    before { user.time_zone = '' }
+    
+    it { should_not be_valid }
+  end
+  
+  describe "Invalid time zone" do
+    before { user.time_zone = 'Twilight Zone' }
+    
+    it { should_not be_valid }
+  end
+  
+  describe "Valid time zones" do
+    User::VALID_TIMEZONES.each do |zone|
+      before { user.time_zone = zone }
+    
+      it { should be_valid }
+    end
+  end
   
   describe "duplicate email" do
     before { @user2 = user.dup }

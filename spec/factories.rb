@@ -184,6 +184,14 @@ FactoryGirl.define do
       end            
     end 
     
+    factory :session_with_fixed_measurements do
+      after(:create) do |session|
+        FactoryGirl.create(:measurement, :location => TreatmentSession::REQUIRED_MEASUREMENT, :circumference => 30.2, :treatment_session => session)
+        FactoryGirl.create(:measurement, :location => '+2cm', :circumference => 28.3, :treatment_session => session)
+        FactoryGirl.create(:measurement, :location => '-2cm', :circumference => 26.5, :treatment_session => session)
+      end            
+    end 
+    
     factory :first_session_with_measurements do
       ignore do
         num_measurements 4
@@ -238,7 +246,7 @@ FactoryGirl.define do
   factory :measurement do
     treatment_session
     
-    location { ['navel', '- 2cm', '+ 2cm', '+ 5cm'].sample }
+    location { [TreatmentSession::REQUIRED_MEASUREMENT, '- 2cm', '+ 2cm', '+ 5cm'].sample }
     circumference 42.5
     
     factory :before_measurement do

@@ -7,7 +7,7 @@
     - facility = testimonial.patient.treatment_facility
     %blockquote= testimonial.comment
     == - #{facility.facility_name}; #{facility.city}, #{facility.state}. 
-    %em= testimonial.date_entered.try(:strftime, '%b %d, %Y')
+    %em= testimonial.date_entered.try(:strftime, ApplicationHelper::DATE_FORMAT)
     - if @can_edit
       = link_to 'Edit', edit_testimonial_path(testimonial)
       = link_to 'Delete', testimonial, :method => 'delete', :data => { confirm: 'Are you sure?'}

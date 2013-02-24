@@ -4,7 +4,7 @@
     - idx = 1
     - @sessions.each do |session|
       %td
-        %h3== Session #{idx}
+        %h3== Session #{idx} (#{session.date_completed.try(:strftime, ApplicationHelper::DATE_FORMAT)})
         - idx += 1
   %tr
     - @sessions.each do |session|

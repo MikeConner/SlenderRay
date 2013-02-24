@@ -27,12 +27,17 @@ describe 'TreatmentSession' do
     session.should respond_to(:measurements)
     session.should respond_to(:labels)
     session.should respond_to(:labeled_measurements)
+    session.should respond_to(:date_completed)
   end
   
   its(:treatment_plan) { should == plan }
   its(:machine) { should == machine }
   
   it { should be_valid }
+  
+  it "should have no date completed" do
+    session.date_completed.should be_nil
+  end
   
   describe "no navel" do
     let(:measurement) { FactoryGirl.create(:measurement, :location => 'blah', :treatment_session => session) }
@@ -50,6 +55,7 @@ describe 'TreatmentSession' do
     
     it "should be complete" do
       session.complete?.should be_true
+      session.date_completed.should be == session.process_timer.updated_at
     end
   end
   
@@ -82,6 +88,24 @@ describe 'TreatmentSession' do
       
       session.measurements.each do |measurement|
         measurement.treatment_session.should == session
+      end
+    end
+    
+    describe "remove required measurement" do
+      let(:session) { FactoryGirl.create(:session_with_fixed_measurements, :treatment_plan => plan) }
+      
+      it "should have 3 measurements" do
+        session.measurements.count.should be == 3
+        session.should be_valid
+      end
+      
+      describe "now remove it" do
+        before { session.measurements.where('location = ?', TreatmentSession::REQUIRED_MEASUREMENT).destroy_all }
+        
+        it "should have 2 measurements" do
+          session.reload.measurements.count.should be == 2
+          session.reload.should_not be_valid
+        end
       end
     end
     
