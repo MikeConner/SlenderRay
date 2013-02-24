@@ -58,6 +58,16 @@ class TreatmentSession < ActiveRecord::Base
     ProcessTimer::COMPLETED == self.process_timer.process_state
   end
   
+  # Require measurements on first and last session (enforced from the controller when the technician presses "Complete Session")
+  def completeable?
+    if self.measurements.empty?
+      !self.treatment_plan.first_session?(self) and !self.treatment_plan.last_session?(self)
+    else
+      # standard validation has already made sure the measurement set has the required measurement
+      true  
+    end
+  end
+  
   # return set of labels used (or [])
   def labels
     label_set = Hash.new
@@ -121,7 +131,7 @@ private
       # If we get here, it wasn't found
       # Only require a navel measurement if there are other valid measurements: completely empty is ok
       if has_valid_measurements
-        self.errors.add :base, 'Navel measurement required'
+        self.errors.add :base, "#{REQUIRED_MEASUREMENT} measurement required"
       end
     end
   end  

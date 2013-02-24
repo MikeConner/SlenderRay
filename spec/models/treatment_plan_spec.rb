@@ -29,11 +29,52 @@ describe 'TreatmentPlan' do
     plan.should respond_to(:patient)
     plan.should respond_to(:treatment_sessions)
     plan.should respond_to(:complete?)
+    plan.should respond_to(:first_session?)
+    plan.should respond_to(:last_session?)
   end
   
   its(:patient) { should == patient}
   
   it { should be_valid }
+  
+  describe "first/last sessions (complete)" do
+    let(:plan) { FactoryGirl.create(:plan_with_sessions, :num_sessions => 4, :num_treatment_sessions => 4) }
+    before { plan }
+    
+    it "should calculate first/last correctly" do    
+      for i in 0..3 do
+        if 0 == i
+          plan.reload.first_session?(plan.reload.treatment_sessions[i]).should be_true
+        else
+          plan.reload.first_session?(plan.reload.treatment_sessions[i]).should be_false
+        end
+        
+        if 3 == i
+          plan.reload.last_session?(plan.reload.treatment_sessions[i]).should be_true
+        else
+          plan.reload.last_session?(plan.reload.treatment_sessions[i]).should be_false
+        end
+      end
+    end
+  end
+
+  describe "first/last sessions (incomplete)" do
+    # 4 of 6 -- last one isn't the last *planned*, so last_session? should be false
+    let(:plan) { FactoryGirl.create(:plan_with_sessions, :num_sessions => 6, :num_treatment_sessions => 4) }
+    before { plan }
+    
+    it "should calculate first/last correctly" do    
+      for i in 0..3 do
+        if 0 == i
+          plan.reload.first_session?(plan.reload.treatment_sessions[i]).should be_true
+        else
+          plan.reload.first_session?(plan.reload.treatment_sessions[i]).should be_false
+        end
+        
+        plan.reload.last_session?(plan.reload.treatment_sessions[i]).should be_false
+      end
+    end
+  end
   
   describe "create from template" do
     let(:template) { FactoryGirl.create(:plan1) }

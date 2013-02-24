@@ -80,4 +80,14 @@ class TreatmentPlan < TreatmentPlanTemplate
       false
     end
   end
+  
+  # Detect first/last to validate measurements
+  def first_session?(session)
+    !session.nil? and (self.treatment_sessions.first == session)
+  end
+  
+  # Detect first/last to validate measurements
+  def last_session?(session)
+    !session.nil? and (self.treatment_sessions.last == session) and (self.num_sessions == self.treatment_sessions.count)    
+  end
 end

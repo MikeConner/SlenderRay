@@ -41,7 +41,7 @@
         %td{:colspan=>6}
           .pull-right
             = link_to "<i class='icon-plus'></i> Create Treatment Facility".html_safe, new_treatment_facility_path,{:class => 'btn btn-success '}  
-
+    = link_to 'Static view of all active machines', static_dashboard_treatment_facilities_path
   - else
     - if current_user.treatment_facility.nil?
       Your User is not Set Up.  Please contact SlenderRay. 

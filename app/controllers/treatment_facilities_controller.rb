@@ -3,7 +3,7 @@ require 'phone_utils'
 class TreatmentFacilitiesController < ApplicationController
   before_filter :authenticate_user!
   before_filter :transform_phones, only: [:create, :update]
-
+  before_filter :ensure_admin, :only => [:static_dashboard]
   load_and_authorize_resource
 
   def index
@@ -117,7 +117,11 @@ class TreatmentFacilitiesController < ApplicationController
       end
     end
   end
-  
+
+  def static_dashboard
+    @facilities = TreatmentFacility.order(:facility_name)    
+  end
+    
   def update_dashboard
     @facility = TreatmentFacility.find(params[:id])
     
@@ -150,6 +154,12 @@ private
       if !fax_number.blank? and (fax_number !~ /#{ApplicationHelper::US_PHONE_REGEX}/)
         params[:treatment_facility][:fax] = PhoneUtils::normalize_phone(fax_number)
       end       
+    end
+  end
+  
+  def ensure_admin
+    if !current_user.has_role?(Role::SUPER_ADMIN)
+      redirect_to root_path, :alert => I18n.t('admins_only')
     end
   end
 end

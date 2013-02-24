@@ -16,6 +16,7 @@ SlenderRay::Application.routes.draw do
     end
     
     get 'dashboard', :on => :collection
+    get 'static_dashboard', :on => :collection
   end
   resources :patients do
     member do

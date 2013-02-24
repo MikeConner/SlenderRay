@@ -28,12 +28,63 @@ describe 'TreatmentSession' do
     session.should respond_to(:labels)
     session.should respond_to(:labeled_measurements)
     session.should respond_to(:date_completed)
+    session.should respond_to(:completeable?)
   end
   
   its(:treatment_plan) { should == plan }
   its(:machine) { should == machine }
   
   it { should be_valid }
+  
+  it "should not be completeable (1st session, no measurements)" do
+    session.reload.completeable?.should be_false
+  end
+  
+  describe "completeable (add measurements)" do
+    before { session.measurements.create!(:location => TreatmentSession::REQUIRED_MEASUREMENT, :circumference => 32.5) }
+    
+    it "should now be completeable" do
+      session.reload.measurements.count.should be == 1
+      session.reload.treatment_plan.first_session?(session.reload).should be_true
+      session.reload.treatment_plan.last_session?(session.reload).should be_false
+      session.reload.completeable?.should be_true
+    end
+  end
+  
+  describe "completeable (middle, no measurements)" do
+    let(:plan) { FactoryGirl.create(:plan_with_sessions, :num_sessions => 4, :num_treatment_sessions => 4) }
+    before { plan }
+
+    it "should be completeable" do
+      plan.reload.treatment_sessions[2].measurements.count.should be == 0
+      plan.first_session?(plan.reload.treatment_sessions[2]).should be_false
+      plan.last_session?(plan.reload.treatment_sessions[2]).should be_false
+      plan.reload.treatment_sessions[2].completeable?.should be_true
+    end    
+  end
+  
+  describe "completeable (end, no measurements)" do
+    let(:plan) { FactoryGirl.create(:plan_with_sessions, :num_sessions => 4, :num_treatment_sessions => 4) }
+    before { plan }
+
+    it "should not be completeable" do
+      plan.reload.treatment_sessions[3].measurements.count.should be == 0
+      plan.reload.first_session?(plan.reload.treatment_sessions[3]).should be_false
+      plan.reload.last_session?(plan.reload.treatment_sessions[3]).should be_true
+      plan.reload.treatment_sessions[3].completeable?.should be_false
+    end    
+    
+    describe "add measurement" do
+      before { plan.reload.treatment_sessions[3].measurements.create!(:location => TreatmentSession::REQUIRED_MEASUREMENT, :circumference => 32.5) }
+
+      it "should now be completeable" do
+        plan.reload.treatment_sessions[3].measurements.count.should be == 1
+        plan.reload.first_session?(plan.reload.treatment_sessions[3]).should be_false
+        plan.reload.last_session?(plan.reload.treatment_sessions[3]).should be_true
+        plan.reload.treatment_sessions[3].completeable?.should be_true
+      end
+    end
+  end
   
   it "should have no date completed" do
     session.date_completed.should be_nil

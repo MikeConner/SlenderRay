@@ -81,7 +81,6 @@ class TreatmentSessionsController < ApplicationController
   def update
     @treatment_session = TreatmentSession.find(params[:id])
 
-    #TODO Why is this returning true when the measurements don't validate???
     notice = nil
     if @treatment_session.update_attributes(params[:treatment_session]) and @treatment_session.valid?
       if 'Start Timer' == params[:commit]
@@ -95,11 +94,11 @@ class TreatmentSessionsController < ApplicationController
       elsif 'Expire Timer' == params[:commit]
         @treatment_session.process_timer.expire
       elsif 'Complete Session' == params[:commit]
-        if @treatment_session.measurements.empty?
-          @treatment_session.errors.add :base, 'Navel measurement required'
-        else
+        if @treatment_session.completeable?
           @treatment_session.process_timer.complete
-          redirect_to root_path and return
+          redirect_to patient_path(@treatment_session.treatment_plan.patient) and return
+        else
+          @treatment_session.errors.add :base, "#{TreatmentSession::REQUIRED_MEASUREMENT} measurement required"
         end
       elsif 'Update Session Data' == params[:commit]
         notice = I18n.t('session_updated')

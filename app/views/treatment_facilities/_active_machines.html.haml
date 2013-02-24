@@ -1,0 +1,15 @@
+- facilities.each do |facility|
+  %h2== #{facility.facility_name}, #{facility.city}, #{facility.state}
+  %table.table.table-striped.table-bordered.table-condensed
+    %caption Active Machine Sessions
+    %thead
+      %th Patient
+      %th Machine
+      %th Status
+    %tbody
+      - facility.treatment_sessions.each do |session|
+        - if !session.complete?
+          %tr
+            %th= session.treatment_plan.patient.name
+            %th= session.machine.display_name
+            %th= session.process_timer.display_status

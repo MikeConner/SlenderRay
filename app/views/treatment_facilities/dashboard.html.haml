@@ -1,21 +1,7 @@
 #dashboard_marker
-- @facilities.each do |facility|
-  %h2== #{facility.facility_name}, #{facility.city}, #{facility.state}
-  %table.table.table-striped.table-bordered.table-condensed
-    %caption Active Machine Sessions
-    %thead
-      %th Patient
-      %th Machine
-      %th Status
-    %tbody
-      - facility.treatment_sessions.each do |session|
-        - if !session.complete?
-          %tr
-            %th= session.treatment_plan.patient.name
-            %th= session.machine.display_name
-            %th= session.process_timer.display_status
-  - if current_user.has_role?(Role::TECHNICIAN) and facility.treatment_areas.count > 0
-    %h3 Treatment Areas
-    = form_for facility, :url => update_dashboard_treatment_facility_path(facility) do |f|
-      = f.fields_for :treatment_areas do |area_form|
-        = render :partial => 'treatment_area_dashview', :locals => { :f => area_form }
+= render :partial => 'active_machines', :locals => { :facilities => @facilities }
+- if current_user.has_role?(Role::TECHNICIAN) and facility.treatment_areas.count > 0
+  %h3 Treatment Areas
+  = form_for facility, :url => update_dashboard_treatment_facility_path(facility) do |f|
+    = f.fields_for :treatment_areas do |area_form|
+      = render :partial => 'treatment_area_dashview', :locals => { :f => area_form }
