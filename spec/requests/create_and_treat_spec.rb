@@ -14,9 +14,8 @@ describe "Create patient (and treat)" do
       sign_in_as_technician(facility)
       login_as(@user, :scope => :user)
       visit new_patient_path
-      save_page
       fill_in 'patient_name', :with => 'Fat Bastard'
-      click_button 'Create Patient'
+      find(:css, 'input[value="Create Patient"]').click
     end
     
     it "should have a patient" do

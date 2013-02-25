@@ -56,7 +56,7 @@ class TreatmentFacilitiesController < ApplicationController
   def update
     @facility = TreatmentFacility.find(params[:id])
     
-    total_before = @facility.machines.count + @facility.users.count
+    total_before = @facility.machines.count + @facility.technicians.count
     if @facility.update_attributes(params[:treatment_facility])
       # Set roles for new users
       @facility.users.each do |user|
@@ -73,8 +73,8 @@ class TreatmentFacilitiesController < ApplicationController
         end
       end
       
-      total_after = @facility.machines.count + @facility.users.count
-      if (total_after == total_before) or (0 == @facility.machines.count) or (0 == @facility.users.count)
+      total_after = @facility.machines.count + @facility.technicians.count
+      if (total_after == total_before) or (0 == @facility.machines.count) or (0 == @facility.technicians.count)
         redirect_to @facility, :notice => I18n.t('facility_updated')
       else
         redirect_to edit_assignments_treatment_facility_path(@facility)
@@ -125,7 +125,6 @@ class TreatmentFacilitiesController < ApplicationController
   def update_dashboard
     @facility = TreatmentFacility.find(params[:id])
     
-    puts params[:commit]
     if @facility.update_attributes(params[:treatment_facility])
       @area = TreatmentArea.find(params[:treatment_facility][:treatment_areas_attributes]['0'][:id])
       if 'Start Timer' == params[:commit]

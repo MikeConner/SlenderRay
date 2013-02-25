@@ -101,8 +101,6 @@ class TreatmentSession < ActiveRecord::Base
         self.measurements.build(:location => REQUIRED_MEASUREMENT, :label => Measurement::AFTER_LABEL)
         self.measurements.build(:location => '-2cm', :label => Measurement::AFTER_LABEL)
         self.measurements.build(:location => '-4cm', :label => Measurement::AFTER_LABEL)
-        
-        puts "#{self.measurements.count} measurements"
       else
         # Build 1 set
         self.measurements.build(:location => '+4cm')

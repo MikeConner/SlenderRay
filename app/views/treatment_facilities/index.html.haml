@@ -35,7 +35,7 @@
             = link_to edit_assignments_treatment_facility_path(facility), :title => "Assign users to machines", :rel => "Assign" do
               .icon-user.icon-2x
               &nbsp;
-            = link_to facility, :method => 'delete', :data => { confirm: 'Are you sure?'}, :title => "Edit", :rel => "Edit" do
+            = link_to facility, :method => 'delete', :data => { confirm: 'Are you sure?'}, :title => "Delete", :rel => "Delete" do
               .icon-trash.icon-2x
       %tr
         %td{:colspan=>6}
@@ -44,7 +44,7 @@
     = link_to 'Static view of all active machines', static_dashboard_treatment_facilities_path
   - else
     - if current_user.treatment_facility.nil?
-      Your User is not Set Up.  Please contact SlenderRay. 
+      = I18n.t('user_not_set_up')
     - else
       - facility = current_user.treatment_facility
       #{facility.facility_name}: #{facility.city}, #{facility.state} #{link_to 'Show', treatment_facility_path(facility)} #{link_to 'Edit', edit_treatment_facility_path(facility)}

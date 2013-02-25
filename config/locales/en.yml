@@ -21,6 +21,7 @@ en:
   testimonial_updated: 'Patient testimonial updated successfully'
   testimonial_created: 'Patient testimonial created successfully'
   technicians_only: 'This function only available to technicians'
+  user_not_set_up: 'Your user is not set up.  Please contact SlenderRay.'
   will_paginate:
     models:
       patient:
