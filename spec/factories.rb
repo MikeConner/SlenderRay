@@ -233,7 +233,7 @@ FactoryGirl.define do
   
   factory :session_timer, :class => ProcessTimer do
     process_state ProcessTimer::IDLE
-    duration_seconds 480
+    duration_seconds 960
     
     process { FactoryGirl.create(:session_process) }
   end

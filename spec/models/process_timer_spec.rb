@@ -63,6 +63,13 @@ describe "ProcessTimer" do
     session_timer.completeable?.should be_false
   end
   
+  describe "pause" do
+    before { session_timer.start }
+    
+    it "should have a pause scheduled" do
+      session_timer.next_pause.should be == 480
+    end
+  end
   describe "display status" do
     before do
       session_timer.duration_seconds = 600
@@ -71,7 +78,6 @@ describe "ProcessTimer" do
     
     it "should show full value" do
       session_timer.display_status.should be == 'Started: 10:00'
-      session_timer.next_pause.should be == 120
     end
     
     context "One second gone" do
