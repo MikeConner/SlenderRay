@@ -145,7 +145,7 @@ class ProcessTimer < ActiveRecord::Base
         treatments = self.duration_seconds / interval
         
         # Starting at duration seconds, stop every interval seconds  (e.g., 16 min, 8 min/treatment: d=960, i=480)
-        for idx in 1..treatments do
+        for idx in 1..(treatments - 1) do
           pause = self.duration_seconds - idx * interval
           if remaining > pause
             return pause

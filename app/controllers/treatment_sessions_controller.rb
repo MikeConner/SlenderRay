@@ -81,7 +81,10 @@ class TreatmentSessionsController < ApplicationController
   
   def treatment_expired
     @treatment_session = TreatmentSession.find(params[:id])
-    @treatment_session.process_timer.pause
+    timer = @treatment_session.process_timer
+    timer.pause
+    # There is a latency of 1-2 seconds when the timer gets paused. We want to stop/resume exactly at the boundary
+    timer.update_attributes!(:elapsed_seconds => timer.duration_seconds - params[:time].to_i)
 
     respond_to do |format|
       format.js { render :js => "window.location.href = \"#{edit_treatment_session_path(@treatment_session)}\"" }

@@ -29,6 +29,7 @@ function countdown() {
 		if (running) {
 			// Only call this once! Once it's expired, paused will be true
 			jQuery.ajax({url:"/treatment_sessions/" + $('#time_remaining').attr('session') + "/treatment_expired",
+			             data: "time=" + scheduled_pause,
 				         type: "PUT",
 			             error: function(xhr, ajaxOptions, thrownError) //{ alert('Oh noes!') },
 			               { alert('error code: ' + xhr.status + ' \n'+'error:\n' + thrownError ); },
