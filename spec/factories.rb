@@ -18,6 +18,7 @@ FactoryGirl.define do
   sequence(:random_first_name) { |n| Faker::Name.first_name }
   sequence(:random_last_name) { |n| Faker::Name.last_name }
   sequence(:random_phrase) { |n| Faker::Company.catch_phrase }
+  sequence(:random_sentences) { |n| Faker::Lorem.sentences.join(' ') }
   sequence(:random_paragraphs) { |n| Faker::Lorem.paragraphs.join("\n") }
   sequence(:sequential_serial) { |n| "00342" + sprintf("%04d", n) }
   sequence(:sequential_machine) { |n| sprintf("Machine %d", n) }
@@ -54,6 +55,16 @@ FactoryGirl.define do
         FactoryGirl.create_list(:treatment_area, evaluator.num_areas, :treatment_facility => facility)
       end
     end
+    
+    factory :facility_with_photos do
+      ignore do
+        num_photos 5
+      end
+      
+      after(:create) do |facility, evaluator|
+        FactoryGirl.create_list(:photo, evaluator.num_photos, :treatment_facility => facility)
+      end
+    end
   end
   
   factory :machine do
@@ -63,6 +74,11 @@ FactoryGirl.define do
     serial_number { generate(:sequential_serial) }
     display_name { generate(:sequential_machine) }
     date_installed 1.week.ago
+    minutes_per_treatment 8
+    
+    factory :ten_minute_machine do
+      minutes_per_treatment 10
+    end
     
     factory :machine_with_sessions do
       ignore do
@@ -269,4 +285,12 @@ FactoryGirl.define do
       role
     end
   end  
+  
+  factory :photo do
+    treatment_facility
+    
+    title { generate(:random_phrase) }
+    caption { generate(:random_sentences) }
+    remote_facility_image_url 'http://g-ecx.images-amazon.com/images/G/01/kindle/dp/2012/famStripe/FS-KJW-125._V387998894_.gif'
+  end
 end

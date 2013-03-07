@@ -1,7 +1,9 @@
 #dashboard_marker
 = render :partial => 'active_machines', :locals => { :facilities => @facilities }
-- if current_user.has_role?(Role::TECHNICIAN) and facility.treatment_areas.count > 0
-  %h3 Treatment Areas
-  = form_for facility, :url => update_dashboard_treatment_facility_path(facility) do |f|
-    = f.fields_for :treatment_areas do |area_form|
-      = render :partial => 'treatment_area_dashview', :locals => { :f => area_form }
+- if current_user.has_role?(Role::TECHNICIAN) 
+  - facility = @facilities[0]
+  - if facility.treatment_areas.count > 0
+    %h3 Treatment Areas
+    = form_for facility, :url => update_dashboard_treatment_facility_path(facility) do |f|
+      = f.fields_for :treatment_areas do |area_form|
+        = render :partial => 'treatment_area_dashview', :locals => { :f => area_form }

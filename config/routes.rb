@@ -22,13 +22,21 @@ SlenderRay::Application.routes.draw do
     member do
       get 'current_session_machine'
       get 'completed_sessions'
+      get 'treat'
     end
   end
   resources :testimonials
   resources :treatment_sessions do
-    put 'timer_expired', :on => :member
+    member do
+      put 'timer_expired'
+      put 'treatment_expired'
+    end
   end
+  resources :photos, :except => [:show]
   
+  match "/training_videos" => 'static_pages#training_videos'
+  match "/select_report" => 'static_pages#select_report'
+  match "/generate_report" => 'static_pages#generate_report', :via => :post
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

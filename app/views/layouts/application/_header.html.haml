@@ -1,18 +1,18 @@
-
-.row-fluid
-  .span6
-    = link_to root_path do
-      =image_tag('/assets/logo.jpg')
-      &nbsp;&nbsp;&nbsp;&nbsp;  
-      .icon-home.icon-4x
-
-  .span6.pull-right
-    - if current_user.nil?
-      %br/
-      = link_to 'Log in', new_user_session_path, :class => 'btn btn-large btn-success'
-    - else
-      %br/
-      = link_to 'Manage Facilities', treatment_facilities_path, :class => 'btn'
-      = link_to 'Log out', destroy_user_session_path, :method => :delete, :class => 'btn btn-large btn-success'
-.row-fluid
-  = render :partial => 'shared/flash_messages'
+.offset2
+  .row-fluid
+    .span6
+      = link_to root_path do
+        .icon-home.icon-4x
+  
+    .span6.pull-right
+      - if current_user.nil?
+        %br/
+        = link_to 'Log in', new_user_session_path, :class => 'btn btn-large btn-success'
+      - else
+        %br/
+        = link_to 'Manage Facilities', treatment_facilities_path, :class => 'btn'
+        - if current_user.has_role?(Role::SUPER_ADMIN)
+          = link_to 'Reports', select_report_path, :class => 'btn'
+        = link_to 'Log out', destroy_user_session_path, :method => :delete, :class => 'btn btn-large btn-success'
+  .row-fluid
+    = render :partial => 'shared/flash_messages'

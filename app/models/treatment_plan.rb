@@ -41,8 +41,6 @@ class TreatmentPlanTemplate < ActiveRecord::Base
 end
 
 class TreatmentPlan < TreatmentPlanTemplate
-  TREATMENT_DURATION_MINUTES = 8
-  
   attr_accessible :patient_id, :treatment_sessions_attributes
   
   belongs_to :patient

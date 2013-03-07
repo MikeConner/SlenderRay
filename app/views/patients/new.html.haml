@@ -1,17 +1,12 @@
 .offset2
   = form_for @patient do |f|
     = render :partial => 'shared/error_messages', :locals => { :errors => @patient.errors, :name => 'Patient' }
-    = f.hidden_field :treatment_facility_id
-    .control-group
-      .control-label
-        = f.label :name
-      .controls
-        = f.text_field :name
-      .control-label
-        Plan
-      .controls
-        = select_tag :plan_template, options_for_select(@facility.treatment_plan_templates.where("type = 'TreatmentPlanTemplate'").map { |t| t.description })
-        Select a treatment plan (you can edit the patient to customize if necessary)
+    = render :partial => 'fields', :locals => { :f => f }
+    .control-label
+      Plan
+    .controls
+      = select_tag :plan_template, options_for_select(@facility.treatment_plan_templates.where("type = 'TreatmentPlanTemplate'").map { |t| t.description })
+      Select a treatment plan (you can edit the patient to customize if necessary)
     .actions
       = f.submit 'Create Patient', :class => 'btn btn-large btn-success'
       = f.submit I18n.t('create_and_treat'), :class => 'btn btn-large btn-success'

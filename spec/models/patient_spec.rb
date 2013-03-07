@@ -7,6 +7,7 @@
 #  created_at            :datetime        not null
 #  updated_at            :datetime        not null
 #  treatment_facility_id :integer
+#  contract_file         :string(255)
 #
 
 describe 'Patient' do
@@ -23,6 +24,7 @@ describe 'Patient' do
     patient.should respond_to(:treatment_plans)
     patient.should respond_to(:treatment_sessions)
     patient.should respond_to(:testimonials)
+    patient.should respond_to(:contract_file)
     facility.patients.should be == [patient]
   end
   

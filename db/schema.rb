@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130223204610) do
+ActiveRecord::Schema.define(:version => 20130227202344) do
 
   create_table "machines", :force => true do |t|
     t.string   "model",                 :limit => 64,                 :null => false
@@ -21,9 +21,10 @@ ActiveRecord::Schema.define(:version => 20130223204610) do
     t.datetime "created_at",                                          :null => false
     t.datetime "updated_at",                                          :null => false
     t.string   "display_name",          :limit => 64, :default => "", :null => false
+    t.integer  "minutes_per_treatment",               :default => 8,  :null => false
   end
 
-  add_index "machines", ["treatment_facility_id", "display_name"], :name => "index_machines_on_treatment_facility_id_and_display_name", :unique => true
+  add_index "machines", ["treatment_facility_id", "display_name"], :name => "unique_by_facility", :unique => true
 
   create_table "machines_users", :id => false, :force => true do |t|
     t.integer "machine_id"
@@ -46,9 +47,19 @@ ActiveRecord::Schema.define(:version => 20130223204610) do
     t.datetime "created_at",                          :null => false
     t.datetime "updated_at",                          :null => false
     t.integer  "treatment_facility_id"
+    t.string   "contract_file"
   end
 
   add_index "patients", ["treatment_facility_id", "name"], :name => "index_patients_on_treatment_facility_id_and_name", :unique => true
+
+  create_table "photos", :force => true do |t|
+    t.string   "title",                 :limit => 64
+    t.string   "caption"
+    t.string   "facility_image"
+    t.integer  "treatment_facility_id"
+    t.datetime "created_at",                          :null => false
+    t.datetime "updated_at",                          :null => false
+  end
 
   create_table "process_timers", :force => true do |t|
     t.string   "process_state",    :limit => 16, :default => "Idle", :null => false

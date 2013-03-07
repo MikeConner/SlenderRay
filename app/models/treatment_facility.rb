@@ -43,6 +43,7 @@ class TreatmentFacility < ActiveRecord::Base
   has_many :treatment_sessions, :through => :machines
   has_many :users, :dependent => :destroy
   has_many :treatment_plan_templates, :dependent => :destroy
+  has_many :photos, :dependent => :destroy
   
   accepts_nested_attributes_for :machines, :allow_destroy => true, :reject_if => :all_blank
   accepts_nested_attributes_for :treatment_areas, :allow_destroy => true, :reject_if => :all_blank

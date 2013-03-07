@@ -136,4 +136,24 @@ class ProcessTimer < ActiveRecord::Base
       [0, self.duration_seconds - (Time.zone.now - self.start_time).round - self.elapsed_seconds].max
     end
   end
+  
+  def next_pause
+    if 'TreatmentSession' == self.process_type
+      remaining = seconds_remaining
+      if !remaining.nil?
+        interval = self.process.machine.minutes_per_treatment * 60
+        treatments = self.duration_seconds / interval
+        
+        # Starting at duration seconds, stop every interval seconds  (e.g., 16 min, 8 min/treatment: d=960, i=480)
+        for idx in 1..treatments do
+          pause = self.duration_seconds - idx * interval
+          if remaining > pause
+            return pause
+          end
+        end
+      end
+    end
+    
+    nil
+  end
 end

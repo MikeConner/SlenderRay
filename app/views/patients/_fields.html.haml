@@ -1,9 +1,14 @@
--# Unused *************
 = f.hidden_field :treatment_facility_id
-.field
-  = f.label :name
-  = f.text_field :name
-%h4 Treatment Plans
-#treatment_plans
-  = f.fields_for :treatment_plans do |plan_form|
-    = render :partial => 'shared/treatment_plan', :locals => { :f => plan_form, :type => 'TreatmentPlan' }
+.control-group
+  .control-label
+    = f.label :name
+  .controls
+    = f.text_field :name
+  .control-label
+    = f.label :contract_file
+  .controls
+    = f.file_field :contract_file
+  .control-label
+    = f.label :remote_contract_file_url, "or file URL"
+  .controls
+    = f.text_field :remote_contract_file_url

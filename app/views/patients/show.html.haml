@@ -11,3 +11,5 @@
   %br/
   %br/
   = link_to 'Edit', edit_patient_path(@patient)
+  - if !@patient.unfinished_plan.nil?
+    = link_to 'Treat', treat_patient_path(@patient)

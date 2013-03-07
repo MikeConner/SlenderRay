@@ -3,7 +3,7 @@ class PatientsController < ApplicationController
   
   before_filter :authenticate_user!
   before_filter :ensure_technician
-  before_filter :ensure_own_patient, :only => [:edit, :update]
+  before_filter :ensure_own_patient, :only => [:edit, :update, :treat]
   load_and_authorize_resource
 
   def index
@@ -14,6 +14,26 @@ class PatientsController < ApplicationController
   def show
     @patient = Patient.find(params[:id])  
     @plans = @patient.treatment_plans.order('updated_at desc')
+  end
+  
+  # Start or Resume session (shortcut from User Show or Manage patients)
+  def treat
+    resume_session = @patient.unfinished_session
+    if resume_session.nil?
+      resume_plan = @patient.unfinished_plan
+      if resume_plan.nil?
+        redirect_to root_path, :alert => 'No active treatment plan for this patient' # shouldn't happen
+      else
+        machine = Machine.first
+        new_session = resume_plan.treatment_sessions.build(:machine_id => machine.id)
+        new_session.build_process_timer(:duration_seconds => resume_plan.treatments_per_session * machine.minutes_per_treatment * 60)
+        if new_session.save
+          redirect_to edit_treatment_session_path(new_session)
+        end    
+      end
+    else
+      redirect_to edit_treatment_session_path(resume_session)
+    end
   end
   
   def new
@@ -39,8 +59,9 @@ class PatientsController < ApplicationController
       if I18n.t('create_and_treat') == params[:commit]
         @treatment_session = @plan.treatment_sessions.build
         # Just pick the first machine; they can change it later
-        @treatment_session.machine_id = @patient.treatment_facility.machines.first.id
-        @treatment_session.build_process_timer(:duration_seconds => @treatment_session.treatment_plan.treatments_per_session * TreatmentPlan::TREATMENT_DURATION_MINUTES * 60)
+        machine = @patient.treatment_facility.machines.first
+        @treatment_session.machine_id = machine.id
+        @treatment_session.build_process_timer(:duration_seconds => @treatment_session.treatment_plan.treatments_per_session * machine.minutes_per_treatment * 60)
         
         if @treatment_session.save
           redirect_to edit_treatment_session_path(@treatment_session) and return
@@ -76,6 +97,9 @@ class PatientsController < ApplicationController
   
   def destroy
     @patient = Patient.find(params[:id])
+    # This should only be called if it's in the original state, with 1 plan and no sessions
+    #   otherwise this will fail with dependent sessions
+    @patient.treatment_plans.destroy_all
     @patient.destroy
 
     redirect_to patients_path, :notice => I18n.t('patient_deleted') 

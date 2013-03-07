@@ -1,6 +1,7 @@
 /* Variables */
 var countdown_id = 0;
 var seconds_remaining = 0;
+var scheduled_pause = -1;
 var dashboard_id = 0;
 
 $(function() {
@@ -20,7 +21,21 @@ function countdown() {
 	
 	$('#time_remaining').text(m + ':' + (s < 10 ? "0" : "") + s);
 	
-	if (0 == seconds_remaining) {
+	// If -1, there is no pause, and it will never trigger this
+	if (scheduled_pause == seconds_remaining) {
+		clearInterval(countdown_id);
+		// Ajax to pause timer
+		running = 'true' == $('#time_remaining').attr('running')
+		if (running) {
+			// Only call this once! Once it's expired, paused will be true
+			jQuery.ajax({url:"/treatment_sessions/" + $('#time_remaining').attr('session') + "/treatment_expired",
+				         type: "PUT",
+			             error: function(xhr, ajaxOptions, thrownError) //{ alert('Oh noes!') },
+			               { alert('error code: ' + xhr.status + ' \n'+'error:\n' + thrownError ); },
+			             async: false}); 	
+		}    				
+	}
+	else if (0 == seconds_remaining) {
 		clearInterval(countdown_id);
 		// Ajax to expire timer
 		running = 'true' == $('#time_remaining').attr('running')
@@ -63,6 +78,7 @@ function myLoadHandler(evt) {
 	if (tr_remaining) {
 		running = 'true' == $('#time_remaining').attr('running')
 		seconds_remaining = parseInt($('#time_remaining').attr('remaining'));
+		scheduled_pause = parseInt($('#time_remaining').attr('scheduled_pause'));
 		
 		// Count down every second
 		if (running && seconds_remaining > 0) {

@@ -10,6 +10,7 @@
 #  created_at            :datetime        not null
 #  updated_at            :datetime        not null
 #  display_name          :string(64)      default(""), not null
+#  minutes_per_treatment :integer         default(8), not null
 #
 
 # CHARTER
@@ -22,8 +23,9 @@
 #
 class Machine < ActiveRecord::Base
   MAX_FIELD_LEN = 64
+  DEFAULT_MINUTES_PER_SESSION = 8
   
-  attr_accessible :model, :serial_number, :display_name, :date_installed,
+  attr_accessible :model, :serial_number, :display_name, :date_installed, :minutes_per_treatment,
                   :treatment_facility_id, :user_ids
   
   belongs_to :treatment_facility
@@ -38,4 +40,6 @@ class Machine < ActiveRecord::Base
   validates_presence_of :treatment_facility_id
   validates :display_name, :presence => true,
                            :length => { maximum: MAX_FIELD_LEN }
+  validates :minutes_per_treatment, :presence => true,
+                                    :numericality => { only_integer: true, greater_than: 0 }
 end

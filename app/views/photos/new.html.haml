@@ -1,0 +1,8 @@
+.offset2
+  %h1== Add a Photo to #{current_user.treatment_facility.facility_name}
+  = form_for @photo do |f|
+    = render :partial => 'shared/error_messages', :locals => { :errors => @photo.errors, :name => 'Photo' }
+    = render :partial => 'fields', :locals => { :f => f }
+    .actions
+      = f.submit 'Add Photo', :class => 'btn btn-large btn-success'
+

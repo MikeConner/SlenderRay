@@ -1,0 +1,20 @@
+- show_facility_name = !current_user.nil? && current_user.has_role?(Role::SUPER_ADMIN)
+- technician = !current_user.nil? && current_user.has_role?(Role::TECHNICIAN)
+%center
+  %h1 Photos
+- @photos.each do |photo|
+  - if !current_user.nil?
+    %br= photo.created_at.try(:strftime, ApplicationHelper::DATETIME_FORMAT)
+  = image_tag photo.facility_image_url(:standard).to_s
+  %br= photo.title
+  %em= photo.caption
+  - if show_facility_name
+    %br= photo.treatment_facility.name
+  - if technician
+    %br/
+    = link_to 'Edit', edit_photo_path(photo)
+    = link_to 'Delete', photo, :method => :delete, :data => { confirm: 'Are you sure?' }
+  %br/
+%br/
+- if technician
+  = link_to 'Add Photo', new_photo_path

@@ -48,6 +48,27 @@ describe "TreatmentFacility" do
   
   it { should be_valid }
   
+  describe "photos" do
+    let(:facility) { FactoryGirl.create(:facility_with_photos) }
+  
+    it "should have photos" do
+      facility.photos.count.should be == 5
+      facility.photos.each do |photo|
+        photo.treatment_facility.should be == facility
+      end
+      
+      Photo.count.should be == 5
+    end  
+    
+    describe "should delete" do
+      before { facility.destroy }
+      
+      it "should be gone" do
+        Photo.count.should be == 0
+      end
+    end
+  end
+  
   describe "users" do
     let(:user) { FactoryGirl.create(:user_with_role, :treatment_facility => facility, :role => Role.find_by_name(Role::SUPER_ADMIN)) }
     let(:user1) { FactoryGirl.create(:user_with_role, :treatment_facility => facility, :role => Role.find_by_name(Role::TECHNICIAN)) }

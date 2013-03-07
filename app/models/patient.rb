@@ -7,6 +7,7 @@
 #  created_at            :datetime        not null
 #  updated_at            :datetime        not null
 #  treatment_facility_id :integer
+#  contract_file         :string(255)
 #
 
 # CHARTER
@@ -21,8 +22,10 @@
 class Patient < ActiveRecord::Base
   MAX_ID_LEN = 40
   
-  attr_accessible :name,
+  attr_accessible :name, :contract_file, :remote_contract_file_url,
                   :treatment_facility_id, :treatment_plans_attributes
+
+  mount_uploader :contract_file, ContractUploader
                   
   belongs_to :treatment_facility
   
@@ -61,5 +64,18 @@ class Patient < ActiveRecord::Base
     end
     
     nil
+  end
+  
+  # If there's just the original plan with no sessions (initial state), it can be deleted,
+  #  by deleting the plan first, then the patient
+  def can_be_deleted?
+    # It's created with a treatment plan, so it should never be zero
+    if 0 == self.treatment_plans.count
+      true
+    elsif 1 == self.treatment_plans.count
+      0 == self.treatment_plans.first.treatment_sessions.count
+    else
+      false
+    end
   end
 end

@@ -37,6 +37,7 @@ describe "ProcessTimer" do
     session_timer.should respond_to(:completeable?)
     session_timer.should respond_to(:complete)
     session_timer.should respond_to(:display_status)
+    session_timer.should respond_to(:next_pause)
   end
   
   it { should be_valid }
@@ -50,6 +51,8 @@ describe "ProcessTimer" do
   it "should have the right types" do
     session_timer.process.class.should be == TreatmentSession
     area_timer.process.class.should be == TreatmentArea
+    session_timer.next_pause.should be_nil
+    area_timer.next_pause.should be_nil
   end
   
   it "should have correct statuses" do
@@ -68,6 +71,7 @@ describe "ProcessTimer" do
     
     it "should show full value" do
       session_timer.display_status.should be == 'Started: 10:00'
+      session_timer.next_pause.should be == 120
     end
     
     context "One second gone" do
@@ -83,6 +87,14 @@ describe "ProcessTimer" do
       
       it "should show leading zeroes" do
         session_timer.display_status.should be == 'Started: 9:05'
+      end
+    end
+    
+    context "past pause point" do
+      before { session_timer.start_time = 500.seconds.ago }
+      
+      it "should not have a scheduled pause" do
+        session_timer.next_pause.should be_nil
       end
     end
   end

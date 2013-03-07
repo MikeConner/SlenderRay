@@ -1,0 +1,18 @@
+= f.hidden_field :treatment_facility_id
+.control-group
+  .control-label
+    = f.label :title
+  .controls
+    = f.text_field :title, :maxlength => Photo::MAX_TITLE_LEN
+  .control-label
+    = f.label :caption
+  .controls
+    = f.text_field :caption
+  .control-label
+    = f.label :facility_image, 'Image'
+  .controls
+    = f.file_field :facility_image
+  .control-label
+    = f.label :remote_facility_image_url, "or image URL"
+  .controls
+    = f.text_field :remote_facility_image_url

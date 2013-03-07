@@ -10,6 +10,7 @@
 #  created_at            :datetime        not null
 #  updated_at            :datetime        not null
 #  display_name          :string(64)      default(""), not null
+#  minutes_per_treatment :integer         default(8), not null
 #
 
 describe "Machine" do
@@ -30,9 +31,18 @@ describe "Machine" do
     machine.should respond_to(:display_name)
     machine.should respond_to(:treatment_sessions)
     machine.should respond_to(:users)
+    machine.should respond_to(:minutes_per_treatment)
   end
   
   its(:treatment_facility) { should == facility }
+  
+  describe "invalid minutes" do
+    [-5, 0, 2.5, 'abc', nil].each do |mins|
+      before { machine.minutes_per_treatment = mins }
+      
+      it { should_not be_valid }
+    end
+  end
   
   it "should enforce unique display names" do 
     expect { FactoryGirl.create(:machine, :treatment_facility => facility, :display_name => machine.display_name) }.to raise_exception(ActiveRecord::RecordNotUnique)

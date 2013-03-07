@@ -1,12 +1,7 @@
 .offset2
   = form_for @patient do |f|
     = render :partial => 'shared/error_messages', :locals => { :errors => @patient.errors, :name => 'Patient' }
-    = f.hidden_field :treatment_facility_id
-    .control-group
-      .control-label
-        = f.label :name
-      .controls
-        = f.text_field :name
+    = render :partial => 'fields', :locals => { :f => f }
     - current_plan = @patient.unfinished_plan
     - if current_plan.nil?
       Select a new treatment plan

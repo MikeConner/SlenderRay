@@ -30,8 +30,9 @@ class TreatmentSessionsController < ApplicationController
     if I18n.t('start_session') == params[:commit]
       @patient = Patient.find(params[:new_patient_id])
       @treatment_session.treatment_plan = @patient.unfinished_plan
-      @treatment_session.machine_id = params[:new_machine_id]
-      @treatment_session.build_process_timer(:duration_seconds => @treatment_session.treatment_plan.treatments_per_session * TreatmentPlan::TREATMENT_DURATION_MINUTES * 60)
+      machine = Machine.find_by_id(params[:new_machine_id])
+      @treatment_session.machine_id = machine.id
+      @treatment_session.build_process_timer(:duration_seconds => @treatment_session.treatment_plan.treatments_per_session * machine.minute_per_treatment * 60)
       
       if @treatment_session.save
         redirect_to edit_treatment_session_path(@treatment_session) and return
@@ -78,11 +79,21 @@ class TreatmentSessionsController < ApplicationController
     end
   end
   
+  def treatment_expired
+    @treatment_session = TreatmentSession.find(params[:id])
+    @treatment_session.process_timer.pause
+
+    respond_to do |format|
+      format.js { render :js => "window.location.href = \"#{edit_treatment_session_path(@treatment_session)}\"" }
+    end
+  end
+  
   def update
     @treatment_session = TreatmentSession.find(params[:id])
 
     notice = nil
     if @treatment_session.update_attributes(params[:treatment_session]) and @treatment_session.valid?
+      
       if 'Start Timer' == params[:commit]
         @treatment_session.process_timer.start
       elsif 'Pause Timer' == params[:commit]
@@ -101,6 +112,9 @@ class TreatmentSessionsController < ApplicationController
           @treatment_session.errors.add :base, "#{TreatmentSession::REQUIRED_MEASUREMENT} measurement required"
         end
       elsif 'Update Session Data' == params[:commit]
+        # if they changed the machine, have to update the duration
+        @treatment_session.process_timer.update_attributes(:duration_seconds => @treatment_session.treatment_plan.treatments_per_session * 
+                                                                                @treatment_session.machine.minute_per_treatment * 60)
         notice = I18n.t('session_updated')
       end
     end

@@ -4,7 +4,9 @@
     = will_paginate
     = page_entries_info
   - @patients.each do |patient|
-    == #{patient.id}. #{patient.name} #{link_to 'Show', patient_path(patient)} #{link_to 'Edit', edit_patient_path(patient)} #{link_to 'Delete', patient, :method => 'delete', :data => { confirm: 'Are you sure?'}}
+    == #{patient.id}. #{patient.name} #{link_to 'Show', patient_path(patient)} #{link_to 'Edit', edit_patient_path(patient)} 
+    - if patient.can_be_deleted?
+      = link_to 'Delete', patient, :method => 'delete', :data => { confirm: 'Are you sure?'}
     %br/
   %br/
   %center= will_paginate

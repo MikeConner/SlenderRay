@@ -85,7 +85,9 @@ describe "Add machine" do
           fill_in 'Model', :with => '342-D'
           fill_in 'Serial number', :with => '3242342'
           fill_in 'Display name', :with => 'FatBlaster 3000'
+          fill_in 'Minutes per treatment', :with => 10
           click_button 'Update Facility'
+          save_page
         end
         
         it "should have added a machine" do

@@ -1,4 +1,4 @@
-%center
+%center.offset2
   .row-fluid
     .span3.box
       = image_tag '/assets/LaunchPad.jpg'
@@ -15,7 +15,7 @@
         .boxtext
           treatment
     .span2.box.redbox
-      =link_to "#" do
+      =link_to training_videos_path do
         .boxtop
           .icon-desktop.white-icon.icon-4x.pull-right
         .boxtext
@@ -38,15 +38,15 @@
         .boxtext
           Schedule
   .row-fluid
-    .span2.box
-      = image_tag '/assets/flower.jpg'
     .span2.box.greenbox
-      = link_to  "#" do
+      = link_to photos_path do
         .boxtop
           .icon-camera-retro.white-icon.icon-4x.pull-right
         .boxtext
           Photos
-    .span3.box.greenbox
+    .span2.box
+      = image_tag '/assets/flower.jpg'
+    .span3.box.orangebox
       = link_to  patients_path do
         .boxtop
           .icon-download-alt.white-icon.icon-4x.pull-right
