@@ -1,0 +1,18 @@
+.pull-right.login-container
+  .login-top 
+    %h4 &nbsp; Sign In to SlenderRay
+  = form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f|
+    .login-inner.row
+      .loginfield.pull-right
+        = f.email_field :email, :placeholder => "Email"
+      .loginfield.pull-right
+        = f.password_field :password, :placeholder => "Password"
+    .login-top.row 
+      %div
+        = f.submit "Sign in", :class => "btn btn-inverse pull-right"
+      %div
+        - if devise_mapping.rememberable?
+          = f.check_box :remember_me
+          = f.label :remember_me
+        %br
+        = render "devise/shared/links"

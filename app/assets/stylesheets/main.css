@@ -1,10 +1,72 @@
 body {
-  background-position: 50% 0%;
-  /*background-image: url('/assets/background.png');*/
-  background-repeat: no-repeat;
+  background-size: 140%   ;
+  background-position: 0px -100px;
+  background-image: url('/assets/frontgirl.jpg');
   min-width: 900px;
+  padding-top: 50px; 
+  background-color: #000;
+ 
 }
+a:link {text-decoration:none;}
+.navtexty {
+  vertical-align: text-top;
+}
+.login-top {
+  background: rgba(0, 0, 0, .93);
+  margin: 0px 0px 0px 0px !important;
+  padding: 3px 10px 10px 5px;
+}
+.login-top label {
+  color: #fff;
+}
+.login-inner{
+  background: rgba(0, 0, 0, .85);
+  z-index:2;
+  margin-left: 0px !important;
+}
+.login-container {
+  background: rgba(0, 0, 0, 0);
+  margin: 0 auto;
+  width: 400px; /* Whatever exact width you are looking for (not bound by preset bootstrap widths) */
+ 
+  border-spacing: 2px;
+  margin-top: 20%;
+  z-index:3;
+}
+.login-container h4 {
+  color: #fff;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: normal;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+.loginfield label, input[type="text"], input[type="password"] {
+  opacity: 1 !important;
 
+  z-index:10;
+}
+.navbar-inner{
+  opacity:.85;
+   background-color: #111; /* background color will be black for all browsers */
+  background-image: none;
+  background-repeat: no-repeat;
+  filter: none;
+}
+.nav-style ul{
+  background-color: #111; 
+  opacity: 1 !important;
+}
+.nav-style li a {
+  color: #fff !important;
+  font-family: Helvetica;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: normal;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  padding-bottom: 10px;
+}
 .space {margin: 25px 0px}
 .space-medium {margin:40px 0;}
 .space-large {margin:75px 0}
