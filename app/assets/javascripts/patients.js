@@ -21,3 +21,7 @@ function update_machine() {
 	             async: false}); 	    	
 	
 }
+$('#sessiontab a').click(function (e) {
+  e.preventDefault();
+  $(this).tab('show');
+})

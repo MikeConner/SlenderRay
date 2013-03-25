@@ -7,14 +7,29 @@
     - else
       = render :partial => 'shared/progress_bar', :locals => { :pct => plan.pct_complete, :text => plan.description }
       .tabbable
-        %ul.nav.nav-tabs
+        %ul.nav.nav-tabs{:id => "sessiontab"}
+          - firstactive = false
           - plan.treatment_sessions.order('created_at desc').each do |session|
-            %li
-              %a{"data-toggle" => "tab", :href => session.id} 
-                = session.created_at.try(:strftime, ApplicationHelper::DATE_FORMAT)
-      .tab-contents
-        - plan.treatment_sessions.order('created_at desc').each do |session|
-          = render :partial => 'session', :locals => { :session => session }
+            - if !firstactive
+              %li.active
+                %a{"data-toggle" => "tab", :href =>  "##{session.id}"} 
+                  = session.created_at.try(:strftime, ApplicationHelper::DATE_FORMAT)
+              - firstactive = true
+            - else
+              %li
+                %a{"data-toggle" => "tab", :href =>  "##{session.id}"} 
+                  = session.created_at.try(:strftime, ApplicationHelper::DATE_FORMAT)
+        .tab-content
+          - firstactive = false
+          - plan.treatment_sessions.order('created_at desc').each do |session|
+            - if !firstactive
+              .tab-pane.active{:id => "#{session.id}"}
+                = render :partial => 'session', :locals => { :session => session }
+              - firstactive = true
+            - else
+              .tab-pane{:id => "#{session.id}"}
+                = render :partial => 'session', :locals => { :session => session }
+
   %br/
   %br/
   = link_to edit_patient_path(@patient) do
