@@ -1,5 +1,5 @@
-.offset2
-  %h2 Manage Patients at #{@facility.facility_name}
+.span8.offset0.newpatient
+  %h3 Manage Patients at #{@facility.facility_name}
   %center
     = will_paginate
     = page_entries_info
@@ -11,4 +11,5 @@
   %br/
   %center= will_paginate
   %br/
-  = link_to "<i class='icon-plus'></i> New Patient".html_safe, new_patient_path,{:class => 'btn btn-success '}  
+  = link_to "<i class='icon-plus'></i> New Patient".html_safe, new_patient_path,{:class => 'btn btn-inverse greybtn '}  
+  %br

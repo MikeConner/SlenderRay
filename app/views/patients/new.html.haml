@@ -1,12 +1,13 @@
-.offset2
+.span6.offset0.newpatient
+  %h3 New Patient Intake
   = form_for @patient do |f|
     = render :partial => 'shared/error_messages', :locals => { :errors => @patient.errors, :name => 'Patient' }
     = render :partial => 'fields', :locals => { :f => f }
     .control-label
-      Plan
+      Select a treatment plan 
     .controls
       = select_tag :plan_template, options_for_select(@facility.treatment_plan_templates.where("type = 'TreatmentPlanTemplate'").map { |t| t.description })
-      Select a treatment plan (you can edit the patient to customize if necessary)
+      
     .actions
-      = f.submit 'Create Patient', :class => 'btn btn-large btn-success'
-      = f.submit I18n.t('create_and_treat'), :class => 'btn btn-large btn-success'
+      = f.submit 'Create Patient', :class => 'btn btn-inverse greybtn'
+      = f.submit I18n.t('create_and_treat'), :class => 'btn  btn-inverse greybtn'

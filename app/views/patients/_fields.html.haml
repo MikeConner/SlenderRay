@@ -1,14 +1,10 @@
 = f.hidden_field :treatment_facility_id
-.control-group
-  .control-label
-    = f.label :name
+.fieldset
   .controls
-    = f.text_field :name
+    = f.text_field :name, :placeholder => "Name"
+  %br
   .control-label
     = f.label :contract_file
   .controls
     = f.file_field :contract_file
-  .control-label
-    = f.label :remote_contract_file_url, "or file URL"
-  .controls
-    = f.text_field :remote_contract_file_url
+  %br

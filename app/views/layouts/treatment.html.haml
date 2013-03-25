@@ -10,17 +10,7 @@
   = csrf_meta_tags
   = stylesheet_link_tag "application", :media => "all"
   = render 'layouts/application/shim'
-%body
+%body{:class => "#{controller_name} #{action_name}"}
 .container-fluid
-  .row-fluid
-    .span5
-      = link_to root_path do
-        =image_tag('/assets/logo.jpg')
-        &nbsp;&nbsp;&nbsp;&nbsp;  
-        .icon-home.icon-4x 
-    .span5.pull-right
-      %br
-      = link_to 'Log out', destroy_user_session_path, :method => :delete, :class => 'btn btn-large btn-success'
-  .row-fluid
-    = render :partial => 'shared/flash_messages'
+  = render 'layouts/application/header'
   = yield

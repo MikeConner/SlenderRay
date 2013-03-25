@@ -1,8 +1,9 @@
-.offset2
-  %h1== Overview Report (#{@start_date.try(:strftime, ApplicationHelper::DATE_FORMAT)} - #{@end_date.try(:strftime, ApplicationHelper::DATE_FORMAT)})
-  - @report_data.each do |facility, data|
-    .row
-      %h2= facility
-      %em== #{data[:patients]} total patients (#{@patients_per_day} / day)
-      - data[:machines].each do |machine, treatments|        
-        %p== #{machine}: #{treatments} treatments
+.span12.facilitypage
+  .report
+    %h1== Overview Report (#{@start_date.try(:strftime, ApplicationHelper::DATE_FORMAT)} - #{@end_date.try(:strftime, ApplicationHelper::DATE_FORMAT)})
+    - @report_data.each do |facility, data|
+      .row
+        %h2= facility
+        %em== #{data[:patients]} total patients (#{@patients_per_day} / day)
+        - data[:machines].each do |machine, treatments|        
+          %p== #{machine}: #{treatments} treatments

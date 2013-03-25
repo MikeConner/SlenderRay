@@ -1,4 +1,4 @@
-.offset2
+.span12.offset0.newpatient
   %h1= @patient.name
   - pct_complete = 40
   - @plans.each do |plan|
@@ -6,10 +6,23 @@
       == #{plan.date_completed.try(:strftime, ApplicationHelper::DATE_FORMAT)}. Completed #{plan.treatment_sessions.count} sessions of '#{plan.description}'
     - else
       = render :partial => 'shared/progress_bar', :locals => { :pct => plan.pct_complete, :text => plan.description }
-      - plan.treatment_sessions.order('created_at desc').each do |session|
-        = render :partial => 'session', :locals => { :session => session }
+      .tabbable
+        %ul.nav.nav-tabs
+          - plan.treatment_sessions.order('created_at desc').each do |session|
+            %li
+              %a{"data-toggle" => "tab", :href => session.id} 
+                = session.created_at.try(:strftime, ApplicationHelper::DATE_FORMAT)
+      .tab-contents
+        - plan.treatment_sessions.order('created_at desc').each do |session|
+          = render :partial => 'session', :locals => { :session => session }
   %br/
   %br/
-  = link_to 'Edit', edit_patient_path(@patient)
+  = link_to edit_patient_path(@patient) do
+    .btn.btn-inverse.greybtn.large-btn
+      Edit
   - if !@patient.unfinished_plan.nil?
-    = link_to 'Treat', treat_patient_path(@patient)
+    = link_to  treat_patient_path(@patient) do
+      .btn.btn-inverse.greybtn.large-btn
+        Treat
+    %br
+    %br

@@ -10,7 +10,7 @@
   = csrf_meta_tags
   = stylesheet_link_tag "application", :media => "all"
   = render 'layouts/application/shim'
-%body
+%body{:class => "#{controller_name} #{action_name}"}
 .container-fluid
   = render 'layouts/application/header'
   = yield
