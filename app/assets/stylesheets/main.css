@@ -8,6 +8,15 @@ body {
 body.home {
   background-image: url('/assets/start.jpg');
 }
+
+body.training_videos {
+  background-image: url('/assets/start.jpg');
+}
+
+body.testimonials {
+  background-image: url('/assets/start.jpg');
+}
+
 body.sessions {
   background-image: url('/assets/start.jpg');
 }

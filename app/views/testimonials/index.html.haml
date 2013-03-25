@@ -2,7 +2,7 @@
   %h1 Patient Testimonials
   %center
     = will_paginate
-    = page_entries_info
+    =# page_entries_info
   - @testimonials.each do |testimonial|
     - facility = testimonial.patient.treatment_facility
     %blockquote= testimonial.comment
