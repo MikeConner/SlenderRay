@@ -2,6 +2,7 @@
 %p== #{session.created_at.try(:strftime, ApplicationHelper::DATE_FORMAT)} on #{session.machine.display_name}
 - if session.patient_image?
   = image_tag session.patient_image_url(:standard).to_s
+  %br
 - else
   No picture
 - if session.labels.empty?
