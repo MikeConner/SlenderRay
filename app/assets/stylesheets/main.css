@@ -13,6 +13,10 @@ body.training_videos {
   background-image: url('/assets/start.jpg');
 }
 
+body.photos {
+  background-image: url('/assets/start.jpg');
+}
+
 body.testimonials {
   background-image: url('/assets/start.jpg');
 }
