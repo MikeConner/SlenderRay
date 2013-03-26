@@ -11,6 +11,7 @@ en:
   facility_created: 'Treatment facility created successfully'
   nobody_in_treatment: 'No patients currently in treatment'
   no_templates_found: 'You must create some treatment plan templates before creating patients'
+  not_web_enabled: 'Machine not web-enabled'
   patient_created: 'New patient created successfully'
   patient_deleted: 'Patient record deleted'
   patient_updated: 'Patient updated successfully'

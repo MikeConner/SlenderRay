@@ -32,7 +32,7 @@ class TreatmentSessionsController < ApplicationController
       @treatment_session.treatment_plan = @patient.unfinished_plan
       machine = Machine.find_by_id(params[:new_machine_id])
       @treatment_session.machine_id = machine.id
-      @treatment_session.build_process_timer(:duration_seconds => @treatment_session.treatment_plan.treatments_per_session * machine.minute_per_treatment * 60)
+      @treatment_session.build_process_timer(:duration_seconds => @treatment_session.treatment_plan.treatments_per_session * machine.minutes_per_treatment * 60)
       
       if @treatment_session.save
         redirect_to edit_treatment_session_path(@treatment_session) and return
@@ -63,9 +63,9 @@ class TreatmentSessionsController < ApplicationController
     @facility = @patient.treatment_facility
     @current_session_idx = @plan.treatment_sessions.count
     @total_sessions = @plan.treatments_per_session
-    first_session = 1 == @current_session_idx
-    # Fill in defaults
-    @treatment_session.add_measurement_prototypes(first_session)
+    #first_session = 1 == @current_session_idx
+    # Fill in defaults (false means not an update)
+    @treatment_session.add_measurement_prototypes(false)
     
     render :layout => 'treatment'
   end
@@ -117,7 +117,7 @@ class TreatmentSessionsController < ApplicationController
       elsif 'Update Session Data' == params[:commit]
         # if they changed the machine, have to update the duration
         @treatment_session.process_timer.update_attributes(:duration_seconds => @treatment_session.treatment_plan.treatments_per_session * 
-                                                                                @treatment_session.machine.minute_per_treatment * 60)
+                                                                                @treatment_session.machine.minutes_per_treatment * 60)
         notice = I18n.t('session_updated')
       end
     end
@@ -130,9 +130,9 @@ class TreatmentSessionsController < ApplicationController
       @facility = @patient.treatment_facility
       @current_session_idx = @plan.treatment_sessions.count
       @total_sessions = @plan.treatments_per_session
-      @first_session = 1 == @current_session_idx
-      # Fill in defaults
-      @treatment_session.add_measurement_prototypes(@first_session)
+      #@first_session = 1 == @current_session_idx
+      # Fill in defaults (true on prototypes means it's an update)
+      @treatment_session.add_measurement_prototypes(true)
       render 'edit'
     end    
   end

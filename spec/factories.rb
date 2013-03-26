@@ -89,6 +89,11 @@ FactoryGirl.define do
         FactoryGirl.create_list(:treatment_session, evaluator.num_sessions, :machine => machine)
       end
     end
+    
+    factory :pi_machine do
+      hostname "192.0.0.1:8000"
+      web_enabled true
+    end
   end
   
   factory :role do

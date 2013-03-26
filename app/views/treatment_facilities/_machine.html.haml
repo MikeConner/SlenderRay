@@ -23,3 +23,15 @@
     = f.label :date_installed
   .controls   
     = f.date_select :date_installed, :order => [:month, :day, :year]
+  .control-label
+    = f.label :hostname, 'Hostname:port'
+  .controls   
+    = f.text_field :hostname, :maxlength => Machine::MAX_HOSTNAME_LEN
+  .control-label
+    = f.label :web_enabled
+  .controls   
+    = f.check_box :web_enabled
+  .control-label
+    = f.label :license_active
+  .controls   
+    = f.check_box :license_active

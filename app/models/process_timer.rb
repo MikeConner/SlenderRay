@@ -66,6 +66,7 @@ class ProcessTimer < ActiveRecord::Base
       self.process_state = STARTED
       self.start_time = Time.zone.now
       self.save!
+      issue_start_command
     end
   end
   
@@ -79,6 +80,7 @@ class ProcessTimer < ActiveRecord::Base
       latest_elapsed = (Time.zone.now - self.start_time).round
       self.elapsed_seconds = self.elapsed_seconds.nil? ? latest_elapsed : self.elapsed_seconds + latest_elapsed
       self.save!
+      issue_stop_command
     end
   end
   
@@ -91,6 +93,7 @@ class ProcessTimer < ActiveRecord::Base
       self.process_state = RESUMED
       self.start_time = Time.zone.now
       self.save!
+      issue_start_command
     end
   end
   
@@ -99,6 +102,7 @@ class ProcessTimer < ActiveRecord::Base
     self.start_time = nil
     self.elapsed_seconds = nil
     self.save!
+    issue_stop_command
   end
   
   def expireable?
@@ -109,6 +113,7 @@ class ProcessTimer < ActiveRecord::Base
     if expireable?
       self.process_state = EXPIRED
       self.save!
+      issue_stop_command
     end
   end
   
@@ -155,5 +160,18 @@ class ProcessTimer < ActiveRecord::Base
     end
     
     nil
+  end
+
+private
+  def issue_start_command
+    if 'TreatmentSession' == self.process_type and self.process.machine.web_enabled
+      self.process.machine.turn_on
+    end
+  end
+  
+  def issue_stop_command
+    if 'TreatmentSession' == self.process_type and self.process.machine.web_enabled
+      self.process.machine.turn_off
+    end    
   end
 end

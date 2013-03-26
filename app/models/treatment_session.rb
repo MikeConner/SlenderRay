@@ -86,28 +86,41 @@ class TreatmentSession < ActiveRecord::Base
     Rails.env.test? ? self.measurements.all.select { |m| label == m.label } : self.measurements.select { |m| label == m.label }
   end
 
-  def add_measurement_prototypes(first)
+  def add_measurement_prototypes(update)
     if self.measurements.empty?
-      if true# first or ALWAYS_PROMPT_BEFORE_AFTER
-        # Build 2 sets, before/after
-        self.measurements.build(:location => '+4cm', :label => Measurement::BEFORE_LABEL)
-        self.measurements.build(:location => '+2cm', :label => Measurement::BEFORE_LABEL)
-        self.measurements.build(:location => REQUIRED_MEASUREMENT, :label => Measurement::BEFORE_LABEL)
-        self.measurements.build(:location => '-2cm', :label => Measurement::BEFORE_LABEL)
-        self.measurements.build(:location => '-4cm', :label => Measurement::BEFORE_LABEL)
-        
-        self.measurements.build(:location => '+4cm', :label => Measurement::AFTER_LABEL)
-        self.measurements.build(:location => '+2cm', :label => Measurement::AFTER_LABEL)
-        self.measurements.build(:location => REQUIRED_MEASUREMENT, :label => Measurement::AFTER_LABEL)
-        self.measurements.build(:location => '-2cm', :label => Measurement::AFTER_LABEL)
-        self.measurements.build(:location => '-4cm', :label => Measurement::AFTER_LABEL)
-      else
-        # Build 1 set
-        self.measurements.build(:location => '+4cm')
-        self.measurements.build(:location => '+2cm')
-        self.measurements.build(:location => REQUIRED_MEASUREMENT)
-        self.measurements.build(:location => '-2cm')
-        self.measurements.build(:location => '-4cm')
+      # Build 2 sets, before/after
+      self.measurements.build(:location => '+4cm', :label => Measurement::BEFORE_LABEL)
+      self.measurements.build(:location => '+2cm', :label => Measurement::BEFORE_LABEL)
+      self.measurements.build(:location => REQUIRED_MEASUREMENT, :label => Measurement::BEFORE_LABEL)
+      self.measurements.build(:location => '-2cm', :label => Measurement::BEFORE_LABEL)
+      self.measurements.build(:location => '-4cm', :label => Measurement::BEFORE_LABEL)
+      
+      self.measurements.build(:location => '+4cm', :label => Measurement::AFTER_LABEL)
+      self.measurements.build(:location => '+2cm', :label => Measurement::AFTER_LABEL)
+      self.measurements.build(:location => REQUIRED_MEASUREMENT, :label => Measurement::AFTER_LABEL)
+      self.measurements.build(:location => '-2cm', :label => Measurement::AFTER_LABEL)
+      self.measurements.build(:location => '-4cm', :label => Measurement::AFTER_LABEL)
+    elsif update
+      # On error (update), if they've entered some measurements, make sure the navel measurement is there
+      # Sorry, this is ugly special case code that is painful to write!
+      has_before_label = false
+      has_after_label = false
+      self.measurements.each do |m|
+        if REQUIRED_MEASUREMENT == m.location
+          if Measurement::BEFORE_LABEL == m.label
+            has_before_label = true
+          else
+            has_after_label = true
+          end
+        end
+      end
+      
+      if !has_before_label
+        self.measurements.build(:location => REQUIRED_MEASUREMENT, :label => Measurement::BEFORE_LABEL)        
+      end
+      
+      if !has_after_label
+        self.measurements.build(:location => REQUIRED_MEASUREMENT, :label => Measurement::AFTER_LABEL)        
       end
     end    
   end
