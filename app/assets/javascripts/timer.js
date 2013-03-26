@@ -28,6 +28,7 @@ function countdown() {
 		running = 'true' == $('#time_remaining').attr('running')
 		if (running) {
 			// Only call this once! Once it's expired, paused will be true
+			turn_machine_off();
 			jQuery.ajax({url:"/treatment_sessions/" + $('#time_remaining').attr('session') + "/treatment_expired",
 			             data: "time=" + scheduled_pause,
 				         type: "PUT",
@@ -42,6 +43,7 @@ function countdown() {
 		running = 'true' == $('#time_remaining').attr('running')
 		if (running) {
 			// Only call this once! Once it's expired, paused will be true
+			turn_machine_off();
 			jQuery.ajax({url:"/treatment_sessions/" + $('#time_remaining').attr('session') + "/timer_expired",
 				         type: "PUT",
 			             error: function(xhr, ajaxOptions, thrownError) //{ alert('Oh noes!') },
@@ -83,11 +85,35 @@ function myLoadHandler(evt) {
 		
 		// Count down every second
 		if (running && seconds_remaining > 0) {
+			// Could get called multiple times; assuming the server tolerates this
+			turn_machine_on();
 			countdown_id = setInterval("countdown()", 1000);
 		}
 		else {
 			countdown();
 		}
+	}
+}
+
+function turn_machine_on() {
+	issue_command(1);
+}
+
+function turn_machine_off() {
+	issue_command(0);
+}
+
+function issue_command(value) {
+	var machine = $('#machine_config');
+	if (machine.length > 0) {
+		machine_url = "http://" + machine.attr('hostname') + "/GPIO/" + machine.attr('api_port') + "/value/" + value;
+		
+		jQuery.ajax({url: machine_url,
+			         type: "POST",
+			         dataType: "jsonp", // datatype required to (hopefully) avoid same origin policy
+		             error: function(xhr, ajaxOptions, thrownError)
+		               { alert('error code: ' + xhr.status + ' \n'+'error:\n' + thrownError ); },
+		             async: false}); 			
 	}
 }
 

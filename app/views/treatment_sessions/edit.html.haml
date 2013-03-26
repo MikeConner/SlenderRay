@@ -12,6 +12,8 @@
             - scheduled_pause = @treatment_session.process_timer.next_pause || -1
             - running = @treatment_session.process_timer.pausable? ? 'true' : 'false'
             #time_remaining{:elapsed => elapsed_seconds, :remaining => seconds_remaining, :scheduled_pause => scheduled_pause, :running => running, :session => @treatment_session.id}
+            - if @treatment_session.machine.web_enabled
+              #machine_config{:hostname => @treatment_session.machine.hostname, :api_port => Machine::API_PORT}
           - if @treatment_session.labels.empty?
             = render :partial => 'table_header', :locals => { :caption => 'Measurements' }
             -# @treatment_session.measurements.each do |m|
