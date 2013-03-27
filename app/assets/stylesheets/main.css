@@ -5,6 +5,10 @@ body {
   padding-top: 80px; 
   background-color: #000;
 }
+#machinestat {
+  height: 30px;
+  width: 100px;
+}
 body.home {
   background-image: url('/assets/start.jpg');
 }

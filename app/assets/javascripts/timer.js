@@ -96,24 +96,19 @@ function myLoadHandler(evt) {
 }
 
 function turn_machine_on() {
-	issue_command(1);
+	issue_command('slenderon');
 }
 
 function turn_machine_off() {
-	issue_command(0);
+	issue_command('slenderoff');
 }
 
 function issue_command(value) {
 	var machine = $('#machine_config');
 	if (machine.length > 0) {
-		machine_url = "http://" + machine.attr('hostname') + "/GPIO/" + machine.attr('api_port') + "/value/" + value;
-		
-		jQuery.ajax({url: machine_url,
-			         type: "POST",
-			         dataType: "jsonp", // datatype required to (hopefully) avoid same origin policy
-		             error: function(xhr, ajaxOptions, thrownError)
-		               { alert('error code: ' + xhr.status + ' \n'+'error:\n' + thrownError ); },
-		             async: false}); 			
+		machine_url = "http://webiopi:raspberry@" + machine.attr('hostname') + "/GPIO/" + machine.attr('api_port') + "/" + value;
+		$('#machinestat').prop('src', machine_url);
+ 
 	}
 }
 
