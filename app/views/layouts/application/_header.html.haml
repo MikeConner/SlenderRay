@@ -5,11 +5,12 @@
         %a#dlabel{:class => 'dropdown-toggle', "data-toggle" => 'dropdown', :href => '#'}
           = image_tag "homeicon.gif"
         %ul{:class => 'dropdown-menu', :role => 'menu'}
-          %li{:role => 'presentation'}
-            = link_to "home", root_path
           - if !current_user.nil?
             %li{:role => 'presentation'} 
               = link_to "new patient intake", new_patient_path
+          - if !current_user.nil?
+            %li{:role => 'presentation'} 
+              = link_to "manage patients", patients_path
             %li{:role => 'presentation'} 
               = link_to "treatment", new_treatment_session_path
             %li{:role => 'presentation'} 
