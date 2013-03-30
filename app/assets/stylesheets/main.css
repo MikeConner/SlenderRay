@@ -267,6 +267,19 @@ label {
   background: rgba(0, 0, 0, .7);
   padding-left: 20px;
 }
+.patientName a {
+  color: #fff;
+  font-size: 16px;
+
+}
+.patientRow {
+  padding-top: 3px;
+  padding-bottom: 3px;
+  border-bottom-style: groove;
+  border-color: #222;
+  border-width: 2px;
+
+}
 
 
 /* treatment scrreen */

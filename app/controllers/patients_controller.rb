@@ -8,7 +8,7 @@ class PatientsController < ApplicationController
 
   def index
     @facility = current_user.treatment_facility
-    @patients = Patient.where('treatment_facility_id = ?', @facility.id).order('updated_at desc').paginate(:page => params[:page])
+    @patients = Patient.where('treatment_facility_id = ?', @facility.id).order('upper(name) asc').paginate(:page => params[:page])
   end
   
   def show

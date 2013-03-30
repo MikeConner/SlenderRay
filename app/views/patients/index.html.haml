@@ -1,15 +1,27 @@
 .span8.offset0.newpatient
   %h3 Manage Patients at #{@facility.facility_name}
-  %center
-    = will_paginate
-    = page_entries_info
+  = will_paginate
+  = page_entries_info
+  %br
+  %br
   - @patients.each do |patient|
-    == #{patient.id}. #{patient.name} #{link_to 'Show', patient_path(patient)} #{link_to 'Edit', edit_patient_path(patient)} 
-    - if patient.can_be_deleted?
-      = link_to 'Delete', patient, :method => 'delete', :data => { confirm: 'Are you sure?'}
-    %br/
+    .row.patientRow
+      .span4.patientName
+        = link_to patient.name.to_s, edit_patient_path(patient)
+      .span1
+        = link_to 'Show', patient_path(patient), {:class => 'btn btn-inverse greybtn btn-small'}  
+      .span1
+        = link_to 'Edit', edit_patient_path(patient), {:class => 'btn btn-inverse greybtn btn-small'}  
+      .span1
+        = link_to 'Treat', treat_patient_path(patient), {:class => 'btn btn-inverse greybtn btn-small'} 
+      - if patient.can_be_deleted?
+        .span1
+          = link_to 'Delete', patient, :method => 'delete', :data => { confirm: 'Are you sure?'} , :class => 'btn btn-danger  btn-small'
+
   %br/
   %center= will_paginate
   %br/
   = link_to "<i class='icon-plus'></i> New Patient".html_safe, new_patient_path,{:class => 'btn btn-inverse greybtn '}  
   %br
+  %br
+
