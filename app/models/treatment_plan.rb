@@ -62,7 +62,7 @@ class TreatmentPlan < TreatmentPlanTemplate
   end
   
   def pct_complete
-    (self.treatment_sessions.count / self.num_sessions * 100).round
+    (self.treatment_sessions.count.to_f / self.num_sessions.to_int  * 100)
   end
   
   def complete?

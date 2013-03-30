@@ -1,6 +1,6 @@
 .span12.offset0.newpatient
   %h1= @patient.name
-  - pct_complete = 40
+  - pct_complete = 20
   - @plans.each do |plan|
     - if plan.complete?
       == #{plan.date_completed.try(:strftime, ApplicationHelper::DATE_FORMAT)}. Completed #{plan.treatment_sessions.count} sessions of '#{plan.description}'
