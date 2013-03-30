@@ -6,7 +6,7 @@
   %br
   - @patients.each do |patient|
     .row.patientRow
-      .span4.patientName
+      .span3.patientName
         = link_to patient.name.to_s, edit_patient_path(patient)
       .span1
         = link_to 'Show', patient_path(patient), {:class => 'btn btn-inverse greybtn btn-small'}  
@@ -14,6 +14,11 @@
         = link_to 'Edit', edit_patient_path(patient), {:class => 'btn btn-inverse greybtn btn-small'}  
       .span1
         = link_to 'Treat', treat_patient_path(patient), {:class => 'btn btn-inverse greybtn btn-small'} 
+      .span1
+        - if patient.unfinished_session.nil?
+          = link_to 'Measure', treat_patient_path(patient), {:class => 'btn btn-inverse greybtn btn-small'} 
+        - else 
+          &nbsp;
       - if patient.can_be_deleted?
         .span1
           = link_to 'Delete', patient, :method => 'delete', :data => { confirm: 'Are you sure?'} , :class => 'btn btn-danger  btn-small'
