@@ -86,21 +86,21 @@ class TreatmentSession < ActiveRecord::Base
     Rails.env.test? ? self.measurements.all.select { |m| label == m.label } : self.measurements.select { |m| label == m.label }
   end
 
-  def add_measurement_prototypes(update)
+  def add_measurement_prototypes(error_flag, first_session_flag, measurement_source_session)
     if self.measurements.empty?
-      # Build 2 sets, before/after
-      self.measurements.build(:location => '+4cm', :label => Measurement::BEFORE_LABEL)
-      self.measurements.build(:location => '+2cm', :label => Measurement::BEFORE_LABEL)
-      self.measurements.build(:location => REQUIRED_MEASUREMENT, :label => Measurement::BEFORE_LABEL)
-      self.measurements.build(:location => '-2cm', :label => Measurement::BEFORE_LABEL)
-      self.measurements.build(:location => '-4cm', :label => Measurement::BEFORE_LABEL)
-      
-      self.measurements.build(:location => '+4cm', :label => Measurement::AFTER_LABEL)
-      self.measurements.build(:location => '+2cm', :label => Measurement::AFTER_LABEL)
-      self.measurements.build(:location => REQUIRED_MEASUREMENT, :label => Measurement::AFTER_LABEL)
-      self.measurements.build(:location => '-2cm', :label => Measurement::AFTER_LABEL)
-      self.measurements.build(:location => '-4cm', :label => Measurement::AFTER_LABEL)
-    elsif update
+      if first_session_flag
+        # Build 2 sets, before/after
+        self.measurements.build(:location => REQUIRED_MEASUREMENT, :label => Measurement::BEFORE_LABEL)
+        self.measurements.build(:location => REQUIRED_MEASUREMENT, :label => Measurement::AFTER_LABEL)
+      elsif measurement_source_session.nil? or measurement_source_session.measurements.empty?
+        self.measurements.build(:location => REQUIRED_MEASUREMENT)
+      else
+        # Copy from index session
+        measurement_source_session.measurements.each do |m|
+          self.measurements.build(:location => m.location, :label => m.label)
+        end
+      end
+    elsif error_flag and first_session_flag
       # On error (update), if they've entered some measurements, make sure the navel measurement is there
       # Sorry, this is ugly special case code that is painful to write!
       has_before_label = false

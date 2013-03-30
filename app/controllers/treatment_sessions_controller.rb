@@ -62,10 +62,15 @@ class TreatmentSessionsController < ApplicationController
     @patient = @plan.patient
     @facility = @patient.treatment_facility
     @current_session_idx = @plan.treatment_sessions.count
-    @total_sessions = @plan.treatments_per_session
-    #first_session = 1 == @current_session_idx
-    # Fill in defaults (false means not an update)
-    @treatment_session.add_measurement_prototypes(false)
+    @total_sessions = @plan.num_sessions
+    @first_session_flag = 1 == @current_session_idx
+    if @first_session_flag
+      measurement_source_session = nil
+    else
+      measurement_source_session = @plan.treatment_sessions.first
+    end
+    error_flag = false
+    @treatment_session.add_measurement_prototypes(error_flag, @first_session_flag, measurement_source_session)
     
     render :layout => 'treatment'
   end
@@ -96,7 +101,6 @@ class TreatmentSessionsController < ApplicationController
 
     notice = nil
     if @treatment_session.update_attributes(params[:treatment_session]) and @treatment_session.valid?
-      
       if 'Start Timer' == params[:commit]
         @treatment_session.process_timer.start
       elsif 'Pause Timer' == params[:commit]
@@ -130,9 +134,14 @@ class TreatmentSessionsController < ApplicationController
       @facility = @patient.treatment_facility
       @current_session_idx = @plan.treatment_sessions.count
       @total_sessions = @plan.treatments_per_session
-      #@first_session = 1 == @current_session_idx
-      # Fill in defaults (true on prototypes means it's an update)
-      @treatment_session.add_measurement_prototypes(true)
+      @first_session_flag = 1 == @current_session_idx
+      if @first_session_flag
+        measurement_source_session = nil
+      else
+        measurement_source_session = @plan.treatment_sessions.first
+      end
+      error_flag = true
+      @treatment_session.add_measurement_prototypes(error_flag, @first_session_flag, measurement_source_session)
       render 'edit'
     end    
   end
@@ -145,7 +154,7 @@ private
   end
   
   def ensure_own_facility
-    @treatment_session = TreatmentSession.find(params[:id])      
+    @treatment_session = TreatmentSession.find(params[:id])     
     @facility = @treatment_session.treatment_plan.patient.treatment_facility    
     
     if @facility != current_user.treatment_facility

@@ -45,9 +45,10 @@
             - if !@treatment_session.patient_image.file.nil? and @treatment_session.patient_image.file.exists?
               = image_tag @treatment_session.patient_image_url(:standard).to_s
 
-    .span5
-      %h4 Previous Sessions
-      %iframe{:src => completed_sessions_patient_url(@patient)}
+    - if !@first_session_flag
+      .span5
+        %h4 Previous Sessions
+        %iframe{:src => completed_sessions_patient_url(@patient)}
   .row-fluid
     -#.navbar-fixed-bottom
     .span2
