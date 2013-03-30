@@ -124,8 +124,13 @@ class PatientsController < ApplicationController
     @patient = Patient.find(params[:id])
     unfinished_plan = @patient.unfinished_plan
    
-    @sessions = unfinished_plan.nil? ? [] : unfinished_plan.treatment_sessions.select { |s| s.complete? }
-    @total = unfinished_plan.num_sessions
+    if unfinished_plan.nil?
+      @sessions = []
+      @total = 0
+    else
+      @sessions = unfinished_plan.treatment_sessions.select { |s| s.complete? }
+      @total = unfinished_plan.num_sessions
+    end
     
     render :layout => false
   end
