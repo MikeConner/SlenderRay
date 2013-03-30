@@ -16,7 +16,7 @@
         = link_to 'Treat', treat_patient_path(patient), {:class => 'btn btn-inverse greybtn btn-small'} 
       .span1
         - if patient.unfinished_session.nil?
-          = link_to 'Measure', treat_patient_path(patient), {:class => 'btn btn-inverse greybtn btn-small'} 
+          = link_to 'Measure', treat_patient_path(patient), {:class => 'btn btn-info  btn-small'} 
         - else 
           &nbsp;
       - if patient.can_be_deleted?
