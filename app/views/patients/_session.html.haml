@@ -1,15 +1,16 @@
 .row.span10.historyblock
   .span4
     %p== #{session.created_at.try(:strftime, ApplicationHelper::DATE_FORMAT)} on #{session.machine.display_name}
-    - if session.labels.empty?
-      %h4 Measurements
-      = render :partial => 'measurements', :locals => { :measurements => session.measurements }
-    - else
-      - width = 9 / session.labels.count
-      - session.labels.each do |label|
-        .span
-          %h3== Measurements (#{label})
-          = render :partial => 'measurements', :locals => { :measurements => session.labeled_measurements(label) }
+    .row
+      - if session.labels.empty?
+        %h4 Measurements
+        = render :partial => 'measurements', :locals => { :measurements => session.measurements }
+      - else
+        - width = 9 / session.labels.count
+        - session.labels.each do |label|
+          .span
+            %h4== Measurements (#{label})
+            = render :partial => 'measurements', :locals => { :measurements => session.labeled_measurements(label) }
     %h4 Notes
     %pre.historynotes= session.notes
   .span4
