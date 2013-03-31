@@ -313,6 +313,9 @@ label {
   border-style: solid;  
 
 }
+.planPrice {
+  margin-left: 20px;
+}
 
 /* treatment scrreen */
 .measure td {

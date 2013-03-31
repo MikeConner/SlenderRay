@@ -5,6 +5,7 @@
   - @plans.each do |plan|
     .row
       = render :partial => 'shared/progress_bar', :locals => { :pct => plan.pct_complete, :text => plan.description }
+      .planPrice= "Updated " + plan.created_at.try(:strftime, ApplicationHelper::DATE_FORMAT).to_s + ":  $" + plan.price.to_s 
       - plan.treatment_sessions.order('created_at desc').each do |session|
         .row
           .span6
