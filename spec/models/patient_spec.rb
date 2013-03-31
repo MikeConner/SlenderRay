@@ -25,7 +25,23 @@ describe 'Patient' do
     patient.should respond_to(:treatment_sessions)
     patient.should respond_to(:testimonials)
     patient.should respond_to(:contract_file)
+    patient.should respond_to(:editable_session)
     facility.patients.should be == [patient]
+  end
+  
+  it "should not have an editable session out of the box" do
+    patient.editable_session.should be_nil
+  end
+  
+  describe "Editable session" do
+    let(:plan) { FactoryGirl.create(:plan_with_sessions, :patient => patient) }
+    before do
+      @session = FactoryGirl.create(:completed_session, :treatment_plan => plan)
+    end
+    
+    it "should have an editable session" do
+      patient.editable_session.should be == @session
+    end
   end
   
   it "Do not allow duplicates in the same facility" do

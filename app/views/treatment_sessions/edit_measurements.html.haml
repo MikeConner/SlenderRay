@@ -1,0 +1,22 @@
+= form_for @treatment_session, :url => update_measurements_treatment_session_path(@treatment_session) do |f|
+  = render :partial => 'shared/error_messages', :locals => { :errors => @treatment_session.errors, :name => 'Treatment Session' }
+  .row-fluid
+    .span7
+      .span12
+        .span8
+          %h4== #{@patient.name}.
+          = render :partial => 'measurement_fields', :locals => { :session => @treatment_session, :f => f }
+          %br/
+          = f.label :notes
+          = f.text_area :notes, :size => '80x4', :style => "width:100%"
+        .span3.control-group
+          -# Show current image
+          .control-label= f.label :patient_image
+          .control.inputFile= f.file_field :patient_image, :accept => 'image/*;capture-camera'
+          %br/
+          .patientImg
+            - if !@treatment_session.patient_image.file.nil? and @treatment_session.patient_image.file.exists?
+              = image_tag @treatment_session.patient_image_url(:standard).to_s
+  .row-fluid
+    .span2
+      = f.submit 'Update Session Data', :class => 'btn btn-large btn-success'

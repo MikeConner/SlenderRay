@@ -3,7 +3,7 @@ class TreatmentSessionsController < ApplicationController
   
   before_filter :authenticate_user!
   before_filter :ensure_technician
-  before_filter :ensure_own_facility, :only => [:edit, :update]
+  before_filter :ensure_own_facility, :only => [:edit, :update, :edit_measurements, :update_measurements]
   load_and_authorize_resource
   
   # Clicking on "Treatment" before we know which patient it is
@@ -146,6 +146,22 @@ class TreatmentSessionsController < ApplicationController
     end    
   end
 
+  def edit_measurements
+    @plan = @treatment_session.treatment_plan
+    @patient = @plan.patient
+  end
+  
+  def update_measurements
+    @treatment_session = TreatmentSession.find(params[:id])
+    
+    if @treatment_session.update_attributes(params[:treatment_session]) and @treatment_session.valid?
+      redirect_to patients_path, :notice => I18n.t('session_updated')
+    else
+      @plan = @treatment_session.treatment_plan
+      @patient = @plan.patient
+      render 'edit_measurements' 
+    end
+  end
 private
   def ensure_technician
     if !current_user.has_role?(Role::TECHNICIAN)

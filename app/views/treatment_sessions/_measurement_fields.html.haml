@@ -1,0 +1,18 @@
+- if session.labels.empty?
+  = render :partial => 'table_header', :locals => { :caption => 'Measurements' }
+  = f.fields_for :measurements do |measurement_form|
+    = render :partial => 'measurement_row', :locals => { :f => measurement_form, :label => nil }
+  = render :partial => 'table_footer', :locals => { :session => session, :f => f, :label => nil, :tag => 'last_measurement' }
+- else
+  -# Before table
+  = render :partial => 'table_header', :locals => { :caption => 'Before Measurements' }
+  - session.labeled_measurements(Measurement::BEFORE_LABEL).each do |m|
+    = f.fields_for :measurements, m do |measurement_form|
+      = render :partial => 'measurement_row', :locals => { :f => measurement_form, :label => Measurement::BEFORE_LABEL }
+  = render :partial => 'table_footer', :locals => { :session => @treatment_session, :f => f, :label => Measurement::BEFORE_LABEL, :tag => 'last_before' }
+  -# After table
+  = render :partial => 'table_header', :locals => { :caption => 'After Measurements' }
+  - session.labeled_measurements(Measurement::AFTER_LABEL).each do |m|
+    = f.fields_for :measurements, m do |measurement_form|
+      = render :partial => 'measurement_row', :locals => { :f => measurement_form, :label => Measurement::AFTER_LABEL }
+  = render :partial => 'table_footer', :locals => { :session => session, :f => f, :label => Measurement::AFTER_LABEL, :tag => 'last_after' }

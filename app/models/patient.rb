@@ -66,6 +66,24 @@ class Patient < ActiveRecord::Base
     nil
   end
   
+  # You can edit measurements/notes on a completed session if it's the same day
+  def editable_session
+    if !treatment_sessions.empty?
+      # Efficiently find last completed session
+      treatment_sessions.reverse.each do |session|
+        if session.complete?
+          if session.updated_at.beginning_of_day == Time.zone.now.beginning_of_day
+            return session
+          else
+            break
+          end
+        end
+      end
+    end
+    
+    nil
+  end
+  
   # If there's just the original plan with no sessions (initial state), it can be deleted,
   #  by deleting the plan first, then the patient
   def can_be_deleted?

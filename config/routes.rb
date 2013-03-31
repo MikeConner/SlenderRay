@@ -30,6 +30,8 @@ SlenderRay::Application.routes.draw do
     member do
       put 'timer_expired'
       put 'treatment_expired'
+      get 'edit_measurements'
+      put 'update_measurements'
     end
   end
   resources :photos, :except => [:show]
