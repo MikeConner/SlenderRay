@@ -58,7 +58,7 @@
               = f.fields_for :treatment_plan_templates, template do |template_form|
                 = render :partial => 'shared/treatment_plan', :locals => { :f => template_form, :type => 'TreatmentPlanTemplate' }
           = add_treatment_plan_template(facility, f)
-      .span5
+      .span8
         %h4 Machines
         - if current_user.has_role?(Role::SUPER_ADMIN)
           #machines

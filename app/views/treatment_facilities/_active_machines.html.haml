@@ -1,13 +1,14 @@
 - facilities.each do |facility|
-  %h2== #{facility.facility_name}, #{facility.city}, #{facility.state}
-  %table.table.table-striped.table-bordered.table-condensed
-    %caption Active Machine Sessions
-    %thead
-      %th Machine
-      %th Status
-    %tbody
-      - facility.treatment_sessions.each do |session|
-        - if !session.complete?
-          %tr
-            %th= session.machine.display_name
-            %th= session.process_timer.display_status
+  %h3== #{facility.facility_name}, #{facility.city}, #{facility.state}
+  .row.span9
+    %table.table.table-striped.table-bordered.table-condensed
+      Active Machine Sessions
+      %thead
+        %th Machine
+        %th Status
+      %tbody
+        - facility.treatment_sessions.each do |session|
+          - if !session.complete?
+            %tr
+              %th= session.machine.display_name
+              %th= session.process_timer.display_status

@@ -1,10 +1,11 @@
-.offset2
+.facilitypage
   %h1 Patient Testimonials
   %center
     = will_paginate
     =# page_entries_info
   - @testimonials.each do |testimonial|
     - facility = testimonial.patient.treatment_facility
+    %br
     %blockquote= testimonial.comment
     == - #{facility.facility_name}; #{facility.city}, #{facility.state}. 
     %em= testimonial.date_entered.try(:strftime, ApplicationHelper::DATE_FORMAT)

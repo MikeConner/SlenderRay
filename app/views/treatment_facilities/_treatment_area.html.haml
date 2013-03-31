@@ -1,8 +1,4 @@
 .treatment_area
-  = f.hidden_field :treatment_facility_id
-  = f.hidden_field :_destroy
-  = link_to_function "X", "if (confirm('Delete this treatment area?')) remove_treatment_area(this)", :class => "close"
-  %br/
   .control-group
     .control-label
       = f.label :area_name
@@ -16,3 +12,7 @@
       = f.label :duration_minutes, 'Process Duration (mins)'
     .controls  
       = f.number_field :duration_minutes, :min => 1
+
+      = link_to_function "Remove", "if (confirm('Delete this treatment area?')) remove_treatment_area(this)", :class => "close", :class => " btn btn-inverse removebtn" 
+      = f.hidden_field :treatment_facility_id
+      = f.hidden_field :_destroy

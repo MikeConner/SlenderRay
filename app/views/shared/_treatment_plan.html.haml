@@ -23,7 +23,7 @@
       = f.label :price
     .controls
       = f.text_field :price
-    .controls
+      &nbsp:&nbsp:&nbsp:&nbsp:
       = link_to_function "Remove", "if (confirm('Delete this plan?')) remove_treatment_plan(this)", :class => " btn btn-inverse removebtn" 
       %br/
       = f.hidden_field :type, :value => type

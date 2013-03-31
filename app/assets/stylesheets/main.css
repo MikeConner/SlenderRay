@@ -180,8 +180,6 @@ label {
 	display:inline;
 }
 .removebtn {
-  float: right;
-  margin-right: 75px;
 }
 .greybtn {
     background-color: rgb(140, 140, 140);
@@ -404,10 +402,15 @@ iframe {
 }
 /*Facility Page*/
 .facilitypage {
-    background: rgba(255, 255, 255, .7);
+    background: rgba(255, 255, 255, .85);
     padding-bottom: 40px;
-
 }
+.dashpage {
+    background: rgba(255, 255, 255, .85);
+    padding-bottom: 40px;
+}
+
+
 .facilitypage table {
   font-size: 18px;
 }
