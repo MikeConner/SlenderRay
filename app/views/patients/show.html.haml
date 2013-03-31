@@ -1,43 +1,21 @@
 .span12.offset0.newpatient
-  %h1= @patient.name
-  - pct_complete = 20
+  .row
+    %h1= @patient.name
+    - pct_complete = 20
   - @plans.each do |plan|
-    - if plan.complete?
-      == #{plan.date_completed.try(:strftime, ApplicationHelper::DATE_FORMAT)}. Completed #{plan.treatment_sessions.count} sessions of '#{plan.description}'
-    - else
+    .row
       = render :partial => 'shared/progress_bar', :locals => { :pct => plan.pct_complete, :text => plan.description }
-      .tabbable
-        %ul.nav.nav-tabs{:id => "sessiontab"}
-          - firstactive = false
-          - plan.treatment_sessions.order('created_at desc').each do |session|
-            - if !firstactive
-              %li.active
-                %a{"data-toggle" => "tab", :href =>  "##{session.id}"} 
-                  = session.created_at.try(:strftime, ApplicationHelper::DATE_FORMAT)
-              - firstactive = true
-            - else
-              %li
-                %a{"data-toggle" => "tab", :href =>  "##{session.id}"} 
-                  = session.created_at.try(:strftime, ApplicationHelper::DATE_FORMAT)
-        .tab-content
-          - firstactive = false
-          - plan.treatment_sessions.order('created_at desc').each do |session|
-            - if !firstactive
-              .tab-pane.active{:id => "#{session.id}"}
-                = render :partial => 'session', :locals => { :session => session }
-              - firstactive = true
-            - else
-              .tab-pane{:id => "#{session.id}"}
-                = render :partial => 'session', :locals => { :session => session }
-
-  %br/
-  %br/
-  = link_to edit_patient_path(@patient) do
-    .btn.btn-inverse.greybtn.large-btn
-      Edit
-  - if !@patient.unfinished_plan.nil?
-    = link_to  treat_patient_path(@patient) do
+      - plan.treatment_sessions.order('created_at desc').each do |session|
+        .row
+          .span6
+            = render :partial => 'session', :locals => { :session => session }
+  .row
+    = link_to edit_patient_path(@patient) do
       .btn.btn-inverse.greybtn.large-btn
-        Treat
-    %br
-    %br
+        Edit
+    - if !@patient.unfinished_plan.nil?
+      = link_to  treat_patient_path(@patient) do
+        .btn.btn-inverse.greybtn.large-btn
+          Treat
+      %br
+      %br
