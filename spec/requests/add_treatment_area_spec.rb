@@ -72,7 +72,7 @@ describe "Add treatment area" do
         describe "Delete it again", :js => true do
           before do
             visit edit_treatment_facility_path(facility)
-            find('a[class="close"]').click
+            find('a[id="delete_ta_1"]').click
             page.driver.browser.switch_to.alert.accept
             click_button 'Update Facility'
           end
@@ -146,7 +146,7 @@ describe "Add treatment area" do
         describe "Delete it again", :js => true do
           before do
             visit edit_treatment_facility_path(facility)
-            find('a[class="close"]').click
+            find('a[id="delete_ta_1"]').click
             page.driver.browser.switch_to.alert.accept
             click_button 'Update Facility'
           end
