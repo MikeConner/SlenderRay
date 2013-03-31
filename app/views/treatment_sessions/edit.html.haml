@@ -4,8 +4,9 @@
     .span7
       .span12
         .span8
-          %h4== #{@patient.name}. Session #{@current_session_idx} of #{@total_sessions}, '#{@plan.description}' plan
-
+          %h4
+            == #{@patient.name}. Session #{@current_session_idx} of #{@total_sessions}, '#{@plan.description}' plan
+            = link_to 'Cancel Session', @treatment_session, :method => :delete, :class => 'btn', :data => { :confirm => 'This will delete this session and all associated data. Are you sure?' }
           %h1#countdown_timer.timer
             - seconds_remaining = @treatment_session.process_timer.seconds_remaining || 0
             - elapsed_seconds = @treatment_session.process_timer.elapsed_seconds || 0

@@ -162,6 +162,13 @@ class TreatmentSessionsController < ApplicationController
       render 'edit_measurements' 
     end
   end
+  
+  def destroy
+    @treatment_session = TreatmentSession.find(params[:id])
+    @treatment_session.destroy
+
+    redirect_to new_treatment_session_path
+  end
 private
   def ensure_technician
     if !current_user.has_role?(Role::TECHNICIAN)

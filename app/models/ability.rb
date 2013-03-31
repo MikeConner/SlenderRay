@@ -12,7 +12,7 @@ class Ability
       can :read, :all
       can :create, [Measurement, TreatmentPlan, TreatmentSession, Testimonial, Photo]
       can :manage, [TreatmentFacility, Patient, Measurement, TreatmentPlan, TreatmentSession, Testimonial, Photo]
-      cannot :destroy, [Machine, Measurement, Protocol, Role, TreatmentFacility, TreatmentPlan, TreatmentSession, User]
+      cannot :destroy, [Machine, Measurement, Protocol, Role, TreatmentFacility, TreatmentPlan, User]
     else
       # Not logged in
       can :read, [Testimonial, TreatmentFacility, Photo]
