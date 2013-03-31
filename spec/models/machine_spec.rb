@@ -109,6 +109,23 @@ describe "Machine" do
     machine.license_active.should be_true
   end
   
+  describe "Should not add port if blank" do
+    before { machine.hostname = ' ' }
+    
+    it "should not add the port" do
+      machine.should be_valid
+      machine.hostname.should be_blank
+    end
+    
+    describe "save it" do
+      before { machine.save! }
+      
+      it "should not have the port" do
+        Machine.first.hostname.should be_blank
+      end
+    end
+  end
+  
   describe "add port" do
     before { machine.hostname = '192.0.0.1' }
     

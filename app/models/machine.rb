@@ -121,7 +121,7 @@ private
   end
   
   def ensure_port
-    if !self.hostname.nil? and self.hostname !~ /:\d+$/
+    if !self.hostname.blank? and self.hostname !~ /:\d+$/
       self.hostname += ":#{DEFAULT_PORT}"
     end
   end
