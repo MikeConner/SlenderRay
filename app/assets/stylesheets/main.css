@@ -456,6 +456,10 @@ iframe {
     padding-bottom: 40px;
 }
 
+.treatpage {
+    background: rgba(255, 255, 255, .6);
+    padding-bottom: 40px;
+}
 
 .facilitypage table {
   font-size: 18px;

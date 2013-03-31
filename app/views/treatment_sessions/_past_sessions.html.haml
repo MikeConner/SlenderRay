@@ -22,8 +22,8 @@
                   .measurehistory
                     %p== Measurements (#{label})
                     %ul
-                      - session.measurements.each do |m|
-                        %li== #{m.location} = #{m.circumference}cm
+                      - session.labeled_measurements(label).each do |m|
+                        %li== #{m.location} = #{m.circumference}cm 
             %h4 Notes
             %pre.historynotes= session.notes
           .span7
