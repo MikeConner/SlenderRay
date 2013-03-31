@@ -14,7 +14,7 @@
           .control-label= f.label :patient_image
           .control.inputFile= f.file_field :patient_image, :accept => 'image/*;capture-camera'
           %br/
-          .patientImg
+          .treatPatientImg
             - if !@treatment_session.patient_image.file.nil? and @treatment_session.patient_image.file.exists?
               = image_tag @treatment_session.patient_image_url(:standard).to_s
   .row-fluid

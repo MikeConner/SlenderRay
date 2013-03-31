@@ -60,6 +60,7 @@ class TreatmentSessionsController < ApplicationController
     # filter sets @treatment_session
     @plan = @treatment_session.treatment_plan
     @patient = @plan.patient
+    @plans = Patient.find_by_id(@patient.id).treatment_plans.order('updated_at desc')
     @facility = @patient.treatment_facility
     @current_session_idx = @plan.treatment_sessions.count
     @total_sessions = @plan.num_sessions

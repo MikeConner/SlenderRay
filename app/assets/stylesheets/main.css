@@ -351,12 +351,25 @@ label {
   width:160px;
   padding:4px;
 }
+
 .patientImg img
 {
   border:2px solid #3a3a3a;
   width:160px;
   padding:4px;
 }
+.treatPatientImg{
+  border:2px solid #3a3a3a;
+  width:160px;
+  padding:0px;
+}
+.treatPatientImg img {
+  border:hidden;
+  width:160px;
+  padding:0px;
+}
+
+
 .phistory td {
   padding-right: 25px;
   vertical-align: top;
@@ -386,6 +399,26 @@ iframe {
 
 /* treat start  */
 
+.treathistory{
+
+  padding-left: 20px;
+  margin-top: 10px;
+
+}
+.treathistoryblock {
+  background: rgba(255, 255, 255, .88);
+  border: 1px;
+  margin: 20px;
+  border-color: #fff;
+  border-style: solid;  
+}
+.measurehistory p {
+  margin-left: 20px;
+}
+.measurehistory li{
+  margin-left: 20px;
+
+}
 .treatstart {
 
   vertical-align: middle;
