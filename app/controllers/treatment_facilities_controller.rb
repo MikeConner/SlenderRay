@@ -135,6 +135,8 @@ class TreatmentFacilitiesController < ApplicationController
         @area.process_timer.resume
       elsif 'Reset Session' == params[:commit]
         @area.process_timer.reset
+      elsif 'Expire Timer' == params[:commit]
+        @area.process_timer.expire
       elsif 'Complete Session' == params[:commit]
         @area.process_timer.complete
       end

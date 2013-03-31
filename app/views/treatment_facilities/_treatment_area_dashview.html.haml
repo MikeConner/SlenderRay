@@ -1,11 +1,13 @@
 .row
   .span2
-    = f.object.area_name
+    = area.area_name
     %br
-    == #{f.object.duration_minutes} minutes :  #{f.object.process_timer.display_status}
+    == #{area.duration_minutes} minutes :  #{area.process_timer.display_status}
     %br
     %br
-  .span3
-    = f.text_field :process_name, :maxlength => TreatmentArea::MAX_FIELD_LEN
-  .span3
-    = render :partial => 'shared/timer', :locals => { :f => f, :timer => f.object.process_timer }
+  = form_for facility, :url => update_dashboard_treatment_facility_path(facility) do |f|
+    = f.fields_for :treatment_areas, area do |area_form|
+      .span3
+        = area_form.text_field :process_name, :maxlength => TreatmentArea::MAX_FIELD_LEN
+      .span3
+        = render :partial => 'shared/timer', :locals => { :f => f, :timer => area.process_timer }
