@@ -34,7 +34,7 @@
   .row-fluid
     -#.navbar-fixed-bottom
     .span2
-      = f.submit 'Update Session Data', :class => 'btn btn-large btn-success'
+      = f.submit 'Update Session Data', :class => 'btn btn-success'
     .span4.offset1
       = render :partial => 'shared/timer', :locals => { :f => f, :timer => @treatment_session.process_timer }
     .span3.offset1
