@@ -2,12 +2,18 @@
   .span2
     = area.area_name
     %br
-    == #{area.duration_minutes} minutes :  #{area.process_timer.display_status}
+    - if area.process_timer.startable?
+      == #{pluralize(area.duration_minutes, 'minute')} :  #{area.process_timer.display_status}
+    - else
+      == #{pluralize(area.process_timer.duration_seconds / 60, 'minute')} :  #{area.process_timer.display_status}
     %br
     %br
   = form_for facility, :url => update_dashboard_treatment_facility_path(facility) do |f|
     = f.fields_for :treatment_areas, area do |area_form|
       .span3
         = area_form.text_field :process_name, :maxlength => TreatmentArea::MAX_FIELD_LEN
+        - if area.process_timer.startable?
+          = label_tag :minutes_override, 'Treatment duration (min)'
+          = number_field_tag :minutes_override, area.duration_minutes, :min => 1
       .span3
         = render :partial => 'shared/timer', :locals => { :f => f, :timer => area.process_timer }

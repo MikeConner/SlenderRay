@@ -69,7 +69,9 @@ function myLoadHandler(evt) {
 	}
 	
 	if (tr_dashboard && 0 == dashboard_id) {
-		dashboard_id = setInterval("window.location.reload()", 10000);
+		// 20s update interval on the dashboard
+		// Users can override treatment area timers. The update clears the form, so we don't want it too fast.
+		dashboard_id = setInterval("window.location.reload()", 20000);
 	}
 	else {
 		clearInterval(dashboard_id);

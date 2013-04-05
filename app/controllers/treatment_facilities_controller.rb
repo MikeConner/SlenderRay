@@ -128,6 +128,8 @@ class TreatmentFacilitiesController < ApplicationController
     if @facility.update_attributes(params[:treatment_facility])
       @area = TreatmentArea.find(params[:treatment_facility][:treatment_areas_attributes]['0'][:id])
       if 'Start Timer' == params[:commit]
+        # Did we override the timer?
+        @area.process_timer.update_attributes(:duration_seconds => params[:minutes_override].to_i * 60)
         @area.process_timer.start
       elsif 'Pause Timer' == params[:commit]
         @area.process_timer.pause
