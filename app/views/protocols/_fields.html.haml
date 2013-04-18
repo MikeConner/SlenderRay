@@ -1,0 +1,17 @@
+.control-group
+  .control-label
+    = f.label :name
+  .controls
+    = f.text_field :name, :maxlength => Protocol::MAX_NAME_LEN
+  .control-label
+    = f.label :frequency
+  .controls
+    = f.number_field :frequency, :min => 1
+  .control-label
+    = f.label :protocol_file, 'Tone'
+  .controls
+    = f.file_field :protocol_file
+  .control-label
+    = f.label :remote_protocol_file_url, "or tone URL"
+  .controls
+    = f.text_field :remote_protocol_file_url

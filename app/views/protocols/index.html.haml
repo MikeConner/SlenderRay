@@ -1,0 +1,14 @@
+.facilitypage
+  %h1 Protocols
+  - @protocols.each do |protocol|
+    %strong= protocol.name 
+    == (#{protocol.frequency})
+    - if protocol.protocol_file.present?
+      = protocol.protocol_file.original_filename
+    - else
+      No sound file uploaded
+    = link_to 'Edit', edit_protocol_path(protocol)
+    = link_to 'Delete', protocol, :method => 'delete', :data => { confirm: 'Are you sure?'}
+    %br
+  %br
+  = link_to "<i class='icon-plus'></i> New Protocol".html_safe, new_protocol_path,{:class => 'btn btn-success '}  

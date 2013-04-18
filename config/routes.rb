@@ -35,6 +35,7 @@ SlenderRay::Application.routes.draw do
     end
   end
   resources :photos, :except => [:show]
+  resources :protocols
   
   match "/training_videos" => 'static_pages#training_videos'
   match "/select_report" => 'static_pages#select_report'

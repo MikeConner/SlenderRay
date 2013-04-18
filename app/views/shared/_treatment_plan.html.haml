@@ -6,7 +6,7 @@
       .controls  
         = f.text_field :description
       .control-label
-        = f.label :treatments_per_session
+        = f.label :treatments_per_session, 'Exposures per session'
       .controls  
         = f.number_field :treatments_per_session, :min => 1
     - else

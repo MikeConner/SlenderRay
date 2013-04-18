@@ -21,7 +21,9 @@
 class Protocol < ActiveRecord::Base
   MAX_NAME_LEN = 32
   
-  attr_accessible :name, :frequency
+  attr_accessible :name, :frequency, :protocol_file, :remote_protocol_file_url
+  
+  mount_uploader :protocol_file, ProtocolUploader
   
   validates :name, :length => { maximum: MAX_NAME_LEN }
   validates :frequency, :presence => true,

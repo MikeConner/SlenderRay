@@ -1,0 +1,6 @@
+.facilitypage
+  = form_for @protocol do |f|
+    = render :partial => 'shared/error_messages', :locals => { :errors => @protocol.errors, :name => 'Protocol' }
+    = render :partial => 'fields', :locals => { :f => f, :protocol => @protocol }
+    .actions
+      = f.submit 'Create Protocol', :class => 'btn btn-large btn-success'

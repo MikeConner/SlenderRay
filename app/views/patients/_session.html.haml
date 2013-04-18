@@ -1,6 +1,8 @@
 .row.span10.historyblock
   .span4
-    %p== #{session.created_at.try(:strftime, ApplicationHelper::DATE_FORMAT)} on #{session.machine.display_name}
+    %p
+      = session.machine.display_name
+      %br== on #{session.created_at.try(:strftime, ApplicationHelper::DATETIME_FORMAT)}
     .row
       - if session.labels.empty?
         %h4 Measurements

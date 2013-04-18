@@ -49,6 +49,7 @@ group :test do
   gem 'factory_girl_rails', '4.1.0'
   gem 'rspec-tag_matchers', '0.1.2'
   gem 'rack-test', '0.6.2'
+  gem "selenium-webdriver", '2.32.1'
 end
 
 # To use ActiveModel has_secure_password

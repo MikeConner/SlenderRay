@@ -33,7 +33,7 @@ class TestimonialsController < ApplicationController
   def update
     @testimonial = Testimonial.find(params[:id])
 
-    if @testimonial.update_attributes(params[:patient])
+    if @testimonial.update_attributes(params[:testimonial])
       redirect_to @testimonial, :notice => I18n.t('testimonial_updated')
     else
       render 'edit'

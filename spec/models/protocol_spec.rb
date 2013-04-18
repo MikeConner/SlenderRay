@@ -18,6 +18,7 @@ describe 'Protocol' do
     protocol.should respond_to(:name)
     protocol.should respond_to(:frequency)
     protocol.should respond_to(:display_name)
+    protocol.should respond_to(:protocol_file)
   end
   
   it "should show the correct display name" do
