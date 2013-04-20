@@ -1,0 +1,9 @@
+.facilitypage
+  %h1== #{@protocol.name} (#{@protocol.frequency})
+  - if @protocol.protocol_file.present?
+    - fname = @protocol.protocol_file.to_s
+    - basename = fname[fname.rindex("/") + 1, fname.length]
+    %strong= basename
+  - else
+    No protocol file uploaded.
+  %br= link_to 'Back', protocols_path

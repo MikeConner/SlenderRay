@@ -53,5 +53,5 @@
         - if @treatment_session.machine.web_enabled
           .machineframe
             %iframe{:id => "machinestat", :src => "http://webiopi:raspberry@192.168.1.10:8000/GPIO/27/slenderoff"}
-
-
+  - if @treatment_session.protocol.protocol_file.present?
+    #jplayer{:src => "#{@treatment_session.protocol.protocol_file.to_s}"}

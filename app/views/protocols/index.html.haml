@@ -1,10 +1,13 @@
 .facilitypage
   %h1 Protocols
   - @protocols.each do |protocol|
-    %strong= protocol.name 
-    == (#{protocol.frequency})
+    %strong
+      = link_to protocol.name, protocol_path(protocol) 
+    == [#{protocol.frequency}]
     - if protocol.protocol_file.present?
-      = protocol.protocol_file.original_filename
+      - fname = protocol.protocol_file.to_s
+      - basename = fname[fname.rindex("/") + 1, fname.length]
+      = basename
     - else
       No sound file uploaded
     = link_to 'Edit', edit_protocol_path(protocol)

@@ -43,7 +43,6 @@ class ProtocolsController < ApplicationController
 
     redirect_to protocols_path, :notice => I18n.t('protocol_deleted') 
   end  
-
 private
    def ensure_admin
     if !current_user.has_role?(Role::SUPER_ADMIN)

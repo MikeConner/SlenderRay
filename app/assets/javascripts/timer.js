@@ -99,10 +99,15 @@ function myLoadHandler(evt) {
 
 function turn_machine_on() {
 	issue_command('slenderon');
+  	var e = document.getElementById("treatment_session_protocol_id");
+    var idx = e.options[e.selectedIndex].value;
+    var music = $('#jplayer').attr('src');
+	$('#jplayer').html('<audio id="music" src="' + music + '" autoplay loop>');
 }
 
 function turn_machine_off() {
 	issue_command('slenderoff');
+	$('#music').remove();
 }
 
 function issue_command(value) {

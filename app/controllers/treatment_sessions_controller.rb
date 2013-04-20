@@ -72,7 +72,6 @@ class TreatmentSessionsController < ApplicationController
     end
     error_flag = false
     @treatment_session.add_measurement_prototypes(error_flag, @first_session_flag, measurement_source_session)
-    
     render :layout => 'treatment'
   end
 
