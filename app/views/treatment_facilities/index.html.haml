@@ -47,5 +47,10 @@
     - if current_user.treatment_facility.nil?
       = I18n.t('user_not_set_up')
     - else
-      - facility = current_user.treatment_facility
-      #{facility.facility_name}: #{facility.city}, #{facility.state} #{link_to 'Show', treatment_facility_path(facility)} #{link_to 'Edit', edit_treatment_facility_path(facility)}
+      .row
+        - facility = current_user.treatment_facility
+        .span6.offset1
+          #{facility.facility_name}: #{facility.city}, #{facility.state} 
+        .span4
+          = link_to 'Show', treatment_facility_path(facility), :class => "btn btn-primary"
+          = link_to 'Edit', edit_treatment_facility_path(facility), :class => "btn btn-primary"

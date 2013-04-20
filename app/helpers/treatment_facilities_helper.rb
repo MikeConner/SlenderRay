@@ -11,7 +11,7 @@ module TreatmentFacilitiesHelper
       html = render(:partial => 'machine', :locals => { :f => machine_form })
       link_to_function 'Add Machine', 
                        "$('#{escape_javascript(html)}'.replace(/NEW_RECORD/g, $('.machine').length)).insertBefore('#add_machine')",
-                       :id  => "add_machine"
+                       :id  => "add_machine", :class => "btn btn-primary"
     end
   end
 
@@ -20,7 +20,7 @@ module TreatmentFacilitiesHelper
       html = render(:partial => 'shared/treatment_plan', :locals => { :f => template_form, :type => 'TreatmentPlanTemplate' })
       link_to_function 'Add Treatment Plan Template', 
                        "$('#{escape_javascript(html)}'.replace(/NEW_RECORD/g, $('.treatment_plan').length)).insertBefore('#add_treatment_plan_template')",
-                       :id  => "add_treatment_plan_template"
+                       :id  => "add_treatment_plan_template", :class => "btn btn-primary"
     end
   end
 
@@ -29,7 +29,7 @@ module TreatmentFacilitiesHelper
       html = render(:partial => 'treatment_area', :locals => { :f => area_form })
       link_to_function 'Add Treatment Area', 
                        "$('#{escape_javascript(html)}'.replace(/NEW_RECORD/g, $('.treatment_area').length)).insertBefore('#add_treatment_area')",
-                       :id  => "add_treatment_area"
+                       :id  => "add_treatment_area", :class => "btn btn-primary"
     end
   end
 
@@ -38,7 +38,7 @@ module TreatmentFacilitiesHelper
       html = render(:partial => 'user', :locals => { :f => user_form, :facility => facility })
       link_to_function 'Add User', 
                        "$('#{escape_javascript(html)}'.replace(/NEW_RECORD/g, $('.user').length)).insertBefore('#add_user')",
-                       :id  => "add_user"
+                       :id  => "add_user", :class => "btn btn-primary"
     end
   end
 end

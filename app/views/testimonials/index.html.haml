@@ -10,8 +10,8 @@
     == - #{facility.facility_name}; #{facility.city}, #{facility.state}. 
     %em= testimonial.date_entered.try(:strftime, ApplicationHelper::DATE_FORMAT)
     - if @can_edit
-      = link_to 'Edit', edit_testimonial_path(testimonial)
-      = link_to 'Delete', testimonial, :method => 'delete', :data => { confirm: 'Are you sure?'}
+      = link_to 'Edit', edit_testimonial_path(testimonial), :class => "btn btn-primary"
+      = link_to 'Delete', testimonial, :method => 'delete', :data => { confirm: 'Are you sure?'}, :class => "btn btn-primary"
   %br/
   %center= will_paginate
   - if @can_create

@@ -12,9 +12,9 @@
     %br= photo.treatment_facility.name
   - if technician
     %br/
-    = link_to 'Edit', edit_photo_path(photo)
-    = link_to 'Delete', photo, :method => :delete, :data => { confirm: 'Are you sure?' }
+    = link_to 'Edit', edit_photo_path(photo), :class => "btn btn-primary"
+    = link_to 'Delete', photo, :method => :delete, :data => { confirm: 'Are you sure?' }, :class => "btn btn-primary"
   %br/
 %br/
 - if technician
-  = link_to 'Add Photo', new_photo_path
+  = link_to 'Add Photo', new_photo_path, :class => "btn btn-primary"

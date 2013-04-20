@@ -6,6 +6,8 @@
     .row
       = render :partial => 'shared/progress_bar', :locals => { :pct => plan.pct_complete, :text => plan.description }
       .planPrice== Purchased on #{plan.created_at.try(:strftime, ApplicationHelper::DATE_FORMAT)}: #{number_to_currency(plan.price)}
+      - if !plan.complete?  
+        .planPrice==Session #{plan.treatment_sessions.count} of #{plan.num_sessions}
       - plan.treatment_sessions.order('created_at desc').each do |session|
         .row
           .span6
