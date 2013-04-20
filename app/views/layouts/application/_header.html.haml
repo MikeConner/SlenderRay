@@ -7,33 +7,92 @@
         %ul{:class => 'dropdown-menu', :role => 'menu'}
           - if !current_user.nil?
             %li{:role => 'presentation'} 
-              = link_to "new patient intake", new_patient_path
+              -# link_to "new patient intake", new_patient_path
+              .span3.smallbox.greybox
+                = link_to new_patient_path do
+                  .boxtop
+                    .icon-download-alt.white-icon.icon-2x.boxtext
+                    New patient 
           - if !current_user.nil?
             %li{:role => 'presentation'} 
-              = link_to "manage patients", patients_path
-            %li{:role => 'presentation'} 
-              = link_to "treatment", new_treatment_session_path
-            %li{:role => 'presentation'} 
-              = link_to "training videos", training_videos_path
-          %li{:role => 'presentation'} 
-            = link_to "testimonials", testimonials_path
-          %li{:role => 'presentation'} 
-            = link_to "schedule", "#"
-          %li{:role => 'presentation'} 
-            = link_to "photos", photos_path
-          - if !current_user.nil?
-            %li{:role => 'presentation'} 
-              = link_to "dashboard", dashboard_treatment_facilities_path
-            - if current_user.has_role?(Role::SUPER_ADMIN)
-              %li{:role => 'presentation'} 
-                = link_to select_report_path do
-                  Reports
+              -# link_to "manage patients", patients_path
+              .span3.smallbox.greybox
+                = link_to  patients_path do
+                  .boxtop
+                    .icon-download-alt.white-icon.icon-2x.boxtext
+                    Manage Patients
 
             %li{:role => 'presentation'} 
-              = link_to "log out", destroy_user_session_path, :method => :delete 
+              -# link_to "treatment", new_treatment_session_path
+              .span3.smallbox.greybox
+                = link_to  new_treatment_session_path do
+                  .boxtop
+                    .icon-hospital.white-icon.icon-2x.boxtext
+                    Treatment
+
+            %li{:role => 'presentation'} 
+              -# link_to "training videos", training_videos_path
+              .span3.smallbox.greybox
+                =link_to training_videos_path do
+                  .boxtop
+                    .icon-desktop.white-icon.icon-2x.boxtext
+                    Training 
+          %li{:role => 'presentation'} 
+            -# link_to "testimonials", testimonials_path
+            .span3.smallbox.greybox
+              =link_to testimonials_path do
+                .boxtop
+                  .icon-comments.white-icon.icon-2x.boxtext
+                  Testimonials
+          %li{:role => 'presentation'} 
+            -# link_to "schedule", "#"
+            .span3.smallbox.greybox
+              =link_to  "#" do  
+                .boxtop
+                  .icon-calendar.white-icon.icon-2x.boxtext
+                  Schedule
+
+          %li{:role => 'presentation'} 
+            -# link_to "photos", photos_path
+            .span3.smallbox.greybox
+              = link_to photos_path do
+                .boxtop
+                  .icon-camera-retro.white-icon.icon-2x.boxtext
+                  Photos            
+          - if !current_user.nil?
+            %li{:role => 'presentation'} 
+              -# link_to "dashboard", dashboard_treatment_facilities_path
+              .span3.smallbox.greybox
+                = link_to  dashboard_treatment_facilities_path do
+                  .boxtop
+                    .icon-sitemap.white-icon.icon-2x.boxtext
+                    Dashboard
+
+            - if current_user.has_role?(Role::SUPER_ADMIN)
+              %li{:role => 'presentation'} 
+                .span3.smallbox.greybox
+                = link_to select_report_path do
+                  .boxtop
+                    .icon-sitemap.white-icon.icon-2x.boxtext
+                    Reports
+
+            %li{:role => 'presentation'} 
+              -# link_to "log out", destroy_user_session_path, :method => :delete 
+              .span3.smallbox.greybox
+                = link_to  destroy_user_session_path, :method => :delete do
+                  .boxtop
+                    .icon-sitemap.white-icon.icon-2x.boxtext
+                    Log Out
+
           - else
             %li{:role => 'presentation'} 
-              = link_to "log in", new_user_session_path
+              -# link_to "log in", new_user_session_path
+              .span3.smallbox.greybox
+                = link_to  new_user_session_path do
+                  .boxtop
+                    .icon-sitemap.white-icon.icon-2x.boxtext
+                    Log In
+
     .span3
       .logopic
         = link_to root_path do
@@ -53,3 +112,7 @@
           Log Out 
 .row-fluid
   = render :partial => 'shared/flash_messages'
+
+
+
+
