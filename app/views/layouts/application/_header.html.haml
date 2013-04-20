@@ -71,10 +71,10 @@
             - if current_user.has_role?(Role::SUPER_ADMIN)
               %li{:role => 'presentation'} 
                 .span3.smallbox.greybox
-                = link_to select_report_path do
-                  .boxtop
-                    .icon-sitemap.white-icon.icon-2x.boxtext
-                    Reports
+                  = link_to select_report_path do
+                    .boxtop
+                      .icon-sitemap.white-icon.icon-2x.boxtext
+                      Reports
 
             %li{:role => 'presentation'} 
               -# link_to "log out", destroy_user_session_path, :method => :delete 
