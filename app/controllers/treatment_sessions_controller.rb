@@ -169,6 +169,20 @@ class TreatmentSessionsController < ApplicationController
 
     redirect_to new_treatment_session_path
   end
+  
+  def timer_state
+    @treatment_session = TreatmentSession.find(params[:id])
+    
+    # Respond with timer status; append "BEEP" if it's time to beep
+    answer = @treatment_session.process_timer.display_status
+    if 10 == @treatment_session.process_timer.seconds_remaining
+      answer += "BEEP"
+    end  
+
+    respond_to do |format|
+      format.js { render :text => answer, :content_type => Mime::TEXT }
+    end
+  end
 private
   def ensure_technician
     if !current_user.has_role?(Role::TECHNICIAN)

@@ -4,7 +4,10 @@ class TreatmentFacilitiesController < ApplicationController
   before_filter :authenticate_user!
   before_filter :transform_phones, only: [:create, :update]
   before_filter :ensure_admin, :only => [:static_dashboard]
+  before_filter :ensure_technician, :only => [:treatment_areas]
   load_and_authorize_resource
+  
+  include ActionView::Helpers::TextHelper
 
   def index
     @facilities = TreatmentFacility.all
@@ -104,18 +107,19 @@ class TreatmentFacilitiesController < ApplicationController
   def dashboard
     if current_user.has_role?(Role::SUPER_ADMIN)
       @facilities = TreatmentFacility.order(:facility_name)
-    else
-      @facilities = [current_user.treatment_facility]
-    end
-    
-    # Look for expired timers, since JS does not have individual ones for all of them
-    @facilities.each do |facility|
-      facility.treatment_areas.each do |area|
-        if area.process_timer.pausable? and (0 == area.process_timer.seconds_remaining)
-          area.process_timer.expire
+      # Look for expired timers, since JS does not have individual ones for all of them
+      @facilities.each do |facility|
+        facility.treatment_areas.each do |area|
+          if area.process_timer.pausable? and (0 == area.process_timer.seconds_remaining)
+            area.process_timer.expire
+          end
         end
       end
-    end
+      
+      render 'admin_dashboard'
+    else
+      @facility = current_user.treatment_facility
+    end    
   end
 
   def static_dashboard
@@ -146,6 +150,28 @@ class TreatmentFacilitiesController < ApplicationController
       redirect_to dashboard_treatment_facilities_path
     end   
   end
+  
+  def treatment_areas
+    facility = TreatmentFacility.find(params[:id])
+    data = Hash.new
+    # Send the client a hash of treatment areas and their statuses for this facility
+    facility.treatment_areas.each do |area|
+      status = area.process_timer.display_status
+      # If 10 seconds left, append BEEP, which tells client to beep
+      if 10 == area.process_timer.seconds_remaining
+        status += 'BEEP'
+      elsif area.process_timer.pausable? and (0 == area.process_timer.seconds_remaining)
+        # Make sure it expires - append RELOAD, which tells the client to reload the page
+        area.process_timer.expire
+        status += "RELOAD"
+      end
+      data[area.id] = "#{pluralize(area.process_timer.duration_seconds / 60, 'minute')} :  #{status}"
+    end
+    
+    respond_to do |format|
+      format.js { render :json => data, :content_type => Mime::JSON }
+    end
+  end
 private
   def transform_phones
     if !params[:treatment_facility].nil?
@@ -163,6 +189,12 @@ private
   def ensure_admin
     if !current_user.has_role?(Role::SUPER_ADMIN)
       redirect_to root_path, :alert => I18n.t('admins_only')
+    end
+  end
+
+  def ensure_technician
+    if !current_user.has_role?(Role::TECHNICIAN)
+      redirect_to root_path, :alert => I18n.t('technicians_only')
     end
   end
 end

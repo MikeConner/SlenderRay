@@ -1,10 +1,9 @@
 .span10.dashpage
-  #dashboard_marker
-  = render :partial => 'active_machines', :locals => { :facilities => @facilities }
-  - if current_user.has_role?(Role::TECHNICIAN) 
-    - facility = @facilities[0]
-    .row
-    - if !facility.treatment_areas.empty?
-      %h3 Treatment Areas
-      - facility.treatment_areas.each do |area|
-        = render :partial => 'treatment_area_dashview', :locals => { :facility => facility, :area => area }
+  = render :partial => 'machine_dashboard', :locals => { :facility => @facility }
+  .row
+  - if !@facility.treatment_areas.empty?
+    %h3 Treatment Areas
+    - @facility.treatment_areas.each do |area|
+      = render :partial => 'treatment_area_dashboard', :locals => { :facility => @facility, :area => area }
+  #technician_dashboard_marker
+  %audio{:id => 'beep', :src => '/audios/beep.mp3'}

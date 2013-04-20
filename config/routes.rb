@@ -13,6 +13,7 @@ SlenderRay::Application.routes.draw do
       get 'edit_assignments'
       put 'update_assignments'
       put 'update_dashboard'
+      get 'treatment_areas'
     end
     
     get 'dashboard', :on => :collection
@@ -32,6 +33,7 @@ SlenderRay::Application.routes.draw do
       put 'treatment_expired'
       get 'edit_measurements'
       put 'update_measurements'
+      get 'timer_state'
     end
   end
   resources :photos, :except => [:show]

@@ -15,6 +15,15 @@ $(function() {
 	}
 });
 
+function beep() {
+	var beep = document.getElementById('beep');
+	if (beep) {
+      beep.play();
+	  //var snd = new Audio(beep); // buffers automatically when created
+      //snd.play();
+	}
+}
+
 function countdown() {
 	var m = Math.floor(seconds_remaining/60);
 	var s = seconds_remaining - m*60;
@@ -58,6 +67,7 @@ function countdown() {
 function myLoadHandler(evt) {
 	var tr_remaining = document.getElementById('time_remaining');
 	var tr_dashboard = document.getElementById('dashboard_marker');
+	var tr_technician_dashboard = document.getElementById('technician_dashboard_marker');
 	if (evt.persisted) {
 		// This is actually a pageshow event and the page is coming out of the page cache
 		// Don't do "one-time" work we'd normally do in OnLoad
@@ -71,12 +81,21 @@ function myLoadHandler(evt) {
 	if (tr_dashboard && 0 == dashboard_id) {
 		// 20s update interval on the dashboard
 		// Users can override treatment area timers. The update clears the form, so we don't want it too fast.
-		dashboard_id = setInterval("window.location.reload()", 20000);
+		dashboard_id = setInterval("window.location.reload()", 10000);
 	}
 	else {
 		clearInterval(dashboard_id);
 		dashboard_id = 0;
+		
+		if (tr_technician_dashboard && 0 == dashboard_id) {
+		  dashboard_id = setInterval("monitor()", 1000);		
+		}
+		else {
+			clearInterval(dashboard_id);
+			dashboard_id = 0;
+		}
 	}
+		
 	// Either a load event for older browsers,
 	// or a pageshow event for the initial load in supported browsers
 	// Do everything a regular load event handler does here
@@ -94,7 +113,60 @@ function myLoadHandler(evt) {
 		else {
 			countdown();
 		}
-	}
+	}	
+}
+
+function monitor() {
+  $('.dashboard_machine_state').each(function(index) {
+  	var element = $(this);
+	jQuery.ajax({url:"/treatment_sessions/" + element.attr('id') + "/timer_state",
+		         type: "GET",
+	             success: function(data) { 
+	               if (/BEEP$/.test(data)) {
+	               	  beep();
+	               	  data = data.substring(0, data.length - 4);
+	               }
+	               element.text(data);
+	             },
+	             error: function(xhr, ajaxOptions, thrownError) //{ alert('Oh noes!') },
+	               { alert('error code: ' + xhr.status + ' \n'+'error:\n' + thrownError ); },
+	             async: false}); 	    	
+  });
+
+  // Only need to send one request for all treatment areas
+  var first = true;
+  var reload = false;
+  var result = null;
+  
+  $('.dashboard_area_state').each(function(index) {
+  	var element = $(this);
+  	
+  	if (first) {
+  		first = false;
+		jQuery.ajax({url:"/treatment_facilities/" + element.attr('facility') + "/treatment_areas",
+			         type: "GET",
+		             success: function(data) { 
+		               result = data;
+		             },
+		             error: function(xhr, ajaxOptions, thrownError) //{ alert('Oh noes!') },
+		               { alert('error code: ' + xhr.status + ' \n'+'error:\n' + thrownError ); },
+		             async: false}); 
+    }	
+    status = result[element.attr('id')];
+    if (/BEEP$/.test(status)) {
+   	    beep();
+   	    status = status.substring(0, status.length - 4);
+    }
+    else if (/RELOAD$/.test(status)) {
+    	status = status.substring(0, status.length - 6);
+    	reload = true;
+    }
+    element.text(status);    	
+  });
+  
+  if (reload) {
+  	window.location.reload();
+  }
 }
 
 function turn_machine_on() {
