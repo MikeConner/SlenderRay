@@ -99,8 +99,10 @@ function myLoadHandler(evt) {
 
 function turn_machine_on() {
 	issue_command('slenderon');
-  	var e = document.getElementById("treatment_session_protocol_id");
-    var idx = e.options[e.selectedIndex].value;
+	// If we had to get the protocol id here, do it this way. As it is, the server is computing it.
+	// You can only change the protocol through interaction with the server anyway (start/pause/resume)
+  	//var e = document.getElementById("treatment_session_protocol_id");
+    //var idx = e.options[e.selectedIndex].value;
     var music = $('#jplayer').attr('src');
 	$('#jplayer').html('<audio id="music" src="' + music + '" autoplay loop>');
 }
