@@ -2,7 +2,7 @@
   .navbar-inner.nav-style
     .span1
       .dropdown
-        %a#dlabel{:class => 'dropdown-toggle', "data-toggle" => 'dropdown', :href => '#'}
+        %a#dlabel.dropdown-icon{:class => 'dropdown-toggle', "data-toggle" => 'dropdown', :href => '#'}
           = image_tag "homeicon.gif"
         %ul{:class => 'dropdown-menu', :role => 'menu'}
           - if !current_user.nil?
@@ -97,7 +97,7 @@
       .logopic
         = link_to root_path do
           = image_tag "logo.gif"
-    .span4.offset1.pull-right.topright
+    .span2.pull-right.topright
       - if current_user.nil?
         = link_to new_user_session_path do
           .icon-user.icon-3x 

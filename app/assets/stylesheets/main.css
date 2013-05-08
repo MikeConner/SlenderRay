@@ -78,21 +78,31 @@ body.generate_report {
 .dropdown img {
   padding-top: 10px;
 }
-.topright img {
-  height: 45px;
+
+
+.topright {
+  margin-top: 15px;
 }
 .topright a {
   color: #fff;
   font-size: 16px;
-  font-family: helvelica;
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+  font-weight: 300;
 }
+
+.topright [class*="icon-"] {
+  font-size:25px;
+  margin-right: 5px;
+}
+
 a:link {text-decoration:none;}
 .navtexty {
   vertical-align: text-top;
 }
 .logopic img {
   display: inline;
-  height: 65px;
+  width: 140px;
+  margin:10px 0 5px;
 }
 .login-top {
   background: rgba(0, 0, 0, .93);
@@ -219,19 +229,30 @@ label {
 
   height:80px;
 }
+
+
+.boxtop [class*="icon"]{
+  margin-right: 10px;
+}
+
 .smallbox{
   border:2px solid #eee;
   margin:-2px 0px 0px 0px !important;
-  padding: 4px 20px 9px 1px !important;
-  height:40px;
+  padding: 8px 0;
+  
 }
 .greybox {
   background: rgba(0, 0, 0, .7);
+}
 
+.greybox:hover{
+  background: rgba(255, 255, 255, 0.4);
 }
-.boxtop{
-  height:90px;
+
+.nav-style li a {
+  font-size: 1.1em;
 }
+
 .pinkbox{
   background-color: #ed8d74;
 }
@@ -253,6 +274,10 @@ label {
   padding-top:1px;
 }
 
+
+.dropdown-menu li:hover {
+  background-color: white!important;
+}
 
 .smallbox a {
   color: #fff;
@@ -473,6 +498,21 @@ iframe {
 
   padding-left: 30px;
 }
+
+.dropdown-icon img {
+  width:50px;
+  margin-top: 5px;
+}
+
+
+
+/* Font Awesome Icons */
+li [class^="icon-"], .nav li [class^="icon-"], li [class*=" icon-"], .nav li [class*=" icon-"] {
+  font-size:25px;
+}
+
+
+
 
 iframe {
   height: 500px;
