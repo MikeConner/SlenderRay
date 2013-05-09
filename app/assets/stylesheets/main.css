@@ -10,38 +10,74 @@ body {
   width: 100px;
 }
 body.home {
-  background-image: url('/assets/start.jpg');
+  background: url('/assets/start.jpg') no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
 body.training_videos {
-  background-image: url('/assets/start.jpg');
+  background: url('/assets/start.jpg') no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
 body.photos {
-  background-image: url('/assets/start.jpg');
+  background: url('/assets/start.jpg') no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
 body.testimonials {
-  background-image: url('/assets/start.jpg');
+  background: url('/assets/start.jpg') no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
 body.sessions {
-  background-image: url('/assets/start.jpg');
+  background: url('/assets/start.jpg') no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
 body.patients.new {
-  background-image: url('/assets/patient.jpg');
+  background: url('/assets/patient.jpg') no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 body.patients.index {
-  background-image: url('/assets/patient.jpg');
+  background: url('/assets/patient.jpg') no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
 body.patients.show {
-  background-image: url('/assets/patient.jpg');
+  background: url('/assets/patient.jpg') no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
 body.patients.edit {
-  background-image: url('/assets/patient.jpg');
+  background: url('/assets/patient.jpg') no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
 
@@ -50,16 +86,32 @@ body.completed_sessions.patients {
 }
 
 body.treatment_sessions  {
-  background-image: url('/assets/treat.jpg');
+  background: url('/assets/treat.jpg') no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 body.treatment_facilities {
-  background-image: url('/assets/manage.jpg');
+  background: url('/assets/manage.jpg') no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 body.select_report {
-  background-image: url('/assets/manage.jpg');
+  background: url('/assets/manage.jpg') no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 body.generate_report {
-  background-image: url('/assets/manage.jpg');
+  background: url('/assets/manage.jpg') no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
 
@@ -88,6 +140,8 @@ body.generate_report {
   font-size: 16px;
   font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
   font-weight: 300;
+  float: right;
+  margin-right: 20px;
 }
 
 .topright [class*="icon-"] {
@@ -107,8 +161,18 @@ a:link {text-decoration:none;}
 .login-top {
   background: rgba(0, 0, 0, .93);
   margin: 0px 0px 0px 0px !important;
-  padding: 3px 10px 10px 5px;
+  padding: 10px 20px;
 }
+
+.login-top h4 {
+  margin-left:-10px;
+  padding:0;
+}
+
+.login-top .btn {
+  margin:5px 0 0 10px;
+}
+
 .login-top label {
   color: #fff;
 }
@@ -116,6 +180,7 @@ a:link {text-decoration:none;}
   background: rgba(0, 0, 0, .85);
   z-index:2;
   margin-left: 0px !important;
+  padding: 10px;
 }
 .login-container {
   background: rgba(0, 0, 0, 0);
@@ -139,6 +204,11 @@ a:link {text-decoration:none;}
 
   z-index:10;
 }
+
+.loginfield {
+  margin:5px 10px 0px;
+}
+
 .navbar-inner{
   opacity:.85;
    background-color: #111; /* background color will be black for all browsers */
@@ -175,11 +245,11 @@ input[type="text"],
 .uneditable-input {
   display: inline-block;
   height: 20px;
-  padding: 0px 0px; /* override from bootstrap */
+  padding: 8px; /* override from bootstrap */
   margin-bottom: 10px;
-  font-size: 18px;
+  font-size: 14px;
   line-height: 20px;
-  color: #555555;
+  color: #999999;
   vertical-align: middle;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -189,6 +259,22 @@ input[type="text"],
 label {
 	display:inline;
 }
+
+.table thead th {
+  background-color: #000;
+  color:white;
+  padding: 10px 0 10px 10px;
+}
+
+
+.treatment-area {
+  background-color: white;
+  padding: 40px 10px 0px 10px;
+  margin:10px 10px;
+}
+
+
+
 .removebtn {
 }
 .greybtn {
@@ -238,7 +324,7 @@ label {
 .smallbox{
   border:2px solid #eee;
   margin:-2px 0px 0px 0px !important;
-  padding: 8px 0;
+  padding: 5px 0 12px;
   
 }
 .greybox {
@@ -478,7 +564,7 @@ iframe {
 }
 .dashpage {
     background: rgba(255, 255, 255, .85);
-    padding-bottom: 40px;
+    padding:20px;
 }
 
 .treatpage {
