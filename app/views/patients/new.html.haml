@@ -1,13 +1,18 @@
-.span6.offset0.newpatient
-  %h3 New Patient Intake
-  = form_for @patient do |f|
-    = render :partial => 'shared/error_messages', :locals => { :errors => @patient.errors, :name => 'Patient' }
-    = render :partial => 'fields', :locals => { :f => f }
-    .control-label
-      Select a treatment plan 
-    .controls
-      = select_tag :plan_template, options_for_select(@facility.treatment_plan_templates.where("type = 'TreatmentPlanTemplate'").map { |t| t.description })
-      
-    .actions
-      = f.submit 'Create Patient', :class => 'btn btn-success'
-      = f.submit I18n.t('create_and_treat'), :class => 'btn  btn-success'
+.block.block-dark.span6
+  %p.block-heading
+    %span.block-icon.pull-right
+      %a.demo-cancel-click
+        %i.icon-cog
+    %span New Patient Intake
+    .block-body
+      = form_for @patient do |f|
+        = render :partial => 'shared/error_messages', :locals => { :errors => @patient.errors, :name => 'Patient' }
+        = render :partial => 'fields', :locals => { :f => f }
+        .control-label
+          Select a treatment plan 
+        .controls
+          = select_tag :plan_template, options_for_select(@facility.treatment_plan_templates.where("type = 'TreatmentPlanTemplate'").map { |t| t.description })
+          
+        .actions
+          = f.submit 'Create Patient', :class => 'btn btn-success'
+          = f.submit I18n.t('create_and_treat'), :class => 'btn  btn-success'

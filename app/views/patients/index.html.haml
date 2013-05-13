@@ -1,33 +1,34 @@
-.span8.offset0.newpatient
-  %h3 Manage Patients at #{@facility.facility_name}
-  = will_paginate
-  = page_entries_info
-  %br
-  %br
-  - @patients.each do |patient|
-    .row.patientRow
-      .span3.patientName
-        = link_to patient.name.to_s, edit_patient_path(patient)
-      .span1
-        = link_to 'Show', patient_path(patient), {:class => 'btn  btn-small'}  
-      .span1
-        = link_to 'Edit', edit_patient_path(patient), {:class => 'btn btn-primary  btn-small'}  
-      .span1
-        = link_to 'Treat', treat_patient_path(patient), {:class => 'btn btn-primary  btn-small'} 
-      .span1
-        - editable_session = patient.editable_session
-        - if editable_session.nil?
-          &nbsp;
-        - else 
-          = link_to 'Measure', edit_measurements_treatment_session_path(editable_session), {:class => 'btn btn-info  btn-small'} 
-      - if patient.can_be_deleted?
-        .span1
-          = link_to 'Delete', patient, :method => 'delete', :data => { confirm: 'Are you sure?'} , :class => 'btn btn-danger  btn-small'
-
-  %br/
-  %center= will_paginate
-  %br/
-  = link_to "<i class='icon-plus'></i> New Patient".html_safe, new_patient_path,{:class => 'btn btn-success '}  
-  %br
-  %br
+.block.block-dark.span8
+  %p.block-heading
+    %span.block-icon.pull-right
+      %a.demo-cancel-click
+        %i.icon-cog
+    %span Manage Patients at #{@facility.facility_name}
+  .stat.block-body
+    = will_paginate
+    = page_entries_info
+    %br
+    %br
+    %ul.unstyled
+      - @patients.each do |patient|
+        %li.patientRow
+          .row-fluid
+            .span4.patientName
+              = link_to patient.name.to_s, edit_patient_path(patient)
+            .span6
+              = link_to 'Show', patient_path(patient), {:class => 'btn  btn-small'} 
+              = link_to 'Edit', edit_patient_path(patient), {:class => 'btn btn-primary  btn-small'}
+              = link_to 'Treat', treat_patient_path(patient), {:class => 'btn btn-primary  btn-small'}
+            .span2.pull-right  
+              - editable_session = patient.editable_session
+              - if editable_session.nil?
+                &nbsp;
+              - else 
+                = link_to 'Measure', edit_measurements_treatment_session_path(editable_session), {:class => 'btn btn-info  btn-small'} 
+              - if patient.can_be_deleted?
+                = link_to 'Delete', patient, :method => 'delete', :data => { confirm: 'Are you sure?'} , :class => 'btn btn-danger  btn-small'
+    %center= will_paginate
+    %br
+    = link_to "<i class='icon-plus'></i> New Patient".html_safe, new_patient_path,{:class => 'btn btn-success '}  
+    %br
 
