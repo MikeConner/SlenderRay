@@ -9,5 +9,5 @@
       = select_tag :plan_template, options_for_select(@facility.treatment_plan_templates.where("type = 'TreatmentPlanTemplate'").map { |t| t.description })
       
     .actions
-      = f.submit 'Create Patient', :class => 'btn btn-inverse greybtn'
-      = f.submit I18n.t('create_and_treat'), :class => 'btn  btn-inverse greybtn'
+      = f.submit 'Create Patient', :class => 'btn btn-success'
+      = f.submit I18n.t('create_and_treat'), :class => 'btn  btn-success'

@@ -9,11 +9,11 @@
       .span3.patientName
         = link_to patient.name.to_s, edit_patient_path(patient)
       .span1
-        = link_to 'Show', patient_path(patient), {:class => 'btn btn-inverse greybtn btn-small'}  
+        = link_to 'Show', patient_path(patient), {:class => 'btn  btn-small'}  
       .span1
-        = link_to 'Edit', edit_patient_path(patient), {:class => 'btn btn-inverse greybtn btn-small'}  
+        = link_to 'Edit', edit_patient_path(patient), {:class => 'btn btn-primary  btn-small'}  
       .span1
-        = link_to 'Treat', treat_patient_path(patient), {:class => 'btn btn-inverse greybtn btn-small'} 
+        = link_to 'Treat', treat_patient_path(patient), {:class => 'btn btn-primary  btn-small'} 
       .span1
         - editable_session = patient.editable_session
         - if editable_session.nil?
@@ -27,7 +27,7 @@
   %br/
   %center= will_paginate
   %br/
-  = link_to "<i class='icon-plus'></i> New Patient".html_safe, new_patient_path,{:class => 'btn btn-inverse greybtn '}  
+  = link_to "<i class='icon-plus'></i> New Patient".html_safe, new_patient_path,{:class => 'btn btn-success '}  
   %br
   %br
 
