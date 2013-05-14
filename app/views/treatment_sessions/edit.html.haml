@@ -1,3 +1,28 @@
+
+
+.block.span7
+  %p.block-heading
+    %span.block-icon.pull-right
+      %a.demo-cancel-click{"data-original-title" => "Refresh", :href => "#", :rel => "tooltip", :title => ""}
+        %i.icon-refresh
+    %span== Session #{@current_session_idx} of #{@total_sessions}, #{@plan.description} plan
+  .block-body
+    %ul.admin.unstyled
+      %li
+        %img.avatar.pull-left{:alt => "avatar", :src => "http://oi43.tinypic.com/audz6h.jpg", :style => "width:60px;"}/
+        %p.patientName-treat
+          %strong== #{@patient.name}
+        = link_to 'Cancel Session', @treatment_session, :method => :delete, :class => 'btn', :data => { :confirm => 'This will delete this session and all associated data. Are you sure?' }
+    %span.patientTime
+      %h1#countdown_timer.timer
+        - seconds_remaining = @treatment_session.process_timer.seconds_remaining || 0
+        - elapsed_seconds = @treatment_session.process_timer.elapsed_seconds || 0
+        - scheduled_pause = @treatment_session.process_timer.next_pause || -1
+        - running = @treatment_session.process_timer.pausable? ? 'true' : 'false'
+        #time_remaining{:elapsed => elapsed_seconds, :remaining => seconds_remaining, :scheduled_pause => scheduled_pause, :running => running, :session => @treatment_session.id}
+        - if @treatment_session.machine.web_enabled
+          #machine_config{:hostname => @treatment_session.machine.hostname, :api_port => Machine::API_PORT}
+
 .treatpage
   = form_for @treatment_session do |f|
     = render :partial => 'shared/error_messages', :locals => { :errors => @treatment_session.errors, :name => 'Treatment Session' }

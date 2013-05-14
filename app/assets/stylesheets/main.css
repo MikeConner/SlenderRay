@@ -405,12 +405,23 @@ label {
   font-size: 16px;
 }
 
+.patientName-treat {
+  font-size: 22px;
+}
 
 /*.patientRow:hover .patientName a{
   background-color: #111;
 }*/
 
+.admin {
+  width:50%;
+  float: left;
+}
 
+.patientTime {
+  width:50%;
+  float:left;
+}
 
 .patientImage { 
   height: 300px}
@@ -821,7 +832,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#383838', end
 }
 
 
-
+.avatar{
+  margin-right: 15px;
+}
 
 /*Well*/
 
