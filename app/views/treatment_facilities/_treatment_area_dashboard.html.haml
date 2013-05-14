@@ -6,7 +6,7 @@
       - if area.process_timer.startable?
         == #{pluralize(area.duration_minutes, 'minute')} :  #{area.process_timer.display_status}
       - else
-        .dashboard_area_state{:id => "#{area.id}", :facility => "#{facility.id}"}
+        .dashboard_area_state.duration{:id => "#{area.id}", :facility => "#{facility.id}"}
           == #{pluralize(area.process_timer.duration_seconds / 60, 'minute')} :  #{area.process_timer.display_status}
     %br
     %br
