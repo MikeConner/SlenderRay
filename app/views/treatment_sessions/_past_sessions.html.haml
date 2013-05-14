@@ -1,37 +1,33 @@
-.span12.offset0.treathistory
+- @plans.each do |plan|
   .row
-    %h4
-      History
-  - @plans.each do |plan|
-    .row
-      = render :partial => 'shared/progress_bar', :locals => { :pct => plan.pct_complete, :text => plan.description }
-      .planPrice= "Updated " + plan.created_at.try(:strftime, ApplicationHelper::DATE_FORMAT).to_s        
-      - plan.treatment_sessions.order('created_at desc').each do |session|
-        .row.span10.treathistoryblock
-          .span5
-            %p== #{session.created_at.try(:strftime, ApplicationHelper::DATE_FORMAT)} 
-            .row.measurehistory
-              - if session.labels.empty?
-                %p Measurements
-                %ul
-                  - session.measurements.each do |m|
-                    %li== #{m.location} = #{m.circumference}cm
-              - else
-                - width = 9 / session.labels.count
-                - session.labels.each do |label|
-                  .measurehistory
-                    %p== Measurements (#{label})
-                    %ul
-                      - session.labeled_measurements(label).each do |m|
-                        %li== #{m.location} = #{m.circumference}cm 
-            %h4 Notes
-            %pre.historynotes= session.notes
-          .span7
-            - if session.patient_image?
-              .treatPatientImage
-                = image_tag session.patient_image_url(:standard).to_s
-              %br
+    = render :partial => 'shared/progress_bar', :locals => { :pct => plan.pct_complete, :text => plan.description }
+    .planPrice= "Updated " + plan.created_at.try(:strftime, ApplicationHelper::DATE_FORMAT).to_s        
+    - plan.treatment_sessions.order('created_at desc').each do |session|
+      .row.span6.treathistoryblock
+        .span5
+          %p== #{session.created_at.try(:strftime, ApplicationHelper::DATE_FORMAT)} 
+          .row.measurehistory
+            - if session.labels.empty?
+              %p Measurements
+              %ul
+                - session.measurements.each do |m|
+                  %li== #{m.location} = #{m.circumference}cm
             - else
-              No picture
+              - width = 9 / session.labels.count
+              - session.labels.each do |label|
+                .measurehistory
+                  %p== Measurements (#{label})
+                  %ul
+                    - session.labeled_measurements(label).each do |m|
+                      %li== #{m.location} = #{m.circumference}cm 
+          %h4 Notes
+          %pre.historynotes= session.notes
+        .span7
+          - if session.patient_image?
+            .treatPatientImage
+              = image_tag session.patient_image_url(:standard).to_s
+            %br
+          - else
+            No picture
 
 

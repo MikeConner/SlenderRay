@@ -1,85 +1,65 @@
+= form_for @treatment_session do |f|
+  = render :partial => 'shared/error_messages', :locals => { :errors => @treatment_session.errors, :name => 'Treatment Session' }
+  .block.span7.patientHistory
+    %p.block-heading
+      %span.block-icon.pull-right
+        %a.demo-cancel-click{"data-original-title" => "Refresh", :href => "#", :rel => "tooltip", :title => ""}
+          %i.icon-refresh
+      %span== Session #{@current_session_idx} of #{@total_sessions}, #{@plan.description} plan
+    .block-body
+      %ul.admin.unstyled
+        %li
+          %img.avatar.pull-left{:alt => "avatar", :src => "http://oi43.tinypic.com/audz6h.jpg", :style => "width:60px;"}/
+          %p.patientName-treat
+            %strong== #{@patient.name}
+          = link_to 'Cancel Session', @treatment_session, :method => :delete, :class => 'btn', :data => { :confirm => 'This will delete this session and all associated data. Are you sure?' }
+      %span.patientTime
+        %h1#countdown_timer.timer
+          - seconds_remaining = @treatment_session.process_timer.seconds_remaining || 0
+          - elapsed_seconds = @treatment_session.process_timer.elapsed_seconds || 0
+          - scheduled_pause = @treatment_session.process_timer.next_pause || -1
+          - running = @treatment_session.process_timer.pausable? ? 'true' : 'false'
+          #time_remaining{:elapsed => elapsed_seconds, :remaining => seconds_remaining, :scheduled_pause => scheduled_pause, :running => running, :session => @treatment_session.id}
+          - if @treatment_session.machine.web_enabled
+            #machine_config{:hostname => @treatment_session.machine.hostname, :api_port => Machine::API_PORT}
+      %br
+      %br
+      %br
+      %hr
+      = render :partial => 'measurement_fields', :locals => { :session => @treatment_session, :f => f }
+      %br
+      %hr
+      = f.label :notes
+      %br
+      = f.text_area :notes, :size => '80x4', :style => "width:95%"
+      %hr
+      .field
+        = f.label :machine_id
+        %br/
+        = f.collection_select :machine_id, @facility.machines, :id, :display_name 
+      .field
+        = f.label :protocol_id
+        %br/
+        = f.collection_select :protocol_id, Protocol.all, :id, :name
+      .row-fluid
+        .span8
+          = f.submit 'Update Session Data', :class => 'btn btn-success'
+          = render :partial => 'shared/timer', :locals => { :f => f, :timer => @treatment_session.process_timer }
 
-
-.block.span7
-  %p.block-heading
-    %span.block-icon.pull-right
-      %a.demo-cancel-click{"data-original-title" => "Refresh", :href => "#", :rel => "tooltip", :title => ""}
-        %i.icon-refresh
-    %span== Session #{@current_session_idx} of #{@total_sessions}, #{@plan.description} plan
-  .block-body
-    %ul.admin.unstyled
-      %li
-        %img.avatar.pull-left{:alt => "avatar", :src => "http://oi43.tinypic.com/audz6h.jpg", :style => "width:60px;"}/
-        %p.patientName-treat
-          %strong== #{@patient.name}
-        = link_to 'Cancel Session', @treatment_session, :method => :delete, :class => 'btn', :data => { :confirm => 'This will delete this session and all associated data. Are you sure?' }
-    %span.patientTime
-      %h1#countdown_timer.timer
-        - seconds_remaining = @treatment_session.process_timer.seconds_remaining || 0
-        - elapsed_seconds = @treatment_session.process_timer.elapsed_seconds || 0
-        - scheduled_pause = @treatment_session.process_timer.next_pause || -1
-        - running = @treatment_session.process_timer.pausable? ? 'true' : 'false'
-        #time_remaining{:elapsed => elapsed_seconds, :remaining => seconds_remaining, :scheduled_pause => scheduled_pause, :running => running, :session => @treatment_session.id}
-        - if @treatment_session.machine.web_enabled
-          #machine_config{:hostname => @treatment_session.machine.hostname, :api_port => Machine::API_PORT}
-
-.treatpage
-  = form_for @treatment_session do |f|
-    = render :partial => 'shared/error_messages', :locals => { :errors => @treatment_session.errors, :name => 'Treatment Session' }
-    .row-fluid
-      .span12
-        .span12
-          .span5
-            %h1
-              == #{@patient.name}
-              = link_to 'Cancel Session', @treatment_session, :method => :delete, :class => 'btn', :data => { :confirm => 'This will delete this session and all associated data. Are you sure?' }
-            %h4
-              == Session #{@current_session_idx} of #{@total_sessions}, #{@plan.description} plan
-              
-            %h1#countdown_timer.timer
-              - seconds_remaining = @treatment_session.process_timer.seconds_remaining || 0
-              - elapsed_seconds = @treatment_session.process_timer.elapsed_seconds || 0
-              - scheduled_pause = @treatment_session.process_timer.next_pause || -1
-              - running = @treatment_session.process_timer.pausable? ? 'true' : 'false'
-              #time_remaining{:elapsed => elapsed_seconds, :remaining => seconds_remaining, :scheduled_pause => scheduled_pause, :running => running, :session => @treatment_session.id}
-              - if @treatment_session.machine.web_enabled
-                #machine_config{:hostname => @treatment_session.machine.hostname, :api_port => Machine::API_PORT}
-            = render :partial => 'measurement_fields', :locals => { :session => @treatment_session, :f => f }
-            %br/
-            = f.label :notes
-            = f.text_area :notes, :size => '80x4', :style => "width:100%"
-            .row
-              .span8.offset1
-                .field
-                  = f.label :machine_id
-                  %br/
-                  = f.collection_select :machine_id, @facility.machines, :id, :display_name 
-                .field
-                  = f.label :protocol_id
-                  %br/
-                  = f.collection_select :protocol_id, Protocol.all, :id, :name
-            .row-fluid
-              -#.navbar-fixed-bottom
-              .span3
-                = f.submit 'Update Session Data', :class => 'btn btn-success'
-            .row-fluid
-              .span10
-                = render :partial => 'shared/timer', :locals => { :f => f, :timer => @treatment_session.process_timer }
-
-          .span6.control-group
-            -# Show current image
-            .control-label= f.label :patient_image
-            .control.inputFile= f.file_field :patient_image, :accept => 'image/*;capture-camera'
-            %br/
-            .treatPatientImg
-              - if !@treatment_session.patient_image.file.nil? and @treatment_session.patient_image.file.exists?
-                = image_tag @treatment_session.patient_image_url(:standard).to_s
-            - if !@first_session_flag
-              = render :partial => 'past_sessions', :locals => { :patient => @patient, :plans => @plans }
-    .row-fluid
-      .span3.offset0
-        - if @treatment_session.machine.web_enabled
-          .machineframe
-            %iframe{:id => "machinestat", :src => "http://webiopi:raspberry@192.168.1.10:8000/GPIO/27/slenderoff"}
-  - if !@treatment_session.protocol.nil? and @treatment_session.protocol.protocol_file.present?
-    #jplayer{:src => "#{@treatment_session.protocol.protocol_file.to_s}"}
+  .block.span7.patientHistory
+    %p.block-heading
+      %span.block-icon.pull-right
+        %a.demo-cancel-click{"data-original-title" => "Refresh", :href => "#", :rel => "tooltip", :title => ""}
+          %i.icon-refresh
+      %span History
+    .block-body
+      - if !@first_session_flag
+        = render :partial => 'past_sessions', :locals => { :patient => @patient, :plans => @plans }
+      .row-fluid
+        .span3.offset0
+          - if @treatment_session.machine.web_enabled
+            .machineframe
+              %iframe{:id => "machinestat", :src => "http://webiopi:raspberry@192.168.1.10:8000/GPIO/27/slenderoff"}
+        - if !@treatment_session.protocol.nil? and @treatment_session.protocol.protocol_file.present?
+          #jplayer{:src => "#{@treatment_session.protocol.protocol_file.to_s}"}
+      

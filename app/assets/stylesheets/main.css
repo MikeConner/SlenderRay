@@ -409,6 +409,10 @@ label {
   font-size: 22px;
 }
 
+.patientHistory {
+  margin-left: 40px!important;
+}
+
 /*.patientRow:hover .patientName a{
   background-color: #111;
 }*/
