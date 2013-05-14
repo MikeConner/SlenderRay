@@ -4,7 +4,7 @@
     %p.block-heading
       %span.block-icon.pull-right
         %a.demo-cancel-click{"data-original-title" => "Refresh", :href => "#", :rel => "tooltip", :title => ""}
-          %i.icon-refresh
+          %i.icon-tasks
       %span== Session #{@current_session_idx} of #{@total_sessions}, #{@plan.description} plan
     .block-body
       %ul.admin.unstyled
@@ -50,7 +50,7 @@
     %p.block-heading
       %span.block-icon.pull-right
         %a.demo-cancel-click{"data-original-title" => "Refresh", :href => "#", :rel => "tooltip", :title => ""}
-          %i.icon-refresh
+          %i.icon-tasks
       %span History
     .block-body
       - if !@first_session_flag
