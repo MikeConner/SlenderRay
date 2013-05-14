@@ -53,6 +53,16 @@
           %i.icon-tasks
       %span History
     .block-body
+      .span6.control-group
+        -# Show current image
+        %br
+        %br
+        .control-label= f.label :patient_image
+        .control.inputFile= f.file_field :patient_image, :accept => 'image/*;capture-camera'
+        %br
+        .treatPatientImg
+          - if !@treatment_session.patient_image.file.nil? and @treatment_session.patient_image.file.exists?
+            = image_tag @treatment_session.patient_image_url(:standard).to_s
       - if !@first_session_flag
         = render :partial => 'past_sessions', :locals => { :patient => @patient, :plans => @plans }
       .row-fluid
