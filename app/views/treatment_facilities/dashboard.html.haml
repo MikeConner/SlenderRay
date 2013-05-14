@@ -1,16 +1,9 @@
-.block.block-dark.span10
-  %p.block-heading
-    %span.block-icon.pull-right
-      %a.demo-cancel-click
-        %i.icon-cog
-    %span Resume Current Session
-    .block-body
-      = render :partial => 'machine_dashboard', :locals => { :facility => @facility }
-      .row
-        - if !@facility.treatment_areas.empty?
-          - @facility.treatment_areas.each do |area|
-            = render :partial => 'treatment_area_dashboard', :locals => { :facility => @facility, :area => area }
-        #technician_dashboard_marker
-        %audio{:id => 'beep', :src => '/audios/beep.mp3'}
-
-    
+.span10.dashpage
+  = render :partial => 'machine_dashboard', :locals => { :facility => @facility }
+  .row
+  - if !@facility.treatment_areas.empty?
+    %h3 Treatment Areas
+    - @facility.treatment_areas.each do |area|
+      = render :partial => 'treatment_area_dashboard', :locals => { :facility => @facility, :area => area }
+  #technician_dashboard_marker
+  %audio{:id => 'beep', :src => '/audios/beep.mp3'}
