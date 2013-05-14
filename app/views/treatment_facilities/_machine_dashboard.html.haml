@@ -1,14 +1,32 @@
-%h3== #{facility.facility_name}, #{facility.city}, #{facility.state}
-.row.span9
-  %table.table.table-striped.table-bordered.table-condensed
-    Active Machine Sessions
-    %thead
-      %th Machine
-      %th Status
-    %tbody
+.block.block-dark.span9
+  .block-heading
+    %span.block-icon.pull-right
+      %a.demo-cancel-click{"data-original-title" => "Export", :href => "#", :rel => "tooltip", :title => ""}
+        %i.icon-external-link
+    %a{"data-toggle" => "collapse", :href => "#collapse-table"}== #{facility.facility_name}, #{facility.city}, #{facility.state}
+  #collapse-table.collapse.in
+    %table.responsive.table
+      %thead
+        %thead
+          %th Machine
+          %th Status
       - facility.treatment_sessions.each do |session|
         - if !session.complete?
           %tr
             %th= session.machine.display_name
             %th{:id => "#{session.id}", :class => 'dashboard_machine_state'}
-              = session.process_timer.display_status      
+              = session.process_timer.display_status  
+    .pagination.pagination-centered
+      %ul
+        %li
+          %a{:href => "#"} Prev
+        %li.active
+          %a{:href => "#"} 1
+        %li
+          %a{:href => "#"} 2
+        %li
+          %a{:href => "#"} 3
+        %li
+          %a{:href => "#"} 4
+        %li
+          %a{:href => "#"} Next

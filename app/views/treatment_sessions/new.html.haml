@@ -1,10 +1,13 @@
-.treatstart
-  .span12.control-group
-    = form_for @treatment_session do |f|
-      = render :partial => 'shared/error_messages', :locals => { :errors => @treatment_session.errors, :name => 'Treatment Session' }
-      .span5.treatmenu
-        %h5.treatmenuhead Start New Session
-        .treatmentmenubody
+.span12.control-group
+  = form_for @treatment_session do |f|
+    = render :partial => 'shared/error_messages', :locals => { :errors => @treatment_session.errors, :name => 'Treatment Session' }
+    .block.block-dark.span5
+      %p.block-heading
+        %span.block-icon.pull-right
+          %a.demo-cancel-click
+            %i.icon-cog
+        %span New Patient Intake
+        .block-body
           - if @new_session.empty?
             %em No patients are ready to start new sessions
           - else
@@ -25,10 +28,13 @@
             .actions
               = f.submit I18n.t('start_session'), :class => 'btn btn-success'
 
-      .span5.pull-right.treatmenu
-        %h5.treatmenuhead Resume Current Session
-        .treatmentmenubody
-
+    .block.block-dark.span5
+      %p.block-heading
+        %span.block-icon.pull-right
+          %a.demo-cancel-click
+            %i.icon-cog
+        %span Resume Current Session
+        .block-body
           - if @resume_session.empty?
             %em No patients have unfinished sessions
           - else
