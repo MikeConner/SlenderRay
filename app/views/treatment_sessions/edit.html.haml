@@ -9,7 +9,10 @@
     .block-body
       %ul.admin.unstyled
         %li
-          %img.avatar.pull-left{:alt => "avatar", :src => "http://oi43.tinypic.com/audz6h.jpg", :style => "width:60px;"}/
+          - if !@patient.treatment_sessions.first.patient_image.file.nil? and @patient.treatment_sessions.first.patient_image.file.exists?
+            -imgUrl =  @patient.treatment_sessions.first.patient_image_url(:standard).to_s
+          - else imgUrl = "http://oi43.tinypic.com/audz6h.jpg"
+          %img.avatar.pull-left{:alt => "avatar", :src => imgUrl, :style => "width:60px;"}
           %p.patientName-treat
             %strong== #{@patient.name}
           = link_to 'Cancel Session', @treatment_session, :method => :delete, :class => 'btn', :data => { :confirm => 'This will delete this session and all associated data. Are you sure?' }
