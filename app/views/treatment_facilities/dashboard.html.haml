@@ -6,4 +6,5 @@
     - @facility.treatment_areas.each do |area|
       = render :partial => 'treatment_area_dashboard', :locals => { :facility => @facility, :area => area }
   #technician_dashboard_marker
-  %audio{:id => 'beep', :src => '/audios/beep.mp3'}
+  %audio{:id => 'beep1', :src => '/audios/beep.mp3'}
+  %audio{:id => 'beep5', :src => '/audios/beep5.wav'}

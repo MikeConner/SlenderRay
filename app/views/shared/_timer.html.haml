@@ -1,12 +1,12 @@
 - case timer.process_state
   - when ProcessTimer::IDLE
-    = f.submit 'Start Timer', :class => 'btn btn-success'
+    = f.submit 'Start Timer', :class => 'btn btn-danger'
   - when ProcessTimer::STARTED, ProcessTimer::RESUMED
-    = f.submit 'Pause Timer', :class => 'btn  btn-danger'
-    = f.submit 'Expire Timer', :class => 'btn btn-danger '
+    = f.submit 'Pause Timer', :class => 'btn  btn-info'
+    = f.submit 'Expire Timer', :class => 'btn btn-info '
   - when ProcessTimer::PAUSED
-    = f.submit 'Resume Timer', :class => 'btn  btn-success'
+    = f.submit 'Resume Timer', :class => 'btn  btn-warning'
   - when ProcessTimer::EXPIRED
     - if 'TreatmentSession' == timer.process_type
       = f.submit 'Complete Session', :class => 'btn  btn-danger'
-    = f.submit 'Reset Session', :class => 'btn btn-danger'
+    = f.submit 'Reset Session', :class => 'btn btn-warning'

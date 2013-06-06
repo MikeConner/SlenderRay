@@ -15,12 +15,11 @@ $(function() {
 	}
 });
 
-function beep() {
-	var beep = document.getElementById('beep');
+function beep(num) {
+	var cnt = typeof num !== 'undefined' ? num.toString() : '1';
+	var beep = document.getElementById('beep' + cnt);
 	if (beep) {
       beep.play();
-	  //var snd = new Audio(beep); // buffers automatically when created
-      //snd.play();
 	}
 }
 
@@ -159,13 +158,14 @@ function monitor() {
     }
     else if (/RELOAD$/.test(status)) {
     	status = status.substring(0, status.length - 6);
+    	beep(5);
     	reload = true;
     }
     element.text(status);    	
   });
   
   if (reload) {
-  	window.location.reload();
+  	setTimeout(function() { window.location.reload(); }, 5000); 
   }
 }
 
