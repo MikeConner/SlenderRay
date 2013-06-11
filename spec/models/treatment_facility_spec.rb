@@ -401,6 +401,17 @@ describe "TreatmentFacility" do
     it "should prepend the http" do
       facility.schedule_url.should be == 'http://www.machovy.com'
     end
+    
+    describe "clear it" do
+      before do
+        facility.schedule_url = ''
+        facility.valid?
+      end
+      
+      it "should be blank" do
+        facility.schedule_url.should be_blank
+      end
+    end
   end
   
   describe "should not transform url" do

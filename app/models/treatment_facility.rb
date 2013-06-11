@@ -95,7 +95,7 @@ private
   end
   
   def ensure_valid_schedule
-    if !self.schedule_url.nil?
+    if !self.schedule_url.blank?
       self.schedule_url = 'http://' + self.schedule_url unless self.schedule_url.match(/^https?:\/\//)
     end
   end

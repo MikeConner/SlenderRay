@@ -19,7 +19,7 @@
                     .icon-download-alt.white-icon.icon-2x.boxtext
                     Manage Patients
 
-            - if !current_user.treatment_facility.schedule_url.nil?
+            - if !current_user.treatment_facility.schedule_url.blank?
               %li{:role => 'presentation'} 
                 .span3.smallbox.greybox
                   =link_to current_user.treatment_facility.schedule_url, :target => '_blank' do  
