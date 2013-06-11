@@ -18,7 +18,7 @@
 #  created_at             :datetime        not null
 #  updated_at             :datetime        not null
 #  treatment_facility_id  :integer
-#  time_zone              :string(32)
+#  time_zone              :string(32)      default("Eastern Time (US & Canada)")
 #
 
 describe 'User' do

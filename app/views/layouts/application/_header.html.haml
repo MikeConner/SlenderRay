@@ -7,23 +7,27 @@
         %ul{:class => 'dropdown-menu', :role => 'menu'}
           - if !current_user.nil?
             %li{:role => 'presentation'} 
-              -# link_to "new patient intake", new_patient_path
               .span3.smallbox.greybox
                 = link_to new_patient_path do
                   .boxtop
                     .icon-download-alt.white-icon.icon-2x.boxtext
                     New patient 
-          - if !current_user.nil?
             %li{:role => 'presentation'} 
-              -# link_to "manage patients", patients_path
               .span3.smallbox.greybox
-                = link_to  patients_path do
+                = link_to patients_path do
                   .boxtop
                     .icon-download-alt.white-icon.icon-2x.boxtext
                     Manage Patients
 
+            - if !current_user.treatment_facility.schedule_url.nil?
+              %li{:role => 'presentation'} 
+                .span3.smallbox.greybox
+                  =link_to current_user.treatment_facility.schedule_url, :target => '_blank' do  
+                    .boxtop
+                      .icon-calendar.white-icon.icon-2x.boxtext
+                      Schedule
+                    
             %li{:role => 'presentation'} 
-              -# link_to "treatment", new_treatment_session_path
               .span3.smallbox.greybox
                 = link_to  new_treatment_session_path do
                   .boxtop
@@ -31,29 +35,18 @@
                     Treatment
 
             %li{:role => 'presentation'} 
-              -# link_to "training videos", training_videos_path
               .span3.smallbox.greybox
                 =link_to training_videos_path do
                   .boxtop
                     .icon-desktop.white-icon.icon-2x.boxtext
                     Training 
           %li{:role => 'presentation'} 
-            -# link_to "testimonials", testimonials_path
             .span3.smallbox.greybox
               =link_to testimonials_path do
                 .boxtop
                   .icon-comments.white-icon.icon-2x.boxtext
                   Testimonials
           %li{:role => 'presentation'} 
-            -# link_to "schedule", "#"
-            .span3.smallbox.greybox
-              =link_to  "#" do  
-                .boxtop
-                  .icon-calendar.white-icon.icon-2x.boxtext
-                  Schedule
-
-          %li{:role => 'presentation'} 
-            -# link_to "photos", photos_path
             .span3.smallbox.greybox
               = link_to photos_path do
                 .boxtop
@@ -61,7 +54,6 @@
                   Photos            
           - if !current_user.nil?
             %li{:role => 'presentation'} 
-              -# link_to "dashboard", dashboard_treatment_facilities_path
               .span3.smallbox.greybox
                 = link_to  dashboard_treatment_facilities_path do
                   .boxtop
@@ -77,7 +69,6 @@
                       Reports
 
             %li{:role => 'presentation'} 
-              -# link_to "log out", destroy_user_session_path, :method => :delete 
               .span3.smallbox.greybox
                 = link_to  destroy_user_session_path, :method => :delete do
                   .boxtop
@@ -86,7 +77,6 @@
 
           - else
             %li{:role => 'presentation'} 
-              -# link_to "log in", new_user_session_path
               .span3.smallbox.greybox
                 = link_to  new_user_session_path do
                   .boxtop

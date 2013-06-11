@@ -1,6 +1,12 @@
 .offset1.span10.facilitypage
   %h1= @facility.facility_name
   %p= @facility.facility_url
+  - if !@facility.schedule_url.nil?
+    %p== Schedule hosted at: #{@facility.schedule_url}
+  - if @facility.contract_file.file.present?
+    %p== Contract uploaded (#{@facility.contract_file.filename})
+  - else
+    %p No contract uploaded
   %p== Dr. #{@facility.first_name} #{@facility.last_name}
   %p== Email: #{@facility.email}
   %p== Phone: #{@facility.phone}

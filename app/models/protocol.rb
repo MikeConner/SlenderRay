@@ -2,11 +2,12 @@
 #
 # Table name: protocols
 #
-#  id         :integer         not null, primary key
-#  frequency  :integer         not null
-#  name       :string(32)
-#  created_at :datetime        not null
-#  updated_at :datetime        not null
+#  id            :integer         not null, primary key
+#  frequency     :integer         not null
+#  name          :string(32)
+#  created_at    :datetime        not null
+#  updated_at    :datetime        not null
+#  protocol_file :string(255)
 #
 
 # CHARTER

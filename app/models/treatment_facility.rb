@@ -17,6 +17,8 @@
 #  zipcode       :string(10)
 #  created_at    :datetime        not null
 #  updated_at    :datetime        not null
+#  contract_file :string(255)
+#  schedule_url  :string(255)
 #
 
 # CHARTER
@@ -31,10 +33,14 @@ class TreatmentFacility < ActiveRecord::Base
   include ApplicationHelper
     
   attr_accessible :facility_name, :facility_url, :first_name, :last_name, :email, :phone, :fax, :address_1, :address_2, :city, :state, :zipcode,
+                  :contract_file, :remote_contract_file_url, :schedule_url,
                   :machines_attributes, :treatment_areas_attributes, :users_attributes, :treatment_plan_templates_attributes
   
+  mount_uploader :contract_file, ContractUploader
+
   before_validation :downcase_email
   before_validation :upcase_state
+  before_validation :ensure_valid_schedule
   
   has_many :patients, :dependent => :restrict
   has_many :machines, :dependent => :restrict
@@ -54,6 +60,7 @@ class TreatmentFacility < ActiveRecord::Base
                             :uniqueness => { case_sensitive: false },
                             :length => { maximum: MAX_ADDRESS_LEN }
   validates :facility_url, :format => { with: URL_REGEX }, :allow_blank => true
+  validates :schedule_url, :format => { with: URL_REGEX }, :allow_blank => true
   validates :first_name, :presence => true,
                          :length => { maximum: MAX_FIRST_NAME_LEN }
   validates :last_name, :presence => true,
@@ -86,4 +93,11 @@ private
   def upcase_state
     self.state.upcase!
   end
+  
+  def ensure_valid_schedule
+    if !self.schedule_url.nil?
+      self.schedule_url = 'http://' + self.schedule_url unless self.schedule_url.match(/^https?:\/\//)
+    end
+  end
 end
+

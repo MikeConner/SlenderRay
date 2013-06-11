@@ -10,6 +10,15 @@
     .controls   
       = f.text_field :facility_url
     .control-label
+      = f.label :schedule_url
+    .controls   
+      = f.text_field :schedule_url
+    - if current_user.has_role?(Role::SUPER_ADMIN)  
+      .control-label
+        = f.label :contract_file
+      .controls
+        = f.file_field :contract_file
+    .control-label
       = f.label :first_name
     .controls   
       = f.text_field :first_name

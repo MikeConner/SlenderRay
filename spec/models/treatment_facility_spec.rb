@@ -17,6 +17,8 @@
 #  zipcode       :string(10)
 #  created_at    :datetime        not null
 #  updated_at    :datetime        not null
+#  contract_file :string(255)
+#  schedule_url  :string(255)
 #
 
 describe "TreatmentFacility" do
@@ -44,6 +46,8 @@ describe "TreatmentFacility" do
     facility.should respond_to(:machines)
     facility.should respond_to(:treatment_sessions)
     facility.should respond_to(:users)
+    facility.should respond_to(:contract_file)
+    facility.should respond_to(:schedule_url)
   end
   
   it { should be_valid }
@@ -364,6 +368,57 @@ describe "TreatmentFacility" do
   describe "url (invalid)" do  
     ["xyz", ".com", "google", "www.google", "ftp://microsoft.com/fish", "www.google."].each do |url|
       before { facility.facility_url = url }
+     
+      it { should_not be_valid }
+    end
+  end  
+  
+  describe "url (valid)" do
+    ["https://cryptic-ravine-3423.herokuapp.com", "microsoft.com", "http://www.google.com", "www.bitbucket.org", "google.com/index.html"].each do |url|
+      before { facility.schedule_url = url }
+      
+      it { should be_valid }
+    end
+  end
+
+  describe "should transform url" do
+    before do
+      facility.schedule_url = 'www.machovy.com'
+      facility.valid?
+    end
+    
+    it "should prepend the http" do
+      facility.schedule_url.should be == 'http://www.machovy.com'
+    end
+  end
+  
+  describe "should not transform url" do
+    before do
+      facility.schedule_url = 'http://www.machovy.com'
+      facility.valid?
+    end
+    
+    it "should prepend the http" do
+      facility.schedule_url.should be == 'http://www.machovy.com'
+    end
+  end
+  
+  describe "should not transform url" do
+    before do
+      facility.schedule_url = 'https://www.machovy.com'
+      facility.valid?
+    end
+    
+    it "should prepend the http" do
+      facility.schedule_url.should be == 'https://www.machovy.com'
+    end
+  end
+  
+  # Should actually introduce phone normalization if we want people to type them in
+  # Many of these should be valid after normalization 
+  describe "url (invalid)" do  
+    ["xyz", ".com", "google", "www.google", "ftp://microsoft.com/fish", "www.google."].each do |url|
+      before { facility.schedule_url = url }
      
       it { should_not be_valid }
     end
