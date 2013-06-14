@@ -6,13 +6,22 @@
       .control-label
         = label_tag :report_start_date
       .controls
-        = date_select :report, :start_date, order: [:month, :day, :year]
+        = date_select :report, :start_date, order: [:month, :year], :disabled => true
       .control-label
         = label_tag :report_end_date
       .controls
-        = date_select :report, :end_date, order: [:month, :day, :year]
+        = date_select :report, :end_date, order: [:month, :year], :disabled => true
       .control-label
         = label_tag :report_name
       .controls
-        = select_tag :report_name, options_for_select(@reports)
+        = select_tag :report_name, options_for_select(@reports), :onchange => 'update_date_selects();'
       = submit_tag 'Generate Report', :class => 'btn btn-danger btn-large'
+:javascript
+  function update_date_selects() {
+    var disabled = 'Clinic Monthly' != $('#report_name').val();
+    
+    $('#report_start_date_2i').prop('disabled', disabled);
+    $('#report_start_date_1i').prop('disabled', disabled);
+    $('#report_end_date_2i').prop('disabled', disabled);
+    $('#report_end_date_1i').prop('disabled', disabled);
+  }

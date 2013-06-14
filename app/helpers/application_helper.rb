@@ -22,5 +22,6 @@ module ApplicationHelper
   SMTP_PASSWORD = 'sharklaser'
   
   DATE_FORMAT = '%b %d, %Y'
+  MONTH_FORMAT = '%B, %Y'
   DATETIME_FORMAT = '%b %d, %Y %0l:%0M %Z'
 end

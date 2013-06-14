@@ -8,20 +8,6 @@ describe "Add machine" do
   
   subject { page }
   
-  describe "Invalid user" do
-    before do
-      @user = FactoryGirl.create(:user, :treatment_facility => nil)
-      login_as(@user, :scope => :user)
-      visit treatment_facilities_path
-    end
-    
-    it "should not have a valid treatment facility" do
-      @user.treatment_facility.should be_nil
-    end
-    
-    it { should have_content(I18n.t('user_not_set_up')) }
-  end
-  
   describe "Technician user" do
     before do
       sign_in_as_technician(facility)

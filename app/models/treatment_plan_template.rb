@@ -29,6 +29,8 @@ class TreatmentPlanTemplate < ActiveRecord::Base
                   :treatment_facility_id
   
   belongs_to :treatment_facility
+  # Necessary to support has_many :through associations through STI on treatment_plans (e.g., in Patient)
+  has_many :treatment_sessions, :foreign_key => 'treatment_plan_id', :dependent => :restrict
   
   validates_presence_of :description
   validates :num_sessions, :presence => true,

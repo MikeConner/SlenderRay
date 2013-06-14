@@ -30,7 +30,12 @@ class Patient < ActiveRecord::Base
   belongs_to :treatment_facility
   
   has_many :testimonials, :dependent => :destroy
-  has_many :treatment_plans, :dependent => :restrict
+  # Where do I start? :-)
+  # We have a has_many pointing "into" an STI hierarchy. TreatmentPlan < TreatmentPlanTemplate < ActiveRecord::Base
+  # Apparently the filename has to match the DB table name, but then calling treatment_plans looks for a TreatmentPlan table, which
+  #   doesn't exist (the table is TreatmentPlanTemplate). So we have to tell it the class_name of what we're actually storing, and
+  #   just to be safe, make it conditional to make sure we don't store any templates here. (Code should prevent it anyway.)
+  has_many :treatment_plans, :class_name => 'TreatmentPlanTemplate', :conditions => { :type => ['TreatmentPlan'] }, :dependent => :restrict
   has_many :treatment_sessions, :through => :treatment_plans
   
   accepts_nested_attributes_for :treatment_plans, :allow_destroy => true, :reject_if => :all_blank

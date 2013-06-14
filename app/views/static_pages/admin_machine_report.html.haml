@@ -1,0 +1,17 @@
+.span12.facilitypage
+  .report
+    %center
+      %h1 Admin Machine Report
+    - @report_data.each do |facility, machine_data|
+      %h2= facility
+      %table.table.table-striped.table-bordered.table-condensed
+        %thead
+          %th Machine Name
+          %th Serial #
+          %th Times Used
+        %tbody
+          - machine_data.each do |machine_name, data|
+            %tr
+              %td= machine_name
+              %td= data[:serial]
+              %td= data[:count]

@@ -1,0 +1,19 @@
+.span12.facilitypage
+  .report
+    %center
+      %h1 Clinic Patient Report
+      - @report_data.each do |facility, facility_data|
+        %h2= facility
+        %table.table.table-striped.table-bordered.table-condensed
+          %thead
+            %th Patient
+            %th Status
+            %th Packages purchased
+            %th Sessions completed
+          %tbody
+            - facility_data.each do |patient_name, patient_data|
+              %tr
+                %td= patient_name
+                %td= patient_data[:status]
+                %td= patient_data[:packages]
+                %td= patient_data[:sessions]

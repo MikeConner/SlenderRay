@@ -1,0 +1,19 @@
+.span12.facilitypage
+  .report
+    %center
+      %h1 Package Report
+    - @report_data.each do |facility, package_data|
+      %h2= facility
+      %table.table.table-striped.table-bordered.table-condensed
+        %thead
+          %th Package Name
+          %th Price
+          %th # Sessions
+          %th # Sold
+        %tbody
+          - package_data.each do |package_name, data|
+            %tr
+              %td= package_name
+              %td= number_to_currency(data[:price])
+              %td= data[:sessions]
+              %td= data[:count]

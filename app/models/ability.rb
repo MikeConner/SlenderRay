@@ -10,9 +10,9 @@ class Ability
       can :manage, :all
     elsif user.has_role?(Role::TECHNICIAN)
       can :read, :all
-      can :create, [Measurement, TreatmentPlan, TreatmentSession, Testimonial, Photo]
-      can :manage, [TreatmentFacility, Patient, Measurement, TreatmentPlan, TreatmentSession, Testimonial, Photo]
-      cannot :destroy, [Machine, Measurement, Protocol, Role, TreatmentFacility, TreatmentPlan, User]
+      can :create, [Measurement, TreatmentSession, Testimonial, Photo]
+      can :manage, [TreatmentFacility, Patient, Measurement, TreatmentSession, Testimonial, Photo]
+      cannot :destroy, [Machine, Measurement, Protocol, Role, TreatmentFacility, User]
     else
       # Not logged in
       can :read, [Testimonial, TreatmentFacility, Photo]

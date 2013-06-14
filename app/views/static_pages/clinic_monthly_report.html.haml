@@ -1,0 +1,24 @@
+.span12.facilitypage
+  .report
+    %center
+      %h1 Clinic Monthly Report
+      - @report_data.each do |facility, facility_data|
+        %h2= facility
+        %table.table.table-striped.table-bordered.table-condensed
+          %thead
+            %th Month
+            %th New Patients
+            %th Continuing Patients
+            %th Active Patients
+            %th Finished Patients
+            %th Total Patients
+          %tbody
+            - @months.each do |month|
+              - month_name = month.try(:strftime, ApplicationHelper::MONTH_FORMAT)
+              %tr
+                %td= month_name
+                %td= facility_data[month_name][:new]
+                %td= facility_data[month_name][:continuing]
+                %td= facility_data[month_name][:active]
+                %td= facility_data[month_name][:finished]
+                %td= facility_data[month_name][:count]
