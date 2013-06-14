@@ -2,24 +2,33 @@
   %h1 Report Selection
   = render :partial => 'shared/flash_messages'
   = form_tag generate_report_path do
+    </br>
     .control-group
-      .control-label
-        = label_tag :report_start_date
-      .controls
-        = date_select :report, :start_date, order: [:month, :year], :disabled => true
-      .control-label
-        = label_tag :report_end_date
-      .controls
-        = date_select :report, :end_date, order: [:month, :year], :disabled => true
       .control-label
         = label_tag :report_name
       .controls
         = select_tag :report_name, options_for_select(@reports), :onchange => 'update_date_selects();'
+      .date_selection{ :style => "display: none"}
+        .control-label
+          = label_tag :report_start_date
+        .controls
+          = date_select :report, :start_date, order: [:month, :year], :disabled => true
+        .control-label
+          = label_tag :report_end_date
+        .controls
+          = date_select :report, :end_date, order: [:month, :year], :disabled => true
       = submit_tag 'Generate Report', :class => 'btn btn-danger btn-large'
 :javascript
   function update_date_selects() {
     var disabled = 'Clinic Monthly' != $('#report_name').val();
-    
+    if (disabled) {
+      $('.date_selection').hide();
+    }
+    else
+    {
+      $('.date_selection').show();
+    }
+
     $('#report_start_date_2i').prop('disabled', disabled);
     $('#report_start_date_1i').prop('disabled', disabled);
     $('#report_end_date_2i').prop('disabled', disabled);
