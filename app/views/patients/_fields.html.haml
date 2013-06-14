@@ -1,10 +1,15 @@
 = f.hidden_field :treatment_facility_id
-.fieldset
+.form-inline.form-dark
   .controls
     = f.text_field :name, :placeholder => "Name"
   %br
   .control-label
     = f.label :contract_file
-  .controls
-    = f.file_field :contract_file
-  %br
+  .fileupload.fileupload-new{"data-provides" => "fileupload"}
+    .input-append
+      .uneditable-input.span3
+        %i.icon-file.fileupload-exists
+        %span.fileupload-preview
+      %span.btn.btn-primary.btn-file
+        %span.fileupload-new Select File
+        = f.file_field :contract_file

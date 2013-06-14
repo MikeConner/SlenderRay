@@ -87,14 +87,15 @@
       .logopic
         = link_to root_path do
           = image_tag "logo.gif"
-    .span2.pull-right.topright
+    .span5.pull-right.topright
       - if current_user.nil?
         = link_to new_user_session_path do
           .icon-user.icon-3x 
           Log In
       - else
         = link_to treatment_facilities_path do
-          = image_tag "manage.gif"
+          // = image_tag "manage.gif"
+          .icon-cogs.icon-3x
           Manage Facilities &nbsp;
 
         = link_to destroy_user_session_path, :method => :delete do

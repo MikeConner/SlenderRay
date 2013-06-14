@@ -10,6 +10,7 @@
     .login-top.row 
       %div
         = f.submit "Sign in", :class => "btn btn-inverse pull-right"
+        = f.submit "New Account", :class => "btn btn-inverse pull-right"
       %div
         - if devise_mapping.rememberable?
           = f.check_box :remember_me
