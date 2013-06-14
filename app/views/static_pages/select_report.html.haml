@@ -12,11 +12,11 @@
         .control-label
           = label_tag :report_start_date
         .controls
-          = date_select :report, :start_date, order: [:month, :year], :disabled => true
+          = date_select :report, :start_date, order: [:month, :year]
         .control-label
           = label_tag :report_end_date
         .controls
-          = date_select :report, :end_date, order: [:month, :year], :disabled => true
+          = date_select :report, :end_date, order: [:month, :year]
       = submit_tag 'Generate Report', :class => 'btn btn-danger btn-large'
 :javascript
   function update_date_selects() {
