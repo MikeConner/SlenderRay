@@ -1,10 +1,13 @@
 class StaticPagesController < ApplicationController
-  before_filter :authenticate_user!, :except => [:home]
+  before_filter :authenticate_user!, :except => [:home, :public_videos]
   
   def home
   end
   
   def training_videos
+  end
+  
+  def public_videos
   end
   
   def select_report

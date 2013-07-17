@@ -52,6 +52,12 @@
                 .boxtop
                   .icon-camera-retro.white-icon.icon-2x.boxtext
                   Photos            
+          %li{:role => 'presentation'} 
+            .span3.smallbox.greybox
+              = link_to public_videos_path do
+                .boxtop
+                  .icon-desktop.white-icon.icon-2x.boxtext
+                  Videos            
           - if !current_user.nil?
             %li{:role => 'presentation'} 
               .span3.smallbox.greybox

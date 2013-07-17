@@ -40,6 +40,7 @@ SlenderRay::Application.routes.draw do
   resources :protocols
   
   match "/training_videos" => 'static_pages#training_videos'
+  match "/public_videos" => 'static_pages#public_videos'
   match "/select_report" => 'static_pages#select_report'
   match "/generate_report" => 'static_pages#generate_report', :via => :post
   # The priority is based upon order of creation:
