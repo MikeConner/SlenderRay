@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.13'
+gem 'rails', '3.2.17'
 ruby '1.9.3'
 
 # Bundle edge Rails instead:
@@ -38,7 +38,6 @@ end
 
 group :development do
   gem 'annotate', '2.5.0'
-  gem 'heroku', '2.39.3'
   gem 'haml-rails', '0.3.5'
 end
 
@@ -70,15 +69,3 @@ gem 'rails_admin'
 
 gem 'will_paginate', '3.0.3'
 gem 'bootstrap-will_paginate', '0.0.5'
-
-# To use Jbuilder templates for JSON
-# gem 'jbuilder'
-
-# Use unicorn as the app server
-# gem 'unicorn'
-
-# Deploy with Capistrano
-# gem 'capistrano'
-
-# To use debugger
-# gem 'debugger'
