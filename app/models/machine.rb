@@ -43,6 +43,7 @@ class Machine < ActiveRecord::Base
   belongs_to :treatment_facility
   has_and_belongs_to_many :users
   has_many :treatment_sessions, :dependent => :restrict
+  has_one :portal, :dependent => :destroy
   
   validates :model, :presence => true,
                     :length => { maximum: MAX_FIELD_LEN }

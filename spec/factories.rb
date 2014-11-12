@@ -36,7 +36,7 @@ FactoryGirl.define do
     zipcode { generate(:random_zip) }
     
     factory :facility_with_treatments do
-      ignore do
+      transient do
         num_sessions 4
       end
       
@@ -47,7 +47,7 @@ FactoryGirl.define do
     end
     
     factory :facility_with_areas do
-      ignore do
+      transient do
         num_areas 3
       end
       
@@ -57,7 +57,7 @@ FactoryGirl.define do
     end
     
     factory :facility_with_photos do
-      ignore do
+      transient do
         num_photos 5
       end
       
@@ -65,6 +65,17 @@ FactoryGirl.define do
         FactoryGirl.create_list(:photo, evaluator.num_photos, :treatment_facility => facility)
       end
     end
+  end
+  
+  factory :portal do
+    machine 
+    
+    name { generate(:random_vendor_name) }
+    wifi_key { SecureRandom.base64(12) }
+    mac_address { SecureRandom.base64(12) }
+    basic_auth { SecureRandom.base64(12) }
+    rid { SecureRandom.hex(16) }
+    cik { SecureRandom.hex(16) }
   end
   
   factory :machine do
@@ -76,12 +87,18 @@ FactoryGirl.define do
     date_installed 1.week.ago
     minutes_per_treatment 8
     
+    factory :machine_with_portal do
+      after(:create) do |machine|
+        FactoryGirl.create(:portal, :machine => machine)
+      end
+    end
+    
     factory :ten_minute_machine do
       minutes_per_treatment 10
     end
     
     factory :machine_with_sessions do
-      ignore do
+      transient do
         num_sessions 4
       end
       
@@ -106,7 +123,7 @@ FactoryGirl.define do
     name "Whole lotta Rosie"
     
     factory :patient_with_testimonials do
-      ignore do
+      transient do
         num_testimonials 2
       end
       
@@ -116,7 +133,7 @@ FactoryGirl.define do
     end
     
     factory :patient_with_plans do
-      ignore do
+      transient do
         num_plans 2
       end
       
@@ -173,7 +190,7 @@ FactoryGirl.define do
     type 'TreatmentPlan'
     
     factory :plan_with_sessions do
-      ignore do
+      transient do
         num_treatment_sessions 2
       end
       
@@ -196,7 +213,7 @@ FactoryGirl.define do
     end
   
     factory :session_with_measurements do
-      ignore do
+      transient do
         num_measurements 6
       end
       
@@ -214,7 +231,7 @@ FactoryGirl.define do
     end 
     
     factory :first_session_with_measurements do
-      ignore do
+      transient do
         num_measurements 4
       end
       

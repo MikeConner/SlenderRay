@@ -44,6 +44,7 @@ describe "Machine" do
   end
   
   its(:treatment_facility) { should == facility }
+  its(:portal) { should be_nil }
   
   it { should be_valid }
   

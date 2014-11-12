@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130611021855) do
+ActiveRecord::Schema.define(:version => 20141031181615) do
 
   create_table "machines", :force => true do |t|
     t.string   "model",                 :limit => 64,                    :null => false
@@ -63,6 +63,18 @@ ActiveRecord::Schema.define(:version => 20130611021855) do
     t.integer  "treatment_facility_id"
     t.datetime "created_at",                          :null => false
     t.datetime "updated_at",                          :null => false
+  end
+
+  create_table "portals", :force => true do |t|
+    t.integer  "machine_id"
+    t.string   "name"
+    t.string   "rid",         :limit => 40, :null => false
+    t.string   "cik",                       :null => false
+    t.string   "basic_auth",  :limit => 40, :null => false
+    t.string   "wifi_key",    :limit => 16, :null => false
+    t.string   "mac_address", :limit => 16, :null => false
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
   end
 
   create_table "process_timers", :force => true do |t|
