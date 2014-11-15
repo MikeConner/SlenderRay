@@ -1,13 +1,14 @@
 source 'https://rubygems.org'
 
 gem 'rails', '3.2.20'
-ruby '1.9.3'
+ruby '2.1.4'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'sass-rails',   '3.2.6'
 gem 'pg', '0.17.1'
+gem 'nokogiri', '1.6.1'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -27,7 +28,7 @@ end
 
 group :development, :test do
   gem 'rspec-rails', '2.13.2'
-  gem 'faker'#, '1.0.1'
+  gem 'faker', '1.4.2'
   gem 'spork', '0.9.2'
   gem 'thin', '1.6.3'
 end
@@ -62,10 +63,10 @@ gem 'cancan', '1.6.10'
 gem 'carrierwave', '0.10.0'
 gem 'fog', '1.22.1'
 gem 'rmagick', '2.13.3', :require => false
-gem 'mini_magick', '3.8.1'
+gem 'mini_magick', '4.0.0'
 
 # for Admin pages
-gem 'rails_admin', '0.4.9'
+gem 'rails_admin', '0.4.8'
 
 gem 'will_paginate', '3.0.5'
 gem 'bootstrap-will_paginate', '0.0.10'
