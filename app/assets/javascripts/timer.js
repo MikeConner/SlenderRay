@@ -175,8 +175,11 @@ function turn_machine_on() {
 	// You can only change the protocol through interaction with the server anyway (start/pause/resume)
   	//var e = document.getElementById("treatment_session_protocol_id");
     //var idx = e.options[e.selectedIndex].value;
+    
+    /* Temporarily disable tone when starting a session 
     var music = $('#jplayer').attr('src');
 	$('#jplayer').html('<audio id="music" src="' + music + '" autoplay loop>');
+	*/
 }
 
 function turn_machine_off() {
