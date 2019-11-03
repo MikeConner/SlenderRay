@@ -10,7 +10,7 @@
       %br= photo.title
       %em= photo.caption
       - if show_facility_name
-        %br= photo.treatment_facility.name
+        %br= photo.treatment_facility.facility_name
       - if technician
         %br/
         = link_to 'Edit', edit_photo_path(photo), :class => "btn btn-primary"
